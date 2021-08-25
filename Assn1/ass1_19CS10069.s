@@ -1,6 +1,6 @@
 	.file	"Ass1.c"							# name of the C source file
-	.text										# Section where our code is stored ***
-	.section	.rodata							# Section containing only read-only data
+	.text										# Section where our code is stored 
+	.section	.rodata							# Section containing read-only data
 	.align 8									# Align with 8-byte boundary
 .LC0:											# Label of f-string with 1st printf
 	.string	"Enter how many elements you want:"	# The string to be printed
@@ -12,7 +12,7 @@
 	.string	"\nEnter the item to search"		# The string to be printed
 .LC4:											# Label of string with 4th printf
 	.string	"\n%d found in position: %d\n"		# The string to be printed
-	.align 8
+	.align 8									# Align with 8 byte boundary
 .LC5:											# Label of string with 5th printf
 	.string	"\nItem is not present in the list." # The string to be printed
 	.text										# Section of type text
@@ -67,7 +67,7 @@ main:											# Beginning of the main function
 	call	inst_sort							# Call the insertion sort function
 	leaq	.LC3(%rip), %rdi					# Load effective address of .LC3(%rip) into rdi for loading the string into printf
 	call	puts@PLT							# Call the printf function
-	leaq	-428(%rbp), %rax					# Load effective address of [rbp - 428] to rax which is the place where item to be found is stored
+	leaq	-428(%rbp), %rax					# Load effective address of [rbp - 428] to rax which is the place where item to be searched is stored
 	movq	%rax, %rsi							# Set rsi to rax(item)
 	leaq	.LC1(%rip), %rdi					# Load effective address of .LC1(%rip$) to rdi for for calling the scanf function
 	movl	$0, %eax							# Set eax to 0 i.e. clear the contents before calling scanf 
@@ -93,12 +93,12 @@ main:											# Beginning of the main function
 	movl	$0, %eax							# Set eax to 0 i.e. clear the contents before calling printf
 	call	printf@PLT							# Call the printf function
 	jmp	.L5										# Jump to .L5
-.L4:
+.L4:											
 	leaq	.LC5(%rip), %rdi					# Load effective address of .LC5(%rip) which is the string loaded to printf
 	call	puts@PLT							# Call the printf function
 .L5:
 	movl	$0, %eax							# Set eax to 0 i.e. clear the contents
-	movq	-8(%rbp), %rcx						# Set rcx to [rbp - 8] (what is this??)
+	movq	-8(%rbp), %rcx						# Set rcx to [rbp - 8] 
 	xorq	%fs:40, %rcx						# Segment addressing, rs is a segment register and we're xor-ing the contents in address fs:40 with rcx
 	je	.L7										# If equal, jump to .L7
 	call	__stack_chk_fail@PLT				
@@ -120,7 +120,7 @@ inst_sort:										# Beginning of insertion sort function
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp							# Set the base pointer to point at rsp
 	.cfi_def_cfa_register 6
-	movq	%rdi, -24(%rbp)						# Set [rbp - 24] to rdi(address of 0th element) this is essentially copying the parameters of the function
+	movq	%rdi, -24(%rbp)						# Set [rbp - 24] to rdi(address of 0th element). This is essentially copying the parameters of the function
 	movl	%esi, -28(%rbp)						# Set [rbp - 28] to esi(n) (note we're using long instead of quad to signify 32 bits)
 	movl	$1, -8(%rbp)						# Set [rbp - 8](j) to 1 which is the initialization in for loop
 	jmp	.L9										# Jump to .L9
@@ -151,7 +151,7 @@ inst_sort:										# Beginning of insertion sort function
 	movl	(%rax), %eax						# Set rax(num[i]) to eax
 	movl	%eax, (%rdx)						# Set rdx(num[i+1]) to eax(num[i])
 	subl	$1, -12(%rbp)						# Subtract 1 from [rbp - 12](i) basically i--
-.L10:											# Label representing the beginning of the second for loop
+.L10:											# Label representing condition check of the second for loop
 	cmpl	$0, -12(%rbp)						# Compare 0 with [rbp - 12](i)
 	js	.L11									# Jump to .L11 if i < 0. Here it evaluates i - 0 and checks if the result is negative. This is indicated by a signed flag
 	movl	-12(%rbp), %eax						# Set eax to [rbp - 12](i)
@@ -166,18 +166,18 @@ inst_sort:										# Beginning of insertion sort function
 	movl	-12(%rbp), %eax						# Set eax to [rbp - 12](i)
 	cltq										# Convert long to quad aseax is 32 bit ans we assigned 64 bit value to it
 	addq	$1, %rax							# Add 1 to rax(i + 1)
-	leaq	0(,%rax,4), %rdx					# Load effective address of (i + 1)th element into rcx by doing 4*(i + 1)
+	leaq	0(,%rax,4), %rdx					# Load effective address of (i + 1)th element into rdx by doing 4*(i + 1)
 	movq	-24(%rbp), %rax						# Set rax to [rbp - 24] which is the address of the 0th element of the array
 	addq	%rax, %rdx							# Add the value in rax to rdx to access the (i + 1)th element
 	movl	-4(%rbp), %eax						# Set the value in eax to [rbp - 4](k)
 	movl	%eax, (%rdx)						# Set rdx(num[i+1]) to eax(k)
 	addl	$1, -8(%rbp)						# Add 1 to [rbp - 8](j) basically j++
-.L9:											# Label representing condition check in for loop
+.L9:											# Label representing condition check in the first for loop
 	movl	-8(%rbp), %eax						# Set eax to [rbp - 8](j)
 	cmpl	-28(%rbp), %eax						# Compare [rbp - 28](n) with eax
 	jl	.L13									# If less, i.e. j < n, jump to .L13
 	nop											# No operation.
-	nop											# No operation
+	nop											# No operation. This depends on the compiler
 	popq	%rbp								# Pop the base pointer from the stack frame
 	.cfi_def_cfa 7, 8
 	ret											# return from function
@@ -201,12 +201,12 @@ bsearch:										# Beginning of binary search function
 	movl	$1, -8(%rbp)						# Set [rbp - 8](bottom) to 1
 	movl	-28(%rbp), %eax						# Set eax to [rbp - 28](n)
 	movl	%eax, -12(%rbp)						# Set [rbp - 12](top) to eax(n)
-.L18:
+.L18:											# Beginning of the do-while loop
 	movl	-8(%rbp), %edx						# Set edx to [rbp - 8](bottom)
 	movl	-12(%rbp), %eax						# Set eax to [rbp - 12](top)
 	addl	%edx, %eax							# Add edx to eax (eax = top + bottom)
 	movl	%eax, %edx							# Set edx to eax
-	shrl	$31, %edx							# Right shift edx by 31 bits (all 0s)
+	shrl	$31, %edx							# Right shift edx by 31 bits (all 0s) esentially clearing it
 	addl	%edx, %eax							# Add edx to eax(edx = top + bottom)
 	sarl	%eax								# Right shift eax by 1 bit basically divide by 2
 	movl	%eax, -4(%rbp)						# Set [rbp - 4](mid) to eax
@@ -216,13 +216,13 @@ bsearch:										# Beginning of binary search function
 	movq	-24(%rbp), %rax						# Set rax to [rbp - 24](address of 0th element of the array)
 	addq	%rdx, %rax							# Add rdx(4*mid) to rax. Basically pointer arithmetic
 	movl	(%rax), %eax						# Set eax to rax(a[mid])
-	cmpl	%eax, -32(%rbp)						# Compare eax(a[mid]) and [rbp - 32](item)
+	cmpl	%eax, -32(%rbp)						# Compare eax(a[mid]) and [rbp - 32](item) {first if statement}
 	jge	.L15									# Jump to .L15 if item >= a[mid]
-	movl	-4(%rbp), %eax						# Set eax to [rbp - 4](mid)
+	movl	-4(%rbp), %eax						# Set eax to [rbp - 4](mid) {Here item < mid holds}
 	subl	$1, %eax							# Subtract 1 from eax(mid - 1)
 	movl	%eax, -12(%rbp)						# Set [rbp - 12](top) to eax(mid - 1)
 	jmp	.L16									# Jump to .L16
-.L15:
+.L15:											# else if part
 	movl	-4(%rbp), %eax						# Set eax to [rbp - 4](mid)
 	cltq										# Convert long to quad as eax is 32 bit ans we assigned 64 bit value to it
 	leaq	0(,%rax,4), %rdx					# Load effective address of the element at index mid by doing 4*mid
@@ -231,10 +231,10 @@ bsearch:										# Beginning of binary search function
 	movl	(%rax), %eax						# Set eax to rax(a[mid])
 	cmpl	%eax, -32(%rbp)						# Compare eax(a[mid]) and [rbp - 32](item)
 	jle	.L16									# Jump to .L16 if item <= a[mid]
-	movl	-4(%rbp), %eax						# Set eax to [rbp - 4](mid)
+	movl	-4(%rbp), %eax						# Set eax to [rbp - 4](mid) {Here item > mid holds}
 	addl	$1, %eax							# Add 1 to eax(mid + 1)
 	movl	%eax, -8(%rbp)						# Set [rbp - 8](bottom) to eax(mid + 1)
-.L16:
+.L16:											# condition check after executing an iteration of the do-while loop
 	movl	-4(%rbp), %eax						# Set eax to [rbp - 4](mid)
 	cltq										# Convert long to quad as eax is 32 bit ans we assigned 64 bit value to it
 	leaq	0(,%rax,4), %rdx					# Load effective address of the element at index mid by doing 4*mid
@@ -245,7 +245,7 @@ bsearch:										# Beginning of binary search function
 	je	.L17									# Jump to .L17 if a[mid] = item
 	movl	-8(%rbp), %eax						# Set eax to [rbp - 8](bottom)
 	cmpl	-12(%rbp), %eax						# Compare eax(bottom) with [rbp - 12](top)
-	jle	.L18									# Jump to .L18 if bottom <= top
+	jle	.L18									# Jump to .L18 if bottom <= top i.e. continue with the loop
 .L17:
 	movl	-4(%rbp), %eax						# Set eax to [rbp - 4](mid) return value from function
 	popq	%rbp								# Pop base pointer from the stack

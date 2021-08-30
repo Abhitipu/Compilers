@@ -1,4 +1,4 @@
-a.out: main.o libass2_19CS190069.a
+a.out: main.o libass2_19CS10069.a
 	cc main.o -L. -lass2_19CS10069
 
 main.o: main.c myl.h

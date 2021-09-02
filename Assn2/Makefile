@@ -11,4 +11,4 @@ ass2_19CS10069.o: ass2_19CS10069.c myl.h
 	cc -Wall -c ass2_19CS10069.c
 
 clean:
-	rm -f a.out main.o libass2_19CS10069.a ass2_19CS10069.o
+	rm a.out main.o libass2_19CS10069.a ass2_19CS10069.o

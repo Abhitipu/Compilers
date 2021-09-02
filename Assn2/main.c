@@ -1,16 +1,15 @@
-#include "myl.h"
+#include "myl.h"						// header file containing functions
 
 int main() {
-	printStr("Hey there! Good to see you here!!\n");
+	printStr("Hey there! Good to see you here!!\n");	// testing printStr
 	int n;
+	printStr("Enter an integer: ");			
 
-	printStr("Enter an integer: ");
-
-	if(readInt(&n) == 0) {
+	if(readInt(&n) == 0) {					// readInt test returns 0 in case of failure
 		printStr("Error in reading integer");
 	} else {
-		printStr("The integer entered is: ");
-		printInt(n);
+		printStr("The integer entered is: ");		
+		printInt(n);					// printInt test
 	}
 	
 	printStr("\n");
@@ -18,11 +17,11 @@ int main() {
 	printStr("Enter a floating point value: ");
 
 	float f;
-	if(readFlt(&f) == 0) {
+	if(readFlt(&f) == 0) {					// readFlt test
 		printStr("Error in reading float");
 	} else {
 		printStr("The floating point value entered is: ");
-		printFlt(f);
+		printFlt(f);					// printFlt test
 	}
 
 	printStr("\n");

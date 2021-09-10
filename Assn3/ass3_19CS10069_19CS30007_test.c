@@ -12,7 +12,7 @@ int main( )
 	const float dummy_float_int = 12.43E-14;
 	// Get the data to be written in file
 	char dataToBeWritten[50]
-		= "GeeksforGeeks-A Computer Science Portal for Geeks";
+		= "GeeksforGeeks-A Computer Science Portal for Geeks\'";
 
 	// Open the existing file GfgTest.c using fopen()
 	// in write mode using "w" attribute

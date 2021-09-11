@@ -20,6 +20,7 @@ int main()
             case BEGIN_MULTI_COMMENT: printf("BEGIN_MULTI_COMMENT = %s", yytext); break;
             case MULTI_COMMENT: printf("%s", yytext); break;
             case END_MULTI_COMMENT: printf("\nEND_MULTI_COMMENT\n"); break;
+            case WHITE_SPACE: ;break;
         }
     }
 }

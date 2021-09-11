@@ -2,276 +2,132 @@ BEGIN_SINGLE_COMMENT = // C program to Open a File,
 END_SINGLE_COMMENT
 BEGIN_SINGLE_COMMENT = // Write in it, And Close the File
 END_SINGLE_COMMENT
-
 PUNCTUATORS = #
-PUNCTUATORS = #
- IDENTIFIER = include
 IDENTIFIER = include
- PUNCTUATORS = <
 PUNCTUATORS = <
 IDENTIFIER = stdio
-IDENTIFIER = stdio
-PUNCTUATORS = .
 PUNCTUATORS = .
 IDENTIFIER = h
-IDENTIFIER = h
 PUNCTUATORS = >
-PUNCTUATORS = >
-
 PUNCTUATORS = #
-PUNCTUATORS = #
- IDENTIFIER = include
 IDENTIFIER = include
- PUNCTUATORS = <
 PUNCTUATORS = <
 IDENTIFIER = string
-IDENTIFIER = string
-PUNCTUATORS = .
 PUNCTUATORS = .
 IDENTIFIER = h
-IDENTIFIER = h
 PUNCTUATORS = >
-PUNCTUATORS = >
-
-
 KEYWORD = int
-KEYWORD = int
- IDENTIFIER = main
 IDENTIFIER = main
 PUNCTUATORS = (
-PUNCTUATORS = (
- PUNCTUATORS = )
 PUNCTUATORS = )
-
 PUNCTUATORS = {
-PUNCTUATORS = {
-
-
-	BEGIN_SINGLE_COMMENT = // Declare the file pointer
+BEGIN_SINGLE_COMMENT = // Declare the file pointer
 END_SINGLE_COMMENT
-	IDENTIFIER = FILE
 IDENTIFIER = FILE
- PUNCTUATORS = *
 PUNCTUATORS = *
 IDENTIFIER = filePointer
-IDENTIFIER = filePointer
- PUNCTUATORS = ;
 PUNCTUATORS = ;
-
-	KEYWORD = const
 KEYWORD = const
- KEYWORD = float
 KEYWORD = float
- IDENTIFIER = dummy_float_int
 IDENTIFIER = dummy_float_int
- PUNCTUATORS = =
 PUNCTUATORS = =
- FLOATING_CONST = 12.43E-14
 FLOATING_CONST = 12.43E-14
 PUNCTUATORS = ;
-PUNCTUATORS = ;
-
-	BEGIN_SINGLE_COMMENT = // Get the data to be written in file
+BEGIN_SINGLE_COMMENT = // Get the data to be written in file
 END_SINGLE_COMMENT
-	KEYWORD = char
 KEYWORD = char
- IDENTIFIER = dataToBeWritten
 IDENTIFIER = dataToBeWritten
 PUNCTUATORS = [
-PUNCTUATORS = [
-INTEGER_CONST = 50
 INTEGER_CONST = 50
 PUNCTUATORS = ]
-PUNCTUATORS = ]
-
-		PUNCTUATORS = =
 PUNCTUATORS = =
- STRING_LITERAL = "GeeksforGeeks-A Computer Science Portal for Geeks\'"
 STRING_LITERAL = "GeeksforGeeks-A Computer Science Portal for Geeks\'"
 PUNCTUATORS = ;
-PUNCTUATORS = ;
-
-
-	BEGIN_SINGLE_COMMENT = // Open the existing file GfgTest.c using fopen()
+BEGIN_SINGLE_COMMENT = // Open the existing file GfgTest.c using fopen()
 END_SINGLE_COMMENT
-	BEGIN_SINGLE_COMMENT = // in write mode using "w" attribute
+BEGIN_SINGLE_COMMENT = // in write mode using "w" attribute
 END_SINGLE_COMMENT
-	IDENTIFIER = filePointer
 IDENTIFIER = filePointer
- PUNCTUATORS = =
 PUNCTUATORS = =
- IDENTIFIER = fopen
 IDENTIFIER = fopen
 PUNCTUATORS = (
-PUNCTUATORS = (
-STRING_LITERAL = "GfgTest.c"
 STRING_LITERAL = "GfgTest.c"
 PUNCTUATORS = ,
-PUNCTUATORS = ,
- STRING_LITERAL = "w"
 STRING_LITERAL = "w"
 PUNCTUATORS = )
-PUNCTUATORS = )
- PUNCTUATORS = ;
 PUNCTUATORS = ;
-
-	
-	BEGIN_SINGLE_COMMENT = // Check if this filePointer is null
+BEGIN_SINGLE_COMMENT = // Check if this filePointer is null
 END_SINGLE_COMMENT
-	BEGIN_SINGLE_COMMENT = // which maybe if the file does not exist
+BEGIN_SINGLE_COMMENT = // which maybe if the file does not exist
 END_SINGLE_COMMENT
-	KEYWORD = if
 KEYWORD = if
- PUNCTUATORS = (
 PUNCTUATORS = (
- IDENTIFIER = filePointer
 IDENTIFIER = filePointer
- PUNCTUATORS = ==
 PUNCTUATORS = ==
- IDENTIFIER = NULL
 IDENTIFIER = NULL
- PUNCTUATORS = )
 PUNCTUATORS = )
-
-	PUNCTUATORS = {
 PUNCTUATORS = {
-
-		IDENTIFIER = printf
 IDENTIFIER = printf
 PUNCTUATORS = (
-PUNCTUATORS = (
- CHARACTER_CONST = 'GfgTest.c file failed to open.'
 CHARACTER_CONST = 'GfgTest.c file failed to open.'
- PUNCTUATORS = )
 PUNCTUATORS = )
- PUNCTUATORS = ;
 PUNCTUATORS = ;
-
-	PUNCTUATORS = }
 PUNCTUATORS = }
-
-	KEYWORD = else
 KEYWORD = else
-
-	PUNCTUATORS = {
 PUNCTUATORS = {
-
-		
-		IDENTIFIER = printf
 IDENTIFIER = printf
 PUNCTUATORS = (
-PUNCTUATORS = (
-CHARACTER_CONST = 'The file is now opened.\n'
 CHARACTER_CONST = 'The file is now opened.\n'
 PUNCTUATORS = )
-PUNCTUATORS = )
- PUNCTUATORS = ;
 PUNCTUATORS = ;
-
-		
-		BEGIN_SINGLE_COMMENT = // Write the dataToBeWritten into the file
+BEGIN_SINGLE_COMMENT = // Write the dataToBeWritten into the file
 END_SINGLE_COMMENT
-		KEYWORD = if
 KEYWORD = if
- PUNCTUATORS = (
 PUNCTUATORS = (
- IDENTIFIER = strlen
 IDENTIFIER = strlen
- PUNCTUATORS = (
 PUNCTUATORS = (
- IDENTIFIER = dataToBeWritten
 IDENTIFIER = dataToBeWritten
- PUNCTUATORS = )
 PUNCTUATORS = )
- PUNCTUATORS = >
 PUNCTUATORS = >
- 0 PUNCTUATORS = )
+INTEGER_CONST = 0
 PUNCTUATORS = )
-
-		PUNCTUATORS = {
 PUNCTUATORS = {
-
-			
-			BEGIN_SINGLE_COMMENT = // writing in the file using fputs()
+BEGIN_SINGLE_COMMENT = // writing in the file using fputs()
 END_SINGLE_COMMENT
-			IDENTIFIER = fputs
 IDENTIFIER = fputs
 PUNCTUATORS = (
-PUNCTUATORS = (
-IDENTIFIER = dataToBeWritten
 IDENTIFIER = dataToBeWritten
 PUNCTUATORS = ,
-PUNCTUATORS = ,
- IDENTIFIER = filePointer
 IDENTIFIER = filePointer
 PUNCTUATORS = )
-PUNCTUATORS = )
- PUNCTUATORS = ;
 PUNCTUATORS = ;
-
-			IDENTIFIER = fputs
 IDENTIFIER = fputs
 PUNCTUATORS = (
-PUNCTUATORS = (
-STRING_LITERAL = "\n"
 STRING_LITERAL = "\n"
 PUNCTUATORS = ,
-PUNCTUATORS = ,
- IDENTIFIER = filePointer
 IDENTIFIER = filePointer
 PUNCTUATORS = )
-PUNCTUATORS = )
- PUNCTUATORS = ;
 PUNCTUATORS = ;
-
-		PUNCTUATORS = }
 PUNCTUATORS = }
-
-		
-		BEGIN_SINGLE_COMMENT = // Closing the file using fclose()
+BEGIN_SINGLE_COMMENT = // Closing the file using fclose()
 END_SINGLE_COMMENT
-		IDENTIFIER = fclose
 IDENTIFIER = fclose
 PUNCTUATORS = (
-PUNCTUATORS = (
-IDENTIFIER = filePointer
 IDENTIFIER = filePointer
 PUNCTUATORS = )
-PUNCTUATORS = )
- PUNCTUATORS = ;
 PUNCTUATORS = ;
-
-		
-		IDENTIFIER = printf
 IDENTIFIER = printf
 PUNCTUATORS = (
-PUNCTUATORS = (
-STRING_LITERAL = "Data successfully written in file GfgTest.c\n"
 STRING_LITERAL = "Data successfully written in file GfgTest.c\n"
 PUNCTUATORS = )
-PUNCTUATORS = )
 PUNCTUATORS = ;
-PUNCTUATORS = ;
-
-		IDENTIFIER = printf
 IDENTIFIER = printf
 PUNCTUATORS = (
-PUNCTUATORS = (
-STRING_LITERAL = "The file is now closed."
 STRING_LITERAL = "The file is now closed."
 PUNCTUATORS = )
-PUNCTUATORS = )
- PUNCTUATORS = ;
 PUNCTUATORS = ;
-
-	PUNCTUATORS = }
 PUNCTUATORS = }
-
-	KEYWORD = return
 KEYWORD = return
- 0PUNCTUATORS = ;
+INTEGER_CONST = 0
 PUNCTUATORS = ;
-	
 PUNCTUATORS = }
-PUNCTUATORS = }
-

@@ -13,14 +13,14 @@ int main()
             case CHARACTER_CONST: printf("CHARACTER_CONST = %s\n", yytext); break;
             case ESCAPE_SEQUENCE: printf("ESCAPE_SEQUENCE = %s\n", yytext); break;
             case STRING_LITERAL: printf("STRING_LITERAL = %s\n", yytext); break;
-            case PUNCTUATORS: printf("PUNCTUATORS = %s\n", yytext); break;
-            case BEGIN_SINGLE_COMMENT: printf("BEGIN_SINGLE_COMMENT = %s\n", yytext); break;
-            case SINGLE_COMMENT_STATE: printf("SINGLE_COMMENT_STATE = %s\n", yytext); break;
-            case END_SINGLE_COMMENT: printf("END_SINGLE_COMMENT = %s\n", yytext); break;
-            case SINGLE_COMENT: printf("SINGLE_COMENT = %s\n", yytext); break;
-            case BEGIN_MULTI_COMMENT: printf("BEGIN_MULTI_COMMENT = %s\n", yytext); break;
-            case MULTI_COMMENT: printf("MULTI_COMMENT = %s\n", yytext); break;
-            case END_MULTI_COMMENT: printf("END_MULTI_COMMENT = %s\n", yytext); break;
+            case PUNCTUATOR: printf("PUNCTUATORS = %s\n", yytext); break;
+            case BEGIN_SINGLE_COMMENT: printf("BEGIN_SINGLE_COMMENT = %s", yytext); break;
+            case END_SINGLE_COMMENT: printf("\nEND_SINGLE_COMMENT\n"); break;
+            case SINGLE_COMMENT: printf("%s", yytext); break;
+            case BEGIN_MULTI_COMMENT: printf("BEGIN_MULTI_COMMENT = %s", yytext); break;
+            case MULTI_COMMENT: printf("%s", yytext); break;
+            case END_MULTI_COMMENT: printf("\nEND_MULTI_COMMENT\n"); break;
+            case WHITE_SPACE: ;break;
         }
     }
 }

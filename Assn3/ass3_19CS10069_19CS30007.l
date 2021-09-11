@@ -44,12 +44,12 @@ PUNCTUATOR          "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"
 KEYWORD             "auto"|"enum"|"restrict"|"unsigned"|"break"|"extern"|"return"|"void"|"case"|"float"|"short"|"volatile"|"char"|"for"|"signed"|"while"|"const"|"goto"|"sizeof"|"_Bool"|"continue"|"if"|"static"|"_Complex"|"default"|"inline"|"struct"|"_Imaginary"|"do"|"int"|"switch"|"double"|"long"|"typedef"|"else"|"register"|"union"
 IDENTIFIER          [_a-zA-Z]({NONDIGIT}|{DIGIT})*
 %%
+
 {KEYWORD}                   {return KEYWORD;}
 {IDENTIFIER}                {return IDENTIFIER;}
 {FLOATING_CONST}            {return FLOATING_CONST;}
 {INTEGER_CONST}             {return INTEGER_CONST;}
 {CHARACTER_CONST}           {return CHARACTER_CONST;}
-{ESCAPE_SEQUENCE}           {return ESCAPE_SEQUENCE;}
 {STRING_LITERAL}            {return STRING_LITERAL;}
 {PUNCTUATOR}                {return PUNCTUATOR;}
 "//"                        {BEGIN(SINGLE_COMMENT_STATE); return BEGIN_SINGLE_COMMENT;}

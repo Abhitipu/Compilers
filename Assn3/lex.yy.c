@@ -368,10 +368,10 @@ static const flex_int16_t yy_accept[199] =
         2,    2,    2,    2,    2,    2,    2,    2,    2,    2,
         2,    2,    2,    2,    8,   14,   15,   14,   11,   10,
         8,    0,    7,    0,    0,    0,    0,    3,   12,    9,
-        3,    4,    0,    0,    4,    8,    8,    2,    6,    2,
+        3,    4,    0,    0,    4,    8,    8,    2,    5,    2,
         2,    2,    2,    2,    2,    2,    2,    2,    1,    2,
         2,    2,    2,    2,    2,    1,    2,    2,    2,    2,
-        2,    2,    2,    2,    2,    2,    2,   13,    5,    0,
+        2,    2,    2,    2,    2,    2,    2,   13,    6,    0,
 
         0,    3,    2,    2,    2,    2,    2,    2,    2,    2,
         2,    2,    2,    2,    2,    2,    2,    2,    2,    2,
@@ -919,12 +919,12 @@ YY_RULE_SETUP
 case 5:
 YY_RULE_SETUP
 #line 51 "ass3_19CS10069_19CS30007.l"
-{return CHARACTER_CONST;}
+{return ESCAPE_SEQUENCE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 52 "ass3_19CS10069_19CS30007.l"
-{return ESCAPE_SEQUENCE;}
+{return CHARACTER_CONST;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
@@ -1999,33 +1999,33 @@ int main() {
     int token;
     while (token = yylex()) {
         switch (token) {
-            case KEYWORD:                   printf("<KEYWORD, %d, %s>\n", token, yytext); 
+            case KEYWORD:                   printf("<KEYWORD, %d, %s >\n", token, yytext); 
                                             break;
-            case IDENTIFIER:                printf("<IDENTIFIER, %d, %s>\n", token, yytext); 
+            case IDENTIFIER:                printf("<IDENTIFIER, %d, %s >\n", token, yytext); 
                                             break;
-            case FLOATING_CONST:            printf("<FLOATING_CONST, %d, %s>\n", token, yytext); 
+            case FLOATING_CONST:            printf("<FLOATING_CONST, %d, %s >\n", token, yytext); 
                                             break;
-            case INTEGER_CONST:             printf("<INTEGER_CONST, %d, %s>\n", token, yytext); 
+            case INTEGER_CONST:             printf("<INTEGER_CONST, %d, %s >\n", token, yytext); 
                                             break;
-            case CHARACTER_CONST:           printf("<CHARACTER_CONST, %d, %s>\n", token, yytext); 
+            case CHARACTER_CONST:           printf("<CHARACTER_CONST, %d, %s >\n", token, yytext); 
                                             break;
-            case ESCAPE_SEQUENCE:           printf("<ESCAPE_SEQUENCE, %d, %s>\n", token, yytext); 
+            case ESCAPE_SEQUENCE:           printf("<ESCAPE_SEQUENCE, %d, %s >\n", token, yytext); 
                                             break;
-            case STRING_LITERAL:            printf("<STRING_LITERAL, %d, %s>\n", token, yytext); 
+            case STRING_LITERAL:            printf("<STRING_LITERAL, %d, %s >\n", token, yytext); 
                                             break;
-            case PUNCTUATOR:                printf("<PUNCTUATOR, %d, %s>\n", token, yytext); 
+            case PUNCTUATOR:                printf("<PUNCTUATOR, %d, %s >\n", token, yytext); 
                                             break;
-            case BEGIN_SINGLE_COMMENT:      printf("<BEGIN_SINGLE_COMMENT, %d, %s>\n", token, yytext); 
+            case BEGIN_SINGLE_COMMENT:      printf("<BEGIN_SINGLE_COMMENT, %d, %s >\n", token, yytext); 
                                             break;
             case SINGLE_COMMENT:            printf("%s", yytext); 
                                             break;
-            case END_SINGLE_COMMENT:        printf("\n<END_SINGLE_COMMENT, %d, >\n",token); 
+            case END_SINGLE_COMMENT:        printf("\n<END_SINGLE_COMMENT, %d,  >\n",token); 
                                             break;
-            case BEGIN_MULTI_COMMENT:       printf("<BEGIN_MULTI_COMMENT, %d, %s>\n", token, yytext); 
+            case BEGIN_MULTI_COMMENT:       printf("<BEGIN_MULTI_COMMENT, %d, %s >\n", token, yytext); 
                                             break;
             case MULTI_COMMENT:             printf("%s", yytext); 
                                             break;
-            case END_MULTI_COMMENT:         printf("\n<END_MULTI_COMMENT, %d, %s>\n", token, yytext); 
+            case END_MULTI_COMMENT:         printf("\n<END_MULTI_COMMENT, %d, %s >\n", token, yytext); 
                                             break;
             case WHITE_SPACE:               break;
             default:                        break;

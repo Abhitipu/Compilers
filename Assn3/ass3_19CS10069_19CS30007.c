@@ -33,7 +33,7 @@ int main() {
             case END_MULTI_COMMENT:         printf("\nEND_MULTI_COMMENT\n"); 
                                             break;
             case WHITE_SPACE:               break;
-            case default:                   break;
+            default:                        break;
         }
     }
 }

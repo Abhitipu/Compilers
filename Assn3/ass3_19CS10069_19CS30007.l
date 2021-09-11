@@ -4,7 +4,7 @@
 DIGIT               [0-9]
 NONDIGIT            [_a-zA-Z]
 NONZERO-DIGIT       [1-9]
-INTEGER-CONST       ({NONZERO-DIGIT}{DIGIT})*|[0]+
+INTEGER-CONST       ({NONZERO-DIGIT}{DIGIT}*)|[0]+
 
 SIGN                [+-]
 DIGIT-SEQUENCE      {DIGIT}+
@@ -21,6 +21,7 @@ S-CHAR              [^\\\"\n]|{ESCAPE-SEQUENCE}
 S-CHAR-SEQUENCE     {S-CHAR}+
 STRING-LITERAL      \"{S-CHAR-SEQUENCE}?\"
 
+PUNCTUATORS         "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"
 KEYWORD             "auto"|"enum"|"restrict"|"unsigned"|"break"|"extern"|"return"|"void"|"case"|"float"|"short"|"volatile"|"char"|"for"|"signed"|"while"|"const"|"goto"|"sizeof"|"_Bool"|"continue"|"if"|"static"|"_Complex"|"default"|"inline"|"struct"|"_Imaginary"|"do"|"int"|"switch"|"double"|"long"|"typedef"|"else"|"register"|"union"
 IDENTIFIER          [_a-zA-Z]({NONDIGIT}|{DIGIT})*
 %%
@@ -30,7 +31,7 @@ IDENTIFIER          [_a-zA-Z]({NONDIGIT}|{DIGIT})*
 {INTEGER-CONST}     {printf("INTEGER-CONST = %s\n", yytext);}
 {CHARACTER-CONST}   {printf("CHARACTER-CONST = %s\n", yytext);}
 {STRING-LITERAL}    {printf("STRING-LITERAL = %s\n", yytext);}
-
+{PUNCTUATORS}       {printf("PUNCTUATORS = %s\n", yytext);}
 \n              
 .
 %%

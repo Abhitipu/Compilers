@@ -13,6 +13,7 @@
     #define MULTI_COMMENT 271
     #define BEGIN_MULTI_COMMENT 272
     #define END_MULTI_COMMENT 273
+    #define WHITE_SPACE 274
 %}
 
 
@@ -22,7 +23,7 @@
 DIGIT                       [0-9]
 NONDIGIT                    [_a-zA-Z]
 NONZERO-DIGIT               [1-9]
-INTEGER_CONST               {NONZERO-DIGIT}{DIGIT}*
+INTEGER_CONST               ({NONZERO-DIGIT}{DIGIT}*)|[0]+
 
 SIGN                [+-]
 DIGIT-SEQUENCE      {DIGIT}+
@@ -42,7 +43,9 @@ STRING_LITERAL      \"{S-CHAR-SEQUENCE}?\"
 PUNCTUATORS         "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"
 KEYWORD             "auto"|"enum"|"restrict"|"unsigned"|"break"|"extern"|"return"|"void"|"case"|"float"|"short"|"volatile"|"char"|"for"|"signed"|"while"|"const"|"goto"|"sizeof"|"_Bool"|"continue"|"if"|"static"|"_Complex"|"default"|"inline"|"struct"|"_Imaginary"|"do"|"int"|"switch"|"double"|"long"|"typedef"|"else"|"register"|"union"
 IDENTIFIER          [_a-zA-Z]({NONDIGIT}|{DIGIT})*
+
 %%
+
 {KEYWORD}                   { return KEYWORD;}
 {IDENTIFIER}                { return IDENTIFIER;}
 {FLOATING_CONST}            { return FLOATING_CONST;}
@@ -51,12 +54,13 @@ IDENTIFIER          [_a-zA-Z]({NONDIGIT}|{DIGIT})*
 {ESCAPE_SEQUENCE}           { return ESCAPE_SEQUENCE;}
 {STRING_LITERAL}            { return STRING_LITERAL;}
 {PUNCTUATORS}               { return PUNCTUATOR;}
+
 "//"                        {BEGIN(SINGLE_COMMENT_STATE); return BEGIN_SINGLE_COMMENT;}
 <SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL); return END_SINGLE_COMMENT;}
 <SINGLE_COMMENT_STATE>.     {return SINGLE_COMMENT;}
-
 "/*"                        {BEGIN(MULTI_COMMENT_STATE); return BEGIN_MULTI_COMMENT;}
 <MULTI_COMMENT_STATE>"*/"   {BEGIN(INITIAL); return END_MULTI_COMMENT;}
 <MULTI_COMMENT_STATE>.      {return MULTI_COMMENT;}
 <MULTI_COMMENT_STATE>"\n"   {return MULTI_COMMENT;}
+[ \t\n]                     {return WHITE_SPACE;}
 %%

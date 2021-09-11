@@ -1,5 +1,5 @@
 
-#line 3 "<stdout>"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -613,9 +613,9 @@ char *yytext;
     #define MULTI_COMMENT 271
     #define BEGIN_MULTI_COMMENT 272
     #define END_MULTI_COMMENT 273
-#line 617 "<stdout>"
+#line 617 "lex.yy.c"
 
-#line 619 "<stdout>"
+#line 619 "lex.yy.c"
 
 #define INITIAL 0
 #define MULTI_COMMENT_STATE 1
@@ -836,7 +836,7 @@ YY_DECL
 	{
 #line 45 "ass3_19CS10069_19CS30007.l"
 
-#line 840 "<stdout>"
+#line 840 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -975,7 +975,7 @@ YY_RULE_SETUP
 #line 62 "ass3_19CS10069_19CS30007.l"
 ECHO;
 	YY_BREAK
-#line 979 "<stdout>"
+#line 979 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(MULTI_COMMENT_STATE):
 case YY_STATE_EOF(SINGLE_COMMENT_STATE):

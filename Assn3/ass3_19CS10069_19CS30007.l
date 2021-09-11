@@ -16,6 +16,7 @@
     #define END-MULTI-COMMENT 274
 %}
 
+
 %x MULTI_COMMENT_STATE
 %x SINGLE_COMMENT_STATE
 
@@ -47,6 +48,8 @@ IDENTIFIER                  [_a-zA-Z]({NONDIGIT}|{DIGIT})*
 {ESCAPE-SEQUENCE}           {printf("ESCAPE-SEQUENCE = %s\n", yytext); return ESCAPE-SEQUENCE;}
 {STRING-LITERAL}            {printf("STRING-LITERAL = %s\n", yytext); return STRING-LITERAL;}
 {PUNCTUATORS}               {printf("PUNCTUATORS = %s\n", yytext); return PUNCTUATOR;}
+
+
 \n              
 .
 

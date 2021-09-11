@@ -31,7 +31,7 @@ EXPONENT-PART       [Ee]({SIGN}?){DIGIT-SEQUENCE}
 FRACTIONAL-CONST    (({DIGIT-SEQUENCE}?)("."){DIGIT-SEQUENCE})|({DIGIT-SEQUENCE}("."))
 FLOATING_CONST      ({FRACTIONAL-CONST}({EXPONENT-PART}?))|({DIGIT-SEQUENCE}{EXPONENT-PART})
 
-ESCAPE_SEQUENCE     "\\\'"|"\\\""|"\\\?"|"\\\\"|"\\a"|"\\b"|"\\f"|"\\n"|"\\t"|"\\v"
+ESCAPE_SEQUENCE     "\\\'"|"\\\""|"\\\?"|"\\\\"|"\\a"|"\\b"|"\\f"|"\\n"|"\\t"|"\\v"|"\\0"
 C-CHAR              [^\\\'\n]|{ESCAPE_SEQUENCE}
 C-CHAR-SEQUENCE     {C-CHAR}+
 CHARACTER_CONST     \'{C-CHAR-SEQUENCE}\'

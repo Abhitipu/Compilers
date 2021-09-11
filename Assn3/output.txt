@@ -1,26 +1,7 @@
-<BEGIN_SINGLE_COMMENT, 269, //>
- C program to Open a File,
-<END_SINGLE_COMMENT, 270, >
-<BEGIN_SINGLE_COMMENT, 269, //>
- Write in it, And Close the File
-<END_SINGLE_COMMENT, 270, >
-<BEGIN_MULTI_COMMENT, 272, /*>
-
-	A multiline comment
-	Test it!//
-
-<END_MULTI_COMMENT, 273, */>
 <PUNCTUATOR, 267, #>
 <IDENTIFIER, 261, include>
 <PUNCTUATOR, 267, <>
 <IDENTIFIER, 261, stdio>
-<PUNCTUATOR, 267, .>
-<IDENTIFIER, 261, h>
-<PUNCTUATOR, 267, >>
-<PUNCTUATOR, 267, #>
-<IDENTIFIER, 261, include>
-<PUNCTUATOR, 267, <>
-<IDENTIFIER, 261, string>
 <PUNCTUATOR, 267, .>
 <IDENTIFIER, 261, h>
 <PUNCTUATOR, 267, >>
@@ -30,120 +11,145 @@
 <PUNCTUATOR, 267, )>
 <PUNCTUATOR, 267, {>
 <BEGIN_SINGLE_COMMENT, 269, //>
- Declare the file pointer
+ Lets test some data types first
 <END_SINGLE_COMMENT, 270, >
-<IDENTIFIER, 261, FILE>
-<PUNCTUATOR, 267, *>
-<IDENTIFIER, 261, filePointer>
+<KEYWORD, 260, int>
+<IDENTIFIER, 261, n>
 <PUNCTUATOR, 267, ;>
-<KEYWORD, 260, const>
-<KEYWORD, 260, float>
-<IDENTIFIER, 261, dummy_float_int>
+<IDENTIFIER, 261, n>
 <PUNCTUATOR, 267, =>
-<FLOATING_CONST, 262, 12.43E-14>
+<INTEGER_CONST, 263, 34>
 <PUNCTUATOR, 267, ;>
-<BEGIN_SINGLE_COMMENT, 269, //>
- Get the data to be written in file
-<END_SINGLE_COMMENT, 270, >
+<KEYWORD, 260, float>
+<IDENTIFIER, 261, f>
+<PUNCTUATOR, 267, ;>
+<IDENTIFIER, 261, f>
+<PUNCTUATOR, 267, =>
+<FLOATING_CONST, 262, 3.4e-12>
+<PUNCTUATOR, 267, ;>
 <KEYWORD, 260, char>
-<IDENTIFIER, 261, dataToBeWritten>
+<IDENTIFIER, 261, c>
+<PUNCTUATOR, 267, ;>
+<IDENTIFIER, 261, c>
+<PUNCTUATOR, 267, =>
+<CHARACTER_CONST, 264, 'X'>
+<PUNCTUATOR, 267, ;>
+<IDENTIFIER, 261, c>
+<PUNCTUATOR, 267, =>
+<CHARACTER_CONST, 264, '-'>
+<PUNCTUATOR, 267, ;>
+<BEGIN_MULTI_COMMENT, 272, /*>
+
+     * Here we will be exploring some strings
+     * We'll do these things:
+     * 1. We'll convert a string to upper case.
+     * 2. Then we'll convert it back to lower case.
+     
+<END_MULTI_COMMENT, 273, */>
+<KEYWORD, 260, char>
+<IDENTIFIER, 261, str>
 <PUNCTUATOR, 267, [>
-<INTEGER_CONST, 263, 50>
 <PUNCTUATOR, 267, ]>
 <PUNCTUATOR, 267, =>
-<STRING_LITERAL, 266, "GeeksforGeeks-A Computer Science Portal for Geeks\'">
+<STRING_LITERAL, 266, "Oh dear! When will this online sem end?!">
 <PUNCTUATOR, 267, ;>
 <BEGIN_SINGLE_COMMENT, 269, //>
- Open the existing file GfgTest.c using fopen()
+ Lets convert the string tp upper case
 <END_SINGLE_COMMENT, 270, >
-<BEGIN_SINGLE_COMMENT, 269, //>
- in write mode using "w" attribute
-<END_SINGLE_COMMENT, 270, >
-<IDENTIFIER, 261, filePointer>
+<KEYWORD, 260, for>
+<PUNCTUATOR, 267, (>
+<KEYWORD, 260, register>
+<KEYWORD, 260, int>
+<IDENTIFIER, 261, i>
 <PUNCTUATOR, 267, =>
-<IDENTIFIER, 261, fopen>
-<PUNCTUATOR, 267, (>
-<STRING_LITERAL, 266, "GfgTest.c">
-<PUNCTUATOR, 267, ,>
-<STRING_LITERAL, 266, "w">
-<PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, ;>
-<BEGIN_SINGLE_COMMENT, 269, //>
- Check if this filePointer is null
-<END_SINGLE_COMMENT, 270, >
-<BEGIN_SINGLE_COMMENT, 269, //>
- which maybe if the file does not exist
-<END_SINGLE_COMMENT, 270, >
-<KEYWORD, 260, if>
-<PUNCTUATOR, 267, (>
-<IDENTIFIER, 261, filePointer>
-<PUNCTUATOR, 267, ==>
-<IDENTIFIER, 261, NULL>
-<PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, {>
-<IDENTIFIER, 261, printf>
-<PUNCTUATOR, 267, (>
-<STRING_LITERAL, 266, "GfgTest.c file failed to open.">
-<PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, ;>
-<PUNCTUATOR, 267, }>
-<KEYWORD, 260, else>
-<PUNCTUATOR, 267, {>
-<IDENTIFIER, 261, printf>
-<PUNCTUATOR, 267, (>
-<STRING_LITERAL, 266, "The file is now opened.\n">
-<PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, ;>
-<BEGIN_SINGLE_COMMENT, 269, //>
- Write the dataToBeWritten into the file
-<END_SINGLE_COMMENT, 270, >
-<KEYWORD, 260, if>
-<PUNCTUATOR, 267, (>
-<IDENTIFIER, 261, strlen>
-<PUNCTUATOR, 267, (>
-<IDENTIFIER, 261, dataToBeWritten>
-<PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, >>
 <INTEGER_CONST, 263, 0>
+<PUNCTUATOR, 267, ;>
+<IDENTIFIER, 261, str>
+<PUNCTUATOR, 267, [>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ]>
+<PUNCTUATOR, 267, !=>
+<CHARACTER_CONST, 264, '\0'>
+<PUNCTUATOR, 267, ;>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ++>
 <PUNCTUATOR, 267, )>
 <PUNCTUATOR, 267, {>
-<BEGIN_SINGLE_COMMENT, 269, //>
- writing in the file using fputs()
-<END_SINGLE_COMMENT, 270, >
-<IDENTIFIER, 261, fputs>
+<KEYWORD, 260, if>
 <PUNCTUATOR, 267, (>
-<IDENTIFIER, 261, dataToBeWritten>
-<PUNCTUATOR, 267, ,>
-<IDENTIFIER, 261, filePointer>
+<IDENTIFIER, 261, str>
+<PUNCTUATOR, 267, [>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ]>
+<PUNCTUATOR, 267, <=>
+<CHARACTER_CONST, 264, 'z'>
+<PUNCTUATOR, 267, &&>
+<IDENTIFIER, 261, str>
+<PUNCTUATOR, 267, [>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ]>
+<PUNCTUATOR, 267, >=>
+<CHARACTER_CONST, 264, 'a'>
 <PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, ;>
-<IDENTIFIER, 261, fputs>
-<PUNCTUATOR, 267, (>
-<STRING_LITERAL, 266, "\n">
-<PUNCTUATOR, 267, ,>
-<IDENTIFIER, 261, filePointer>
-<PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, ;>
-<PUNCTUATOR, 267, }>
-<BEGIN_SINGLE_COMMENT, 269, //>
- Closing the file using fclose()
-<END_SINGLE_COMMENT, 270, >
-<IDENTIFIER, 261, fclose>
-<PUNCTUATOR, 267, (>
-<IDENTIFIER, 261, filePointer>
-<PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, ;>
-<IDENTIFIER, 261, printf>
-<PUNCTUATOR, 267, (>
-<STRING_LITERAL, 266, "Data successfully written in file GfgTest.c\n">
-<PUNCTUATOR, 267, )>
-<PUNCTUATOR, 267, ;>
-<IDENTIFIER, 261, printf>
-<PUNCTUATOR, 267, (>
-<STRING_LITERAL, 266, "The file is now closed.">
-<PUNCTUATOR, 267, )>
+<IDENTIFIER, 261, str>
+<PUNCTUATOR, 267, [>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ]>
+<PUNCTUATOR, 267, -=>
+<INTEGER_CONST, 263, 32>
 <PUNCTUATOR, 267, ;>
 <PUNCTUATOR, 267, }>
+<BEGIN_SINGLE_COMMENT, 269, //>
+ Lets go back to lower case using a while loop now
+<END_SINGLE_COMMENT, 270, >
+<KEYWORD, 260, register>
+<KEYWORD, 260, int>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, =>
+<INTEGER_CONST, 263, 0>
+<PUNCTUATOR, 267, ;>
+<KEYWORD, 260, while>
+<PUNCTUATOR, 267, (>
+<IDENTIFIER, 261, str>
+<PUNCTUATOR, 267, [>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ]>
+<PUNCTUATOR, 267, !=>
+<CHARACTER_CONST, 264, '\0'>
+<PUNCTUATOR, 267, )>
+<PUNCTUATOR, 267, {>
+<KEYWORD, 260, if>
+<PUNCTUATOR, 267, (>
+<IDENTIFIER, 261, str>
+<PUNCTUATOR, 267, [>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ]>
+<PUNCTUATOR, 267, <=>
+<CHARACTER_CONST, 264, 'Z'>
+<PUNCTUATOR, 267, &&>
+<IDENTIFIER, 261, str>
+<PUNCTUATOR, 267, [>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ]>
+<PUNCTUATOR, 267, >=>
+<CHARACTER_CONST, 264, 'A'>
+<PUNCTUATOR, 267, )>
+<IDENTIFIER, 261, str>
+<PUNCTUATOR, 267, [>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ]>
+<PUNCTUATOR, 267, +=>
+<INTEGER_CONST, 263, 32>
+<PUNCTUATOR, 267, ;>
+<IDENTIFIER, 261, i>
+<PUNCTUATOR, 267, ++>
+<PUNCTUATOR, 267, ;>
+<PUNCTUATOR, 267, }>
+<KEYWORD, 260, char>
+<IDENTIFIER, 261, nullChar>
+<PUNCTUATOR, 267, =>
+<CHARACTER_CONST, 264, '\0'>
+<PUNCTUATOR, 267, ;>
 <KEYWORD, 260, return>
 <INTEGER_CONST, 263, 0>
 <PUNCTUATOR, 267, ;>

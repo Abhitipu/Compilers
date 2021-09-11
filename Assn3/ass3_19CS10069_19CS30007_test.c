@@ -22,12 +22,12 @@ int main( )
 	// which maybe if the file does not exist
 	if ( filePointer == NULL )
 	{
-		printf( 'GfgTest.c file failed to open.' ) ;
+		printf( "GfgTest.c file failed to open." ) ;
 	}
 	else
 	{
 		
-		printf('The file is now opened.\n') ;
+		printf("The file is now opened.\n") ;
 		
 		// Write the dataToBeWritten into the file
 		if ( strlen ( dataToBeWritten ) > 0 )

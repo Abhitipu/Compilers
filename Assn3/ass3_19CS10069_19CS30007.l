@@ -1,3 +1,4 @@
+/*definitions for each token*/
 %{
     #define KEYWORD 260
     #define IDENTIFIER 261
@@ -16,10 +17,11 @@
     #define WHITE_SPACE 274
 %}
 
-
+/* Start conditions */
 %x MULTI_COMMENT_STATE
 %x SINGLE_COMMENT_STATE
 
+/* Regular expressions for different tokens */
 DIGIT                       [0-9]
 NONDIGIT                    [_a-zA-Z]
 NONZERO-DIGIT               [1-9]
@@ -45,6 +47,8 @@ KEYWORD             "auto"|"enum"|"restrict"|"unsigned"|"break"|"extern"|"return
 IDENTIFIER          [_a-zA-Z]({NONDIGIT}|{DIGIT})*
 
 ENUMERATION_CONST   {IDENTIFIER}
+
+/*Rules begin*/
 %%
 
 {KEYWORD}                   {return KEYWORD;}
@@ -55,6 +59,7 @@ ENUMERATION_CONST   {IDENTIFIER}
 {ENUMERATION_CONST}         {return ENUMERATION_CONST;}
 {STRING_LITERAL}            {return STRING_LITERAL;}
 {PUNCTUATOR}                {return PUNCTUATOR;}
+
 "//"                        {BEGIN(SINGLE_COMMENT_STATE); return BEGIN_SINGLE_COMMENT;}
 <SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL); return END_SINGLE_COMMENT;}
 <SINGLE_COMMENT_STATE>.     {return SINGLE_COMMENT;}

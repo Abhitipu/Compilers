@@ -14,6 +14,8 @@ int main() {
                                             break;
             case CHARACTER_CONST:           printf("<CHARACTER_CONST, %d, %s >\n", token, yytext); 
                                             break;
+            case ENUMERATION_CONST:         printf("<ENUMERATION_CONST, %d, %s >\n", token, yytext); 
+                                            break;
             case STRING_LITERAL:            printf("<STRING_LITERAL, %d, %s >\n", token, yytext); 
                                             break;
             case PUNCTUATOR:                printf("<PUNCTUATOR, %d, %s >\n", token, yytext); 

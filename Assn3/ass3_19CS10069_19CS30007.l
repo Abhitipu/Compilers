@@ -4,7 +4,7 @@
     #define FLOATING_CONST 262
     #define INTEGER_CONST 263
     #define CHARACTER_CONST 264
-    #define ESCAPE_SEQUENCE 265
+    #define ENUMERATION_CONST 265
     #define STRING_LITERAL 266
     #define PUNCTUATOR 267
     #define SINGLE_COMMENT 268
@@ -43,6 +43,8 @@ STRING_LITERAL      \"{S-CHAR-SEQUENCE}?\"
 PUNCTUATOR          "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"
 KEYWORD             "auto"|"enum"|"restrict"|"unsigned"|"break"|"extern"|"return"|"void"|"case"|"float"|"short"|"volatile"|"char"|"for"|"signed"|"while"|"const"|"goto"|"sizeof"|"_Bool"|"continue"|"if"|"static"|"_Complex"|"default"|"inline"|"struct"|"_Imaginary"|"do"|"int"|"switch"|"double"|"long"|"typedef"|"else"|"register"|"union"
 IDENTIFIER          [_a-zA-Z]({NONDIGIT}|{DIGIT})*
+
+ENUMERATION_CONST   {IDENTIFIER}
 %%
 
 {KEYWORD}                   {return KEYWORD;}
@@ -50,6 +52,7 @@ IDENTIFIER          [_a-zA-Z]({NONDIGIT}|{DIGIT})*
 {FLOATING_CONST}            {return FLOATING_CONST;}
 {INTEGER_CONST}             {return INTEGER_CONST;}
 {CHARACTER_CONST}           {return CHARACTER_CONST;}
+{ENUMERATION_CONST}         {return ENUMERATION_CONST;}
 {STRING_LITERAL}            {return STRING_LITERAL;}
 {PUNCTUATOR}                {return PUNCTUATOR;}
 "//"                        {BEGIN(SINGLE_COMMENT_STATE); return BEGIN_SINGLE_COMMENT;}

@@ -2,7 +2,7 @@
 %{
     #include<stdio.h>
     extern int yylex();
-    extern void yyerror(char*);
+    void yyerror(char*);
 %}
 
 %union {
@@ -10,6 +10,7 @@
     char myCharVal;
     float myFloatVal;
     double myDoubleVal;
+    char myCharArray[60];
     char* myStringVal;
 }
 
@@ -19,7 +20,7 @@
 %token CONST DEFAULT STATIC REGISTER RESTRICT VOLATILE EXTERN INLINE 
 %token BEGIN_SINGLE_COMMENT END_SINGLE_COMMENT SINGLE_COMMENT BEGIN_MULTI_COMMENT END_MULTI_COMMENT MULTI_COMMENT WHITE_SPACE
 
-%token <myStringVal> IDENTIFIER
+%token <myCharArray> IDENTIFIER
 %token <myIntVal> INTEGER_CONST
 %token <myCharVal> CHAR_CONST
 %token <myFloatVal> FLOAT_CONST
@@ -29,6 +30,8 @@
 %token PLUS MINUS MULT DIVIDE ARROW INCREMENT DECREMENT RSHIFT LSHIFT LT GT LEQ GEQ EQ NEQ BITWISE_OR LOGICAL_OR BITWISE_AND LOGICAL_AND XOR BITWISE_NOT LOGICAL_NOT ELLIPSIS MODULO ASGN ENUMERATION_CONST
 %token ADD_ASGN SUB_ASGN MULT_ASGN DIV_ASGN MOD_ASGN LSHIFT_ASGN RSHIFT_ASGN AND_ASGN OR_ASGN XOR_ASGN 
 
+%nonassoc ')'
+%nonassoc ELSE
 %start translation_unit
 
 /*Rules*/

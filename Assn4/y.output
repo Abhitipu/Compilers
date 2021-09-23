@@ -13,9 +13,6 @@ Terminals unused in grammar
     DOUBLE_CONST
 
 
-State 326 conflicts: 1 shift/reduce
-
-
 Grammar
 
     0 $accept: translation_unit $end
@@ -364,7 +361,7 @@ Terminals, with rules where they appear
     END_MULTI_COMMENT (299)
     MULTI_COMMENT (300)
     WHITE_SPACE (301)
-    IDENTIFIER <myStringVal> (302) 1 11 12 117 118 131 155 156 169 176 196
+    IDENTIFIER <myCharArray> (302) 1 11 12 117 118 131 155 156 169 176 196
     INTEGER_CONST <myIntVal> (303) 5
     CHAR_CONST <myCharVal> (304) 7
     FLOAT_CONST <myFloatVal> (305) 6
@@ -5855,8 +5852,9 @@ State 326
 
     ELSE  shift, and go to state 332
 
-    ELSE      [reduce using rule 187 (selection_statement)]
     $default  reduce using rule 187 (selection_statement)
+
+    Conflict between rule 187 and token ELSE resolved as shift (')' < ELSE).
 
 
 State 327

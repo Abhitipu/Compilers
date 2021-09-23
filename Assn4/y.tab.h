@@ -235,9 +235,10 @@ union YYSTYPE
     char myCharVal;
     float myFloatVal;
     double myDoubleVal;
+    char myCharArray[60];
     char* myStringVal;
 
-#line 241 "y.tab.h"
+#line 242 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -23,4 +23,4 @@ y.tab.o: y.tab.c
 	gcc -c y.tab.c
 
 clean:
-	rm a.out lex.yy.* y.output asgn4_19CS10069_19CS30007.o y.tab.* 
+	rm a.out lex.yy.* y.output asgn4_19CS10069_19CS30007.o *tab*

@@ -1,6 +1,6 @@
 /*definitions for each token*/
 %{
-    #include <stdio.h>  // check this, if it does not work replace <, > by ""
+    #include "stdio.h"  // check this, if it does not work replace <, > by ""
     #include "y.tab.h"
     int line = 1;
 %}
@@ -140,7 +140,7 @@ ENUMERATION_CONST   {IDENTIFIER}
 <MULTI_COMMENT_STATE>"*/"   {BEGIN(INITIAL); return END_MULTI_COMMENT;}
 <MULTI_COMMENT_STATE>.      {return MULTI_COMMENT;}
 <MULTI_COMMENT_STATE>"\n"   {return MULTI_COMMENT;}
-[ \t\n]                     {return WHITE_SPACE;}
+[ \t\n]                     { ;}
 
 %%
 

@@ -617,7 +617,7 @@ char *yytext;
 #line 1 "asgn4_19CS10069_19CS30007.l"
 /*definitions for each token*/
 #line 3 "asgn4_19CS10069_19CS30007.l"
-    #include <stdio.h>  // check this, if it does not work replace <, > by ""
+    #include "stdio.h"  // check this, if it does not work replace <, > by ""
     #include "y.tab.h"
     int line = 1;
 #line 624 "lex.yy.c"
@@ -1396,7 +1396,7 @@ case 98:
 /* rule 98 can match eol */
 YY_RULE_SETUP
 #line 143 "asgn4_19CS10069_19CS30007.l"
-{return WHITE_SPACE;}
+{ ;}
 	YY_BREAK
 case 99:
 YY_RULE_SETUP

@@ -1,3 +1,0 @@
-type_specifier -> int
-declaration_specifiers -> type_specifier declaration_specifiers_opt
-Found error syntax error

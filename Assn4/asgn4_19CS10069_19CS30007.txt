@@ -1,3 +1,16 @@
-type_specifier -> int
+type_specifier -> void
 declaration_specifiers -> type_specifier declaration_specifiers_opt
-Found error syntax error
+direct_declarator -> identifier
+declarator -> pointer_opt direct_declarator
+
+#################### LINE NO : 2 ####################
+jump_statement -> return expression_opt ;
+statement -> jump_statement
+block_item -> statement
+block_item_list -> block_item
+
+#################### LINE NO : 3 ####################
+compound_statement -> { block_item_list_opt }
+function_definition -> declaration_specifiers declarator declaration_list_opt compound_statement
+external_declaration -> function_definition
+translation_unit -> external_declaration

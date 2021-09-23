@@ -2,6 +2,7 @@
 %{
     #include <stdio.h>  // check this, if it does not work replace <, > by ""
     #include "y.tab.h"
+    int line = 1;
 %}
 
 /* Start conditions */
@@ -77,10 +78,10 @@ ENUMERATION_CONST   {IDENTIFIER}
 "union"                     {return UNION;}
 
 {IDENTIFIER}                {return IDENTIFIER;}
-{FLOATING_CONST}            {return FLOATING_CONST;}
+{FLOATING_CONST}            {return FLOAT_CONST;}
 {INTEGER_CONST}             {return INTEGER_CONST;}
-{CHARACTER_CONST}           {return CHARACTER_CONST;}
-{ENUMERATION_CONST}         {return ENUMERATION_CONST;}
+{CHARACTER_CONST}           {return CHAR_CONST;}
+"\n"                        { line++; printf("\n#################### LINE NO : %d ####################\n", line); }
 {STRING_LITERAL}            {return STRING_LITERAL;}
 
 "["                         {return '[';                }                                 
@@ -93,41 +94,41 @@ ENUMERATION_CONST   {IDENTIFIER}
 "->"                        {return ARROW;              }                                  
 "++"                        {return INCREMENT;          }                                  
 "--"                        {return DECREMENT;          }                                  
-"&"                         {return '&';                }                                 
+"&"                         {return BITWISE_AND;        }                                 
 "*"                         {return MULT;               }                                 
-"+"                         {return PLUS;                }                                 
+"+"                         {return PLUS;               }                                 
 "-"                         {return MINUS;              }                                 
-"~"                         {return BITWISE_NOT;                }                                 
-"!"                         {return LOGICAL_NOT;                }                                 
-"/"                         {return '/';                }                                 
-"%"                         {return '%';                }                                 
+"~"                         {return BITWISE_NOT;        }                                 
+"!"                         {return LOGICAL_NOT;        }                                 
+"/"                         {return DIVIDE;             }                                 
+"%"                         {return MODULO;             }                                 
 "<<"                        {return LSHIFT;             }                                  
 ">>"                        {return RSHIFT;             }                                  
-"<"                         {return '<';                }                                 
-">"                         {return '>';                }                                 
+"<"                         {return LT;                 }                                 
+">"                         {return GT;                 }                                 
 "<="                        {return LEQ;                }                                  
 ">="                        {return GEQ;                }                                  
 "=="                        {return EQ;                 }                                  
 "!="                        {return NEQ;                }                                  
-"^"                         {return '^';                }                                 
-"|"                         {return '|';                }                           
-"&&"                        {return AND;                }                                  
-"||"                        {return OR;                 }                           
+"^"                         {return XOR;                }                                 
+"|"                         {return BITWISE_OR;         }                           
+"&&"                        {return LOGICAL_AND;        }                                  
+"||"                        {return LOGICAL_OR;         }                           
 "?"                         {return '?';                }                                 
 ":"                         {return ':';                }                                 
 ";"                         {return ';';                }                                 
 "..."                       {return ELLIPSIS;           }                               
-"="                         {return '=';                }                                 
-"*="                        {return MULT_ASSIGN;        }                                  
-"/="                        {return DIV_ASSIGN;         }                                  
-"%="                        {return MOD_ASSIGN;         }                                  
-"+="                        {return ADD_ASSIGN;         }                                  
-"-="                        {return SUB_ASSIGN;         }                                  
-"<<="                       {return LSHIFT_ASSIGN;      }                               
-">>="                       {return RSHIFT_ASSIGN;      }                               
-"&="                        {return BIN_AND_ASSIGN;     }                                  
-"^="                        {return BIN_XOR_ASSIGN;     }                                  
-"|="                        {return BIN_XOR_ASSIGN;     }                        
+"="                         {return ASGN;               }                                 
+"*="                        {return MULT_ASGN;          }                                  
+"/="                        {return DIV_ASGN;           }                                  
+"%="                        {return MOD_ASGN;           }                                  
+"+="                        {return ADD_ASGN;           }                                  
+"-="                        {return SUB_ASGN;           }                                  
+"<<="                       {return LSHIFT_ASGN;        }                               
+">>="                       {return RSHIFT_ASGN;        }                               
+"&="                        {return AND_ASGN;           }                                  
+"^="                        {return XOR_ASGN;           }                                  
+"|="                        {return XOR_ASGN;           }                        
 ","                         {return ',';                }                                 
 "#"                         {return '#';                }                                 
 
@@ -140,4 +141,7 @@ ENUMERATION_CONST   {IDENTIFIER}
 <MULTI_COMMENT_STATE>.      {return MULTI_COMMENT;}
 <MULTI_COMMENT_STATE>"\n"   {return MULTI_COMMENT;}
 [ \t\n]                     {return WHITE_SPACE;}
+
 %%
+
+int yywrap (void) {return 1;}

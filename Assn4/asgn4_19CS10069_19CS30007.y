@@ -17,6 +17,7 @@
 %token FLOAT SHORT CHAR _BOOL _IMAGINARY _COMPLEX INT DOUBLE LONG VOID SIGNED AUTO UNSIGNED 
 %token ENUM UNION STRUCT TYPEDEF 
 %token CONST DEFAULT STATIC REGISTER RESTRICT VOLATILE EXTERN INLINE 
+%token BEGIN_SINGLE_COMMENT END_SINGLE_COMMENT SINGLE_COMMENT BEGIN_MULTI_COMMENT END_MULTI_COMMENT MULTI_COMMENT WHITE_SPACE
 
 %token <myStringVal> IDENTIFIER
 %token <myIntVal> INTEGER_CONST
@@ -25,7 +26,7 @@
 %token <myDoubleVal> DOUBLE_CONST
 %token <myStringVal> STRING_LITERAL
 
-%token PLUS MINUS MULT DIVIDE ARROW INCREMENT DECREMENT RSHIFT LSHIFT LEQ GEQ EQ NEQ OR AND XOR BITWISE_NOT LOGICAL_NOT ELLIPSIS
+%token PLUS MINUS MULT DIVIDE ARROW INCREMENT DECREMENT RSHIFT LSHIFT LT GT LEQ GEQ EQ NEQ BITWISE_OR LOGICAL_OR BITWISE_AND LOGICAL_AND XOR BITWISE_NOT LOGICAL_NOT ELLIPSIS MODULO ASGN ENUMERATION_CONST
 %token ADD_ASGN SUB_ASGN MULT_ASGN DIV_ASGN MOD_ASGN LSHIFT_ASGN RSHIFT_ASGN AND_ASGN OR_ASGN XOR_ASGN 
 
 %start translation_unit
@@ -42,6 +43,12 @@ primary_expression:
                     { printf("primary_expression -> string-literal\n"); }
                     | '(' expression ')'
                     { printf("primary_expression -> ( expression )\n"); }
+                    ;
+
+constant:
+                    INTEGER_CONST
+                    | FLOAT_CONST
+                    | CHAR_CONST
                     ;
 
 postfix_expression:
@@ -94,7 +101,7 @@ unary_expression:
 
 /*Changes made here*/
 unary_operator: 
-                    AND
+                    BITWISE_AND
                     { printf("unary_operator -> &\n"); }
                     | MULT
                     { printf("unary_operator -> *\n"); }
@@ -120,16 +127,17 @@ multiplicative_expression:
                             { printf("multiplicative_expression -> cast_expression\n"); }
                             | multiplicative_expression MULT cast_expression
                             { printf("multiplicative_expression -> multiplicative_expression * cast_expression\n"); }
-                            | multiplicative_expression '/' cast_expression
+                            | multiplicative_expression DIVIDE cast_expression
                             { printf("multiplicative_expression -> multiplicative_expression / cast_expression\n"); }
-                            | multiplicative_expression '%' cast_expression     
+                            | multiplicative_expression MODULO cast_expression     
                             { printf("multiplicative_expression -> multiplicative_expression modulo cast_expression\n"); }
                             ;
 
+/*Made changes here*/
 additive_expression:        
                             multiplicative_expression
                             { printf("additive_expression -> multiplicative_expression\n"); }
-                            | additive_expression '+' multiplicative_expression
+                            | additive_expression PLUS multiplicative_expression
                             { printf("additive_expression -> additive_expression + multiplicative_expression\n"); }
                             | additive_expression MINUS multiplicative_expression
                             { printf("additive_expression -> additive_expression − multiplicative_expression\n"); }
@@ -143,13 +151,13 @@ shift_expression:
                             | shift_expression RSHIFT additive_expression
                             { printf("shift_expression -> shift_expression >> additive_expression\n"); }
                             ;
-
+/* changes made here */
 relational_expression:
                         shift_expression
                         { printf("relational_expression -> shift_expression\n"); }
-                        | relational_expression '<' shift_expression
+                        | relational_expression LT shift_expression
                         { printf("relational_expression -> relational_expression < shift_expression\n"); }
-                        | relational_expression '>' shift_expression
+                        | relational_expression GT shift_expression
                         { printf("relational_expression -> relational_expression > shift_expression\n"); }
                         | relational_expression LEQ shift_expression
                         { printf("relational_expression -> relational_expression <= shift_expression\n"); }
@@ -169,35 +177,35 @@ equality_expression:
 AND_expression:
                     equality_expression
                     { printf("AND_expression -> equality_expression\n"); }
-                    | AND_expression '&' equality_expression
+                    | AND_expression BITWISE_AND equality_expression
                     { printf("AND_expression -> AND_expression & equality_expression\n");}
                     ;
 
 exclusive_OR_expression:
                             AND_expression
                             { printf("exclusive_OR_expression -> AND_expression\n"); }
-                            | exclusive_OR_expression '^' AND_expression
+                            | exclusive_OR_expression XOR AND_expression
                             { printf("exclusive_OR_expression -> exclusive_OR_expression ˆ AND_expression\n"); }
                             ;
 
 inclusive_OR_expression:
                             exclusive_OR_expression
                             { printf("inclusive_OR_expression -> exclusive_OR_expression\n"); }
-                            | inclusive_OR_expression '|' exclusive_OR_expression
+                            | inclusive_OR_expression BITWISE_OR exclusive_OR_expression
                             { printf("inclusive_OR_expression -> inclusive_OR_expression | exclusive_OR_expression\n"); }
                             ;
 
 logical_AND_expression:
                             inclusive_OR_expression
                             { printf("logical_AND_expression -> inclusive_OR_expression\n"); }
-                            | logical_AND_expression AND inclusive_OR_expression
+                            | logical_AND_expression LOGICAL_AND inclusive_OR_expression
                             { printf("logical_AND_expression -> logical_AND_expression && inclusive_OR_expression\n"); }
                             ;
 
 logical_OR_expression:
                         logical_AND_expression
                         { printf("logical_OR_expression -> logical_AND_expression\n"); }
-                        | logical_OR_expression OR logical_AND_expression
+                        | logical_OR_expression LOGICAL_OR logical_AND_expression
                         { printf("logical_OR_expression -> logical_OR_expression || logical_AND_expression\n"); }
                         ;
 
@@ -215,28 +223,29 @@ assignment_expression:
                         { printf("assignment_expression -> unary_expression assignment_operator assignment_expression\n"); }
                         ;
 
+/* Check convention */
 assignment_operator: 
                         '='
                         { printf("assignment_operator -> =\n"); }
-                        | MULT_ASSIGN
+                        | MULT_ASGN
                         { printf("assignment_operator -> *=\n"); }
-                        | DIV_ASSIGN
+                        | DIV_ASGN
                         { printf("assignment_operator -> /=\n"); }
-                        | MOD_ASSIGN
-                        { printf("assignment_operator -> modulo =\n"); }
-                        | ADD_ASSIGN
+                        | MOD_ASGN
+                        { printf("assignment_operator -> %%=\n"); }
+                        | ADD_ASGN
                         { printf("assignment_operator -> +=\n"); }
-                        | SUB_ASSIGN
+                        | SUB_ASGN
                         { printf("assignment_operator -> -=\n"); }
-                        | LSHIFT_ASSIGN
+                        | LSHIFT_ASGN
                         { printf("assignment_operator -> <<=\n"); }
-                        | RSHIFT_ASSIGN
+                        | RSHIFT_ASGN
                         { printf("assignment_operator -> >>=\n"); }
-                        | BIN_AND_ASSIGN
+                        | AND_ASGN
                         { printf("assignment_operator -> &=\n"); }
-                        | BIN_XOR_ASSIGN
+                        | XOR_ASGN
                         { printf("assignment_operator -> ^=\n"); }
-                        | BIN_OR_ASSIGN
+                        | OR_ASGN
                         { printf("assignment_operator -> |=\n"); }
                         ;
 
@@ -288,7 +297,7 @@ init_declarator_list:
 init_declarator:
                     declarator
                     { printf("init_declarator -> declarator\n"); }
-                    | declarator '=' initializer
+                    | declarator ASGN initializer
                     { printf("init_declarator -> declarator = initializer\n"); }
                     ;
 
@@ -297,6 +306,10 @@ storage_class_specifier:
                             { printf("storage_class_specifier -> extern\n"); }
                             | STATIC
                             { printf("storage_class_specifier -> static\n"); }
+                            | AUTO
+                            { printf("storage_class_specifier -> auto\n"); }
+                            | REGISTER
+                            { printf("storage_class_specifier -> register\n"); }
                             ;
 
 type_specifier:
@@ -314,6 +327,18 @@ type_specifier:
                 { printf("type_specifier -> float\n"); }
                 | DOUBLE
                 { printf("type_specifier -> double\n"); }
+                | SIGNED
+                { printf("type_specifier -> signed\n"); }
+                | UNSIGNED
+                { printf("type_specifier -> unsigned\n"); }
+                | _BOOL
+                { printf("type_specifier -> _bool\n"); }
+                | _COMPLEX
+                { printf("type_specifier -> _complex\n"); }
+                | _IMAGINARY
+                { printf("type_specifier -> _imaginary\n"); }
+                | enum_specifier
+                { printf("type_specifier -> enum_specifier\n");}
                 ;
 
 specifier_qualifier_list:
@@ -327,6 +352,35 @@ specifier_qualifier_list_opt:
                                 specifier_qualifier_list
                                 | /* epsilon */
                                 ;
+
+enum_specifier:
+                    ENUM identifier_opt '{' enumerator_list '}'
+                    { printf("enum_specifier -> enum identifier_opt { enumerator_list }\n"); }
+                    | ENUM identifier_opt '{' enumerator_list ',' '}'
+                    { printf("enum_specifier -> enum identifier_opt { enumerator_list , }\n"); }
+                    | ENUM IDENTIFIER
+                    { printf("enum_specifier -> enum identifier\n"); }
+                    ;
+
+identifier_opt:
+                    IDENTIFIER
+                    | /* epsilon */
+                    ;
+
+enumerator_list:
+                    enumerator
+                    { printf("enumerator_list -> enumerator\n");}
+                    | enumerator_list ',' enumerator
+                    { printf("enumerator_list -> enumerator_list, enumerator\n");}
+                    ;
+
+enumerator:
+                    ENUMERATION_CONST
+                    { printf("enumerator -> enumerator_constant\n");}
+                    ENUMERATION_CONST ASGN constant_expression
+                    { printf("enumerator -> enumerator_constant = constant_expression\n");}
+                    ;
+                
 
 type_qualifier:
                 CONST
@@ -593,11 +647,6 @@ declaration_list:
                     { printf("declaration_list -> declaration_list declaration\n"); }
                     ;
 
-constant:
-                    INT_CONST
-                    | FLOAT_CONST
-                    | CHAR_CONST
-                    ;
 %%
 /*Auxiliaries*/
 void yyerror(char* s)

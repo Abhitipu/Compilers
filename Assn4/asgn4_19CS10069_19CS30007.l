@@ -95,10 +95,10 @@ ENUMERATION_CONST   {IDENTIFIER}
 "--"                        {return DECREMENT;          }                                  
 "&"                         {return '&';                }                                 
 "*"                         {return MULT;               }                                 
-"+"                         {return '+';                }                                 
+"+"                         {return PLUS;                }                                 
 "-"                         {return MINUS;              }                                 
-"~"                         {return '~';                }                                 
-"!"                         {return '!';                }                                 
+"~"                         {return BITWISE_NOT;                }                                 
+"!"                         {return LOGICAL_NOT;                }                                 
 "/"                         {return '/';                }                                 
 "%"                         {return '%';                }                                 
 "<<"                        {return LSHIFT;             }                                  

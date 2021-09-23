@@ -1,37 +1,45 @@
-/*Declarations*/
 %{
-    #include<stdio.h>
+    #include "stdio.h"
     extern int yylex();
-    extern void yyerror(char*);
+    void yyerror(char* s);
 %}
 
 %union {
-    int myIntVal;
-    char myCharVal;
-    float myFloatVal;
-    double myDoubleVal;
-    char* myStringVal;
+    int intValue;
+    double doubleValue;
+    char charValue;
+    char charArray[40];
+    char* stringValue;
 }
 
-%token BREAK RETURN CASE FOR WHILE GOTO SIZEOF CONTINUE IF DO SWITCH ELSE
-%token FLOAT SHORT CHAR _BOOL _IMAGINARY _COMPLEX INT DOUBLE LONG VOID SIGNED AUTO UNSIGNED 
-%token ENUM UNION STRUCT TYPEDEF 
-%token CONST DEFAULT STATIC REGISTER RESTRICT VOLATILE EXTERN INLINE 
+%token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN 
+%token TYPEDEF EXTERN STATIC INLINE 
+%token CHAR SHORT INT LONG DOUBLE CONST VOLATILE VOID FLOAT 
+%token RESTRICT UNION SIZEOF STRUCT 
 
-%token <myStringVal> IDENTIFIER
-%token <myIntVal> INTEGER_CONST
-%token <myCharVal> CHAR_CONST
-%token <myFloatVal> FLOAT_CONST
-%token <myDoubleVal> DOUBLE_CONST
-%token <myStringVal> STRING_LITERAL
+%token <charArray> IDENTIFIER
+%token <stringValue> STRING_LITERAL
+%token <intValue> INT_CONST
+%token <doubleValue> FLOAT_CONST
+%token <charValue> CHAR_CONST
 
-%token PLUS MINUS MULT DIVIDE ARROW INCREMENT DECREMENT RSHIFT LSHIFT LEQ GEQ EQ NEQ OR AND XOR BITWISE_NOT LOGICAL_NOT ELLIPSIS
-%token ADD_ASGN SUB_ASGN MULT_ASGN DIV_ASGN MOD_ASGN LSHIFT_ASGN RSHIFT_ASGN AND_ASGN OR_ASGN XOR_ASGN 
+%token ARROW INCREMENT DECREMENT RSHIFT LSHIFT LEQ GEQ EQ NEQ OR AND ELLIPSIS MULT MINUS
+%token MULT_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LSHIFT_ASSIGN
+%token RSHIFT_ASSIGN BIN_AND_ASSIGN BIN_XOR_ASSIGN BIN_OR_ASSIGN 
 
+%token MULTI_COMMENT MULTI_COMMENT_END MULTI_COMMENT_START
+%token SINGLE_COMMENT SINGLE_COMMENT_END SINGLE_COMMENT_START
+
+%nonassoc ')'
+%nonassoc ELSE
 %start translation_unit
 
-/*Rules*/
 %%
+constant:
+                    INT_CONST
+                    | FLOAT_CONST
+                    | CHAR_CONST
+                    ;
 
 primary_expression:
                     IDENTIFIER
@@ -43,6 +51,8 @@ primary_expression:
                     | '(' expression ')'
                     { printf("primary_expression -> ( expression )\n"); }
                     ;
+
+
 
 postfix_expression:
                     primary_expression
@@ -92,19 +102,18 @@ unary_expression:
                     { printf("unary_expression -> sizeof ( type_name ) \n"); }
                     ;    
 
-/*Changes made here*/
 unary_operator: 
-                    AND
+                    '&' 
                     { printf("unary_operator -> &\n"); }
                     | MULT
                     { printf("unary_operator -> *\n"); }
-                    | PLUS
+                    | '+' 
                     { printf("unary_operator -> +\n"); }
                     | MINUS
                     { printf("unary_operator -> -\n"); }
-                    | BITWISE_NOT
+                    | '~'
                     { printf("unary_operator -> ~\n"); }
-                    | LOGICAL_NOT
+                    | '!'
                     { printf("unary_operator -> !\n"); }
                     ;
 
@@ -592,14 +601,8 @@ declaration_list:
                     | declaration_list declaration
                     { printf("declaration_list -> declaration_list declaration\n"); }
                     ;
-
-constant:
-                    INT_CONST
-                    | FLOAT_CONST
-                    | CHAR_CONST
-                    ;
 %%
-/*Auxiliaries*/
+
 void yyerror(char* s)
 {
     printf("Found error %s\n", s);

@@ -116,7 +116,7 @@ ENUMERATION_CONST   {IDENTIFIER}
 "?"                         {return '?';                }                                 
 ":"                         {return ':';                }                                 
 ";"                         {return ';';                }                                 
-"..."                       {return '...';              }                               
+"..."                       {return ELLIPSIS;           }                               
 "="                         {return '=';                }                                 
 "*="                        {return MULT_ASSIGN;        }                                  
 "/="                        {return DIV_ASSIGN;         }                                  

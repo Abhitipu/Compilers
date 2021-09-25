@@ -134,14 +134,13 @@ ENUMERATION_CONST   {IDENTIFIER}
 
 
 "//"                        {BEGIN(SINGLE_COMMENT_STATE);}
-<SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL);}
+<SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL);line++;}
 <SINGLE_COMMENT_STATE>.     {;}
 "/*"                        {BEGIN(MULTI_COMMENT_STATE);}
 <MULTI_COMMENT_STATE>"*/"   {BEGIN(INITIAL);}
 <MULTI_COMMENT_STATE>.      {;}
-<MULTI_COMMENT_STATE>"\n"   {;}
-[ \t\n]                     {;}
-
+<MULTI_COMMENT_STATE>"\n"   {line++;}
+[ \t]                       {;}
 %%
 
 int yywrap (void) {return 1;}

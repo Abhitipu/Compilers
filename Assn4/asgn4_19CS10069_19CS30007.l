@@ -134,12 +134,12 @@ ENUMERATION_CONST   {IDENTIFIER}
 
 
 "//"                        {BEGIN(SINGLE_COMMENT_STATE);}
-<SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL);line++;}
+<SINGLE_COMMENT_STATE>"\n"  {line++; printf("\n#################### LINE NO : %d ####################\n", line);BEGIN(INITIAL);}
 <SINGLE_COMMENT_STATE>.     {;}
 "/*"                        {BEGIN(MULTI_COMMENT_STATE);}
 <MULTI_COMMENT_STATE>"*/"   {BEGIN(INITIAL);}
 <MULTI_COMMENT_STATE>.      {;}
-<MULTI_COMMENT_STATE>"\n"   {line++;}
+<MULTI_COMMENT_STATE>"\n"   {line++; printf("\n#################### LINE NO : %d ####################\n", line);}
 [ \t]                       {;}
 %%
 

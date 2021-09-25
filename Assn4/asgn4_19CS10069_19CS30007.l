@@ -133,15 +133,14 @@ ENUMERATION_CONST   {IDENTIFIER}
 "#"                         {return '#';                }                                 
 
 
-"//"                        {BEGIN(SINGLE_COMMENT_STATE); return BEGIN_SINGLE_COMMENT;}
-<SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL); return END_SINGLE_COMMENT;}
-<SINGLE_COMMENT_STATE>.     {return SINGLE_COMMENT;}
-"/*"                        {BEGIN(MULTI_COMMENT_STATE); return BEGIN_MULTI_COMMENT;}
-<MULTI_COMMENT_STATE>"*/"   {BEGIN(INITIAL); return END_MULTI_COMMENT;}
-<MULTI_COMMENT_STATE>.      {return MULTI_COMMENT;}
-<MULTI_COMMENT_STATE>"\n"   {return MULTI_COMMENT;}
-[ \t\n]                     { ;}
-
+"//"                        {BEGIN(SINGLE_COMMENT_STATE);}
+<SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL);line++;}
+<SINGLE_COMMENT_STATE>.     {;}
+"/*"                        {BEGIN(MULTI_COMMENT_STATE);}
+<MULTI_COMMENT_STATE>"*/"   {BEGIN(INITIAL);}
+<MULTI_COMMENT_STATE>.      {;}
+<MULTI_COMMENT_STATE>"\n"   {line++;}
+[ \t]                       {;}
 %%
 
 int yywrap (void) {return 1;}

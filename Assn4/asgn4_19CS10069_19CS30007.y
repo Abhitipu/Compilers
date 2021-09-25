@@ -18,7 +18,7 @@
 %token FLOAT SHORT CHAR _BOOL _IMAGINARY _COMPLEX INT DOUBLE LONG VOID SIGNED AUTO UNSIGNED 
 %token ENUM UNION STRUCT TYPEDEF 
 %token CONST DEFAULT STATIC REGISTER RESTRICT VOLATILE EXTERN INLINE 
-%token BEGIN_SINGLE_COMMENT END_SINGLE_COMMENT SINGLE_COMMENT BEGIN_MULTI_COMMENT END_MULTI_COMMENT MULTI_COMMENT WHITE_SPACE
+
 
 %token <myCharArray> IDENTIFIER
 %token <myIntVal> INTEGER_CONST
@@ -36,6 +36,11 @@
 
 /*Rules*/
 %%
+constant:
+                    INTEGER_CONST
+                    | FLOAT_CONST
+                    | CHAR_CONST
+                    ;
 
 primary_expression:
                     IDENTIFIER
@@ -48,11 +53,6 @@ primary_expression:
                     { printf("primary_expression -> ( expression )\n"); }
                     ;
 
-constant:
-                    INTEGER_CONST
-                    | FLOAT_CONST
-                    | CHAR_CONST
-                    ;
 
 postfix_expression:
                     primary_expression

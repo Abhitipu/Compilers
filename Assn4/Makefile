@@ -11,7 +11,7 @@ lex.yy.c: asgn4_19CS10069_19CS30007.l y.tab.h
 	flex asgn4_19CS10069_19CS30007.l
 
 y.tab.c y.tab.h: asgn4_19CS10069_19CS30007.y 
-	yacc -d asgn4_19CS10069_19CS30007.y
+	yacc -dty asgn4_19CS10069_19CS30007.y
 
 clean:
 	rm a.out lex.yy.c *tab* asgn4_19CS10069_19CS30007.txt

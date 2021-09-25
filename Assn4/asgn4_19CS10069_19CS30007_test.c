@@ -3,7 +3,7 @@
 // union not working
 
 
-enum week {MONDAY};//{ Monday , Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+enum week ;//{ Monday , Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
 
 extern int check;
 
@@ -15,7 +15,7 @@ int main() {
 
     // Lets test some data types first
     int n;
-    n = 34;
+    int n = 4;
     float f;
     f = 3.4e-12;
     char c;
@@ -25,13 +25,13 @@ int main() {
     // testing a switch statement 
     const int k = 2;
     switch (k) {
-        case 1: printf("1\n")
-        case 2: printf("2\n")
-        case 3: printf("3\n")
+        case 1: printf("1\n");
+        case 2: printf("2\n");
+        case 3: printf("3\n");
         case 4:                                      
-        case 5: printf("45\n")
+        case 5: printf("45\n");
                 break;              
-        default : printf("6\n")
+        default : printf("6\n");
     }
 
     // lets count the odd nos in an array

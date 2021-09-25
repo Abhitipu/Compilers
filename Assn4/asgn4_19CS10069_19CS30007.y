@@ -36,6 +36,11 @@
 
 /*Rules*/
 %%
+constant:
+                    INTEGER_CONST
+                    | FLOAT_CONST
+                    | CHAR_CONST
+                    ;
 
 primary_expression:
                     IDENTIFIER
@@ -48,11 +53,6 @@ primary_expression:
                     { printf("primary_expression -> ( expression )\n"); }
                     ;
 
-constant:
-                    INTEGER_CONST
-                    | FLOAT_CONST
-                    | CHAR_CONST
-                    ;
 
 postfix_expression:
                     primary_expression

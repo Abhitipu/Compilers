@@ -228,7 +228,7 @@ assignment_expression:
 
 /* Check convention */
 assignment_operator: 
-                        '='
+                        ASGN
                         { printf("assignment_operator -> =\n"); }
                         | MULT_ASGN
                         { printf("assignment_operator -> *=\n"); }
@@ -378,9 +378,9 @@ enumerator_list:
                     ;
 
 enumerator:
-                    ENUMERATION_CONST
+                    IDENTIFIER
                     { printf("enumerator -> enumerator_constant\n");}
-                    ENUMERATION_CONST ASGN constant_expression
+                    IDENTIFIER ASGN constant_expression
                     { printf("enumerator -> enumerator_constant = constant_expression\n");}
                     ;
                 

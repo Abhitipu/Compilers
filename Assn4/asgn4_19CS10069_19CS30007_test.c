@@ -3,7 +3,7 @@
 // union not working
 
 
-enum week ;//{ Monday , Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+enum week;//{ Monday , Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
 
 extern int check;
 
@@ -83,7 +83,7 @@ int main() {
     
     // lets create some instances of students
     newLabel:
-    stud student1, student2;
+    // stud student1, student2;
 
     student1.name = "Tom";
     student1.rollNo = 1;

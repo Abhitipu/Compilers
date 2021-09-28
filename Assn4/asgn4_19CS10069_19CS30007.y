@@ -342,6 +342,8 @@ type_specifier:
                 { printf("type_specifier -> _imaginary\n"); }
                 | enum_specifier
                 { printf("type_specifier -> enum_specifier\n");}
+                | struct_or_union_specifier
+                { printf("Works\n"); }
                 ;
 
 specifier_qualifier_list:
@@ -355,6 +357,37 @@ specifier_qualifier_list_opt:
                                 specifier_qualifier_list
                                 | /* epsilon */
                                 ;
+
+struct_or_union_specifier:
+                            struct_or_union '{' struct_declaration_list '}'
+                            | struct_or_union IDENTIFIER '{' struct_declaration_list '}'
+                            | struct_or_union IDENTIFIER
+                            ;
+
+struct_or_union:
+                STRUCT
+                | UNION
+                ;
+
+struct_declaration_list
+	: struct_declaration
+	| struct_declaration_list struct_declaration
+	;
+
+struct_declaration
+	: specifier_qualifier_list ';'	/* for anonymous struct/union */
+	| specifier_qualifier_list struct_declarator_list ';'
+	;
+
+struct_declarator_list
+	: struct_declarator
+	| struct_declarator_list ',' struct_declarator
+	;
+struct_declarator
+	: ':' constant_expression
+	| declarator ':' constant_expression
+	| declarator
+	;
 
 enum_specifier:
                     ENUM identifier_opt '{' enumerator_list '}'

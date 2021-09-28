@@ -1,7 +1,7 @@
 // lets test some keywords first
 // typedef not working, even struct does not work
 // union not working
-int x = 0;
+static int x = 0;
 
 enum Week { Monday ,Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
 
@@ -11,10 +11,29 @@ inline int add(int x, int y) {
     return x + y;
 }
 
+struct s {
+    int a, b;
+    char c;
+    float ff;
+};
+
+union MyNumber {
+    short mySmallNumber;
+    int myNumber;
+    long myBigNumber;
+    float myRealNumber;
+    double myDoubleumber;
+    _Complex myComplexNumber;
+    _Bool myBooleanValue;
+    _Imaginary myImaginaryValue;
+};
+
 int main() {
 
     // Lets test some data types first
-    int n;
+    int n = 234231%5;
+    n %= 3;
+
     int y = 4 + 3*3 + 12 / 4;
     float f;
     f = 3.4e-12;

@@ -128,7 +128,7 @@ ENUMERATION_CONST   {IDENTIFIER}
 ">>="                       {return RSHIFT_ASGN;        }                               
 "&="                        {return AND_ASGN;           }                                  
 "^="                        {return XOR_ASGN;           }                                  
-"|="                        {return XOR_ASGN;           }                        
+"|="                        {return OR_ASGN;           }                        
 ","                         {return ',';                }                                 
 "#"                         {return '#';                }                                 
 

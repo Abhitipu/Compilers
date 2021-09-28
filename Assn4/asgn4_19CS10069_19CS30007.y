@@ -357,8 +357,10 @@ specifier_qualifier_list_opt:
                                 ;
 
 enum_specifier:
-                    ENUM identifier_opt '{' enumerator '}'
+                    ENUM identifier_opt '{' enumerator_list '}'
                     { printf("enum_specifier -> enum identifier_opt { enumerator_list }\n"); }
+                    | ENUM identifier_opt '{' enumerator_list ',' '}'
+                    { printf("enum_specifier -> enum identifier_opt { enumerator_list , }\n"); }
                     | ENUM IDENTIFIER
                     { printf("enum_specifier -> enum identifier\n"); }
                     ;
@@ -375,10 +377,11 @@ enumerator_list:
                     { printf("enumerator_list -> enumerator_list, enumerator\n");}
                     ;
 
+/*Enumeration_const? */
 enumerator:
                     IDENTIFIER
                     { printf("enumerator -> enumerator_constant\n");}
-                    IDENTIFIER ASGN constant_expression
+                    | IDENTIFIER ASGN constant_expression
                     { printf("enumerator -> enumerator_constant = constant_expression\n");}
                     ;
                 

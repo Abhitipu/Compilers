@@ -3,17 +3,7 @@
 // union not working
 int x = 0;
 
-enum Week
-{
- Monday
-};
-//  Tuesday,
-//  Wednesday,
-//  Thursday,
-//  Friday,
-//  Saturday,
-//  Sunday
-//  };
+enum Week { Monday ,Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
 
 extern int check;
 
@@ -25,7 +15,7 @@ int main() {
 
     // Lets test some data types first
     int n;
-    int n = 4;
+    int y = 4 + 3*3 + 12 / 4;
     float f;
     f = 3.4e-12;
     char c;

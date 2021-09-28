@@ -6,7 +6,7 @@ extern int yyparse();
 int main() 
 {
     extern int yydebug;
-    yydebug = 1;
+    yydebug = 1;            // yydebug is used for printing debug info
 
     int works = yyparse();
 

@@ -38,8 +38,11 @@
 %%
 constant:
                     INTEGER_CONST
+                    { printf("constant -> INTEGER_CONST\n"); }
                     | FLOAT_CONST
+                    { printf("CONSTANT -> FLOAT_CONST\n"); }
                     | CHAR_CONST
+                    { printf("CONSTANT -> CHAR_CONST\n"); }
                     ;
 
 primary_expression:
@@ -76,16 +79,16 @@ postfix_expression:
                     ;  
 
 argument_expression_list:
-                            assignment_expression
-                            { printf("argument_expression_list -> assignment_expression\n"); }
-                            | argument_expression_list ',' assignment_expression   
-                            { printf("argument_expression_list -> argument_expression_list , assignment_expression\n"); } 
-                            ;
+                    assignment_expression
+                    { printf("argument_expression_list -> assignment_expression\n"); }
+                    | argument_expression_list ',' assignment_expression   
+                    { printf("argument_expression_list -> argument_expression_list , assignment_expression\n"); } 
+                    ;
 
 argument_expression_list_opt:
-                                argument_expression_list
-                                | /* epsilon */
-                                ;
+                    argument_expression_list
+                    | /* epsilon */
+                    ;
 
 unary_expression:
                     postfix_expression
@@ -102,7 +105,7 @@ unary_expression:
                     { printf("unary_expression -> sizeof ( type_name ) \n"); }
                     ;    
 
-/*Changes made here*/
+
 unary_operator: 
                     BITWISE_AND
                     { printf("unary_operator -> &\n"); }
@@ -126,56 +129,56 @@ cast_expression:
                     ;
 
 multiplicative_expression:
-                            cast_expression
-                            { printf("multiplicative_expression -> cast_expression\n"); }
-                            | multiplicative_expression MULT cast_expression
-                            { printf("multiplicative_expression -> multiplicative_expression * cast_expression\n"); }
-                            | multiplicative_expression DIVIDE cast_expression
-                            { printf("multiplicative_expression -> multiplicative_expression / cast_expression\n"); }
-                            | multiplicative_expression MODULO cast_expression     
-                            { printf("multiplicative_expression -> multiplicative_expression modulo cast_expression\n"); }
-                            ;
+                    cast_expression
+                    { printf("multiplicative_expression -> cast_expression\n"); }
+                    | multiplicative_expression MULT cast_expression
+                    { printf("multiplicative_expression -> multiplicative_expression * cast_expression\n"); }
+                    | multiplicative_expression DIVIDE cast_expression
+                    { printf("multiplicative_expression -> multiplicative_expression / cast_expression\n"); }
+                    | multiplicative_expression MODULO cast_expression     
+                    { printf("multiplicative_expression -> multiplicative_expression modulo cast_expression\n"); }
+                    ;
 
-/*Made changes here*/
+
 additive_expression:        
-                            multiplicative_expression
-                            { printf("additive_expression -> multiplicative_expression\n"); }
-                            | additive_expression PLUS multiplicative_expression
-                            { printf("additive_expression -> additive_expression + multiplicative_expression\n"); }
-                            | additive_expression MINUS multiplicative_expression
-                            { printf("additive_expression -> additive_expression − multiplicative_expression\n"); }
-                            ;
+                    multiplicative_expression
+                    { printf("additive_expression -> multiplicative_expression\n"); }
+                    | additive_expression PLUS multiplicative_expression
+                    { printf("additive_expression -> additive_expression + multiplicative_expression\n"); }
+                    | additive_expression MINUS multiplicative_expression
+                    { printf("additive_expression -> additive_expression − multiplicative_expression\n"); }
+                    ;
 
 shift_expression:
-                            additive_expression
-                            { printf("shift_expression -> additive_expression\n"); }
-                            | shift_expression LSHIFT additive_expression
-                            { printf("shift_expression -> shift_expression << additive_expression\n"); }
-                            | shift_expression RSHIFT additive_expression
-                            { printf("shift_expression -> shift_expression >> additive_expression\n"); }
-                            ;
-/* changes made here */
+                    additive_expression
+                    { printf("shift_expression -> additive_expression\n"); }
+                    | shift_expression LSHIFT additive_expression
+                    { printf("shift_expression -> shift_expression << additive_expression\n"); }
+                    | shift_expression RSHIFT additive_expression
+                    { printf("shift_expression -> shift_expression >> additive_expression\n"); }
+                    ;
+
 relational_expression:
-                        shift_expression
-                        { printf("relational_expression -> shift_expression\n"); }
-                        | relational_expression LT shift_expression
-                        { printf("relational_expression -> relational_expression < shift_expression\n"); }
-                        | relational_expression GT shift_expression
-                        { printf("relational_expression -> relational_expression > shift_expression\n"); }
-                        | relational_expression LEQ shift_expression
-                        { printf("relational_expression -> relational_expression <= shift_expression\n"); }
-                        | relational_expression GEQ shift_expression
-                        { printf("relational_expression -> relational_expression >= shift_expression\n"); }
-                        ;
+                    shift_expression
+                    { printf("relational_expression -> shift_expression\n"); }
+                    | relational_expression LT shift_expression
+                    { printf("relational_expression -> relational_expression < shift_expression\n"); }
+                    | relational_expression GT shift_expression
+                    { printf("relational_expression -> relational_expression > shift_expression\n"); }
+                    | relational_expression LEQ shift_expression
+                    { printf("relational_expression -> relational_expression <= shift_expression\n"); }
+                    | relational_expression GEQ shift_expression
+                    { printf("relational_expression -> relational_expression >= shift_expression\n"); }
+                    ;
 
 equality_expression:
-                        relational_expression
-                        { printf("equality_expression -> relational_expression\n"); }
-                        | equality_expression EQ relational_expression
-                        { printf("equality_expression -> equality_expression == relational_expression\n"); }
-                        | equality_expression NEQ relational_expression
-                        { printf("equality_expression -> equality_expression ! = relational_expression\n"); }
-                        ;
+                    relational_expression
+                    { printf("equality_expression -> relational_expression\n"); }
+                    | equality_expression EQ relational_expression
+                    { printf("equality_expression -> equality_expression == relational_expression\n"); }
+                    | equality_expression NEQ relational_expression
+                    { printf("equality_expression -> equality_expression ! = relational_expression\n"); }
+                    ;
 
 AND_expression:
                     equality_expression
@@ -185,117 +188,117 @@ AND_expression:
                     ;
 
 exclusive_OR_expression:
-                            AND_expression
-                            { printf("exclusive_OR_expression -> AND_expression\n"); }
-                            | exclusive_OR_expression XOR AND_expression
-                            { printf("exclusive_OR_expression -> exclusive_OR_expression ˆ AND_expression\n"); }
-                            ;
+                    AND_expression
+                    { printf("exclusive_OR_expression -> AND_expression\n"); }
+                    | exclusive_OR_expression XOR AND_expression
+                    { printf("exclusive_OR_expression -> exclusive_OR_expression ˆ AND_expression\n"); }
+                    ;
 
 inclusive_OR_expression:
-                            exclusive_OR_expression
-                            { printf("inclusive_OR_expression -> exclusive_OR_expression\n"); }
-                            | inclusive_OR_expression BITWISE_OR exclusive_OR_expression
-                            { printf("inclusive_OR_expression -> inclusive_OR_expression | exclusive_OR_expression\n"); }
-                            ;
+                    exclusive_OR_expression
+                    { printf("inclusive_OR_expression -> exclusive_OR_expression\n"); }
+                    | inclusive_OR_expression BITWISE_OR exclusive_OR_expression
+                    { printf("inclusive_OR_expression -> inclusive_OR_expression | exclusive_OR_expression\n"); }
+                    ;
 
 logical_AND_expression:
-                            inclusive_OR_expression
-                            { printf("logical_AND_expression -> inclusive_OR_expression\n"); }
-                            | logical_AND_expression LOGICAL_AND inclusive_OR_expression
-                            { printf("logical_AND_expression -> logical_AND_expression && inclusive_OR_expression\n"); }
-                            ;
+                    inclusive_OR_expression
+                    { printf("logical_AND_expression -> inclusive_OR_expression\n"); }
+                    | logical_AND_expression LOGICAL_AND inclusive_OR_expression
+                    { printf("logical_AND_expression -> logical_AND_expression && inclusive_OR_expression\n"); }
+                    ;
 
 logical_OR_expression:
-                        logical_AND_expression
-                        { printf("logical_OR_expression -> logical_AND_expression\n"); }
-                        | logical_OR_expression LOGICAL_OR logical_AND_expression
-                        { printf("logical_OR_expression -> logical_OR_expression || logical_AND_expression\n"); }
-                        ;
+                    logical_AND_expression
+                    { printf("logical_OR_expression -> logical_AND_expression\n"); }
+                    | logical_OR_expression LOGICAL_OR logical_AND_expression
+                    { printf("logical_OR_expression -> logical_OR_expression || logical_AND_expression\n"); }
+                    ;
 
 conditional_expression:
-                        logical_OR_expression
-                        { printf("conditional_expression -> logical_OR_expression\n"); }
-                        | logical_OR_expression '?' expression ':' conditional_expression
-                        { printf("conditional_expression -> logical_OR_expression ? expression : conditional_expression\n"); }
-                        ;
+                    logical_OR_expression
+                    { printf("conditional_expression -> logical_OR_expression\n"); }
+                    | logical_OR_expression '?' expression ':' conditional_expression
+                    { printf("conditional_expression -> logical_OR_expression ? expression : conditional_expression\n"); }
+                    ;
 
 assignment_expression:
-                        conditional_expression
-                        { printf("assignment_expression -> conditional_expression\n"); }
-                        | unary_expression assignment_operator assignment_expression
-                        { printf("assignment_expression -> unary_expression assignment_operator assignment_expression\n"); }
-                        ;
+                    conditional_expression
+                    { printf("assignment_expression -> conditional_expression\n"); }
+                    | unary_expression assignment_operator assignment_expression
+                    { printf("assignment_expression -> unary_expression assignment_operator assignment_expression\n"); }
+                    ;
 
-/* Check convention */
+
 assignment_operator: 
-                        ASGN
-                        { printf("assignment_operator -> =\n"); }
-                        | MULT_ASGN
-                        { printf("assignment_operator -> *=\n"); }
-                        | DIV_ASGN
-                        { printf("assignment_operator -> /=\n"); }
-                        | MOD_ASGN
-                        { printf("assignment_operator -> %%=\n"); }
-                        | ADD_ASGN
-                        { printf("assignment_operator -> +=\n"); }
-                        | SUB_ASGN
-                        { printf("assignment_operator -> -=\n"); }
-                        | LSHIFT_ASGN
-                        { printf("assignment_operator -> <<=\n"); }
-                        | RSHIFT_ASGN
-                        { printf("assignment_operator -> >>=\n"); }
-                        | AND_ASGN
-                        { printf("assignment_operator -> &=\n"); }
-                        | XOR_ASGN
-                        { printf("assignment_operator -> ^=\n"); }
-                        | OR_ASGN
-                        { printf("assignment_operator -> |=\n"); }
-                        ;
+                    ASGN
+                    { printf("assignment_operator -> =\n"); }
+                    | MULT_ASGN
+                    { printf("assignment_operator -> *=\n"); }
+                    | DIV_ASGN
+                    { printf("assignment_operator -> /=\n"); }
+                    | MOD_ASGN
+                    { printf("assignment_operator -> %%=\n"); }
+                    | ADD_ASGN
+                    { printf("assignment_operator -> +=\n"); }
+                    | SUB_ASGN
+                    { printf("assignment_operator -> -=\n"); }
+                    | LSHIFT_ASGN
+                    { printf("assignment_operator -> <<=\n"); }
+                    | RSHIFT_ASGN
+                    { printf("assignment_operator -> >>=\n"); }
+                    | AND_ASGN
+                    { printf("assignment_operator -> &=\n"); }
+                    | XOR_ASGN
+                    { printf("assignment_operator -> ^=\n"); }
+                    | OR_ASGN
+                    { printf("assignment_operator -> |=\n"); }
+                    ;
 
 expression:
-                assignment_expression
-                { printf("expression -> assignment_expression\n"); }
-                | expression ',' assignment_expression
-                { printf("expression -> expression , assignment_expression\n"); }
-                ;
+                    assignment_expression
+                    { printf("expression -> assignment_expression\n"); }
+                    | expression ',' assignment_expression
+                    { printf("expression -> expression , assignment_expression\n"); }
+                    ;
 
 constant_expression:
-                        conditional_expression
-                        { printf("constant_expression -> conditional_expression\n"); }
-                        ;
+                    conditional_expression
+                    { printf("constant_expression -> conditional_expression\n"); }
+                    ;
 
 declaration:
-                declaration_specifiers init_declarator_list_opt ';'
-                { printf("declaration -> declaration_specifiers init_declarator_list_opt ;\n"); }
-                ;
+                    declaration_specifiers init_declarator_list_opt ';'
+                    { printf("declaration -> declaration_specifiers init_declarator_list_opt ;\n"); }
+                    ;
 
 init_declarator_list_opt:
-                            init_declarator_list
-                            | /* epsilon */
-                            ;
+                    init_declarator_list
+                    | /* epsilon */
+                    ;
 
 declaration_specifiers:
-                        storage_class_specifier declaration_specifiers_opt
-                        { printf("declaration_specifiers -> storage_class_specifier declaration_specifiers_opt\n"); }
-                        | type_specifier declaration_specifiers_opt
-                        { printf("declaration_specifiers -> type_specifier declaration_specifiers_opt\n"); }
-                        | type_qualifier declaration_specifiers_opt
-                        { printf("declaration_specifiers -> type_qualifier declaration_specifiers_opt\n"); }
-                        | function_specifier declaration_specifiers_opt
-                        { printf("declaration_specifiers -> function_specifier declaration_specifiers_opt\n"); }
-                        ;
+                    storage_class_specifier declaration_specifiers_opt
+                    { printf("declaration_specifiers -> storage_class_specifier declaration_specifiers_opt\n"); }
+                    | type_specifier declaration_specifiers_opt
+                    { printf("declaration_specifiers -> type_specifier declaration_specifiers_opt\n"); }
+                    | type_qualifier declaration_specifiers_opt
+                    { printf("declaration_specifiers -> type_qualifier declaration_specifiers_opt\n"); }
+                    | function_specifier declaration_specifiers_opt
+                    { printf("declaration_specifiers -> function_specifier declaration_specifiers_opt\n"); }
+                    ;
 
 declaration_specifiers_opt:
-                            declaration_specifiers
-                            | /* epsilon */
-                            ;
+                    declaration_specifiers
+                    | /* epsilon */
+                    ;
 
 init_declarator_list:
-                        init_declarator
-                        { printf("init_declarator_list -> init_declarator\n"); }
-                        | init_declarator_list ',' init_declarator
-                        { printf("init_declarator_list -> init_declarator_list , init_declarator\n"); }
-                        ;
+                    init_declarator
+                    { printf("init_declarator_list -> init_declarator\n"); }
+                    | init_declarator_list ',' init_declarator
+                    { printf("init_declarator_list -> init_declarator_list , init_declarator\n"); }
+                    ;
 
 init_declarator:
                     declarator
@@ -305,89 +308,103 @@ init_declarator:
                     ;
 
 storage_class_specifier:
-                            EXTERN
-                            { printf("storage_class_specifier -> extern\n"); }
-                            | STATIC
-                            { printf("storage_class_specifier -> static\n"); }
-                            | AUTO
-                            { printf("storage_class_specifier -> auto\n"); }
-                            | REGISTER
-                            { printf("storage_class_specifier -> register\n"); }
-                            ;
+                    EXTERN
+                    { printf("storage_class_specifier -> extern\n"); }
+                    | STATIC
+                    { printf("storage_class_specifier -> static\n"); }
+                    | AUTO
+                    { printf("storage_class_specifier -> auto\n"); }
+                    | REGISTER
+                    { printf("storage_class_specifier -> register\n"); }
+                    ;
 
 type_specifier:
-                VOID
-                { printf("type_specifier -> void\n"); }
-                | CHAR
-                { printf("type_specifier -> char\n"); }
-                | SHORT
-                { printf("type_specifier -> short\n"); }
-                | INT
-                { printf("type_specifier -> int\n"); }
-                | LONG
-                { printf("type_specifier -> long\n"); }
-                | FLOAT
-                { printf("type_specifier -> float\n"); }
-                | DOUBLE
-                { printf("type_specifier -> double\n"); }
-                | SIGNED
-                { printf("type_specifier -> signed\n"); }
-                | UNSIGNED
-                { printf("type_specifier -> unsigned\n"); }
-                | _BOOL
-                { printf("type_specifier -> _bool\n"); }
-                | _COMPLEX
-                { printf("type_specifier -> _complex\n"); }
-                | _IMAGINARY
-                { printf("type_specifier -> _imaginary\n"); }
-                | enum_specifier
-                { printf("type_specifier -> enum_specifier\n");}
-                | struct_or_union_specifier
-                { printf("Works\n"); }
-                ;
+                    VOID
+                    { printf("type_specifier -> void\n"); }
+                    | CHAR
+                    { printf("type_specifier -> char\n"); }
+                    | SHORT
+                    { printf("type_specifier -> short\n"); }
+                    | INT
+                    { printf("type_specifier -> int\n"); }
+                    | LONG
+                    { printf("type_specifier -> long\n"); }
+                    | FLOAT
+                    { printf("type_specifier -> float\n"); }
+                    | DOUBLE
+                    { printf("type_specifier -> double\n"); }
+                    | SIGNED
+                    { printf("type_specifier -> signed\n"); }
+                    | UNSIGNED
+                    { printf("type_specifier -> unsigned\n"); }
+                    | _BOOL
+                    { printf("type_specifier -> _bool\n"); }
+                    | _COMPLEX
+                    { printf("type_specifier -> _complex\n"); }
+                    | _IMAGINARY
+                    { printf("type_specifier -> _imaginary\n"); }
+                    | enum_specifier
+                    { printf("type_specifier -> enum_specifier\n");}
+                    | struct_or_union_specifier
+                    { printf("type_specifier -> struct_or_union_specifier\n"); }
+                    ;
 
 specifier_qualifier_list:
-                            type_specifier specifier_qualifier_list_opt
-                            { printf("specifier_qualifier_list -> type_specifier specifier_qualifier_list_opt\n"); }
-                            | type_qualifier specifier_qualifier_list_opt
-                            { printf("specifier_qualifier_list -> type_qualifier specifier_qualifier_list_opt\n"); }
-                            ;
+                    type_specifier specifier_qualifier_list_opt
+                    { printf("specifier_qualifier_list -> type_specifier specifier_qualifier_list_opt\n"); }
+                    | type_qualifier specifier_qualifier_list_opt
+                    { printf("specifier_qualifier_list -> type_qualifier specifier_qualifier_list_opt\n"); }
+                    ;
 
 specifier_qualifier_list_opt:
-                                specifier_qualifier_list
-                                | /* epsilon */
-                                ;
+                    specifier_qualifier_list
+                    | /* epsilon */
+                    ;
 
 struct_or_union_specifier:
-                            struct_or_union '{' struct_declaration_list '}'
-                            | struct_or_union IDENTIFIER '{' struct_declaration_list '}'
-                            | struct_or_union IDENTIFIER
-                            ;
+                    struct_or_union '{' struct_declaration_list '}'
+                    { printf("struct_or_union_specifier -> struct_or_union { struct_declaration_list } \n"); }
+                    | struct_or_union IDENTIFIER '{' struct_declaration_list '}'
+                    { printf("struct_or_union_specifier -> struct_or_union IDENTIFIER { struct_declaration_list } \n"); }
+                    | struct_or_union IDENTIFIER
+                    { printf("struct_or_union_specifier -> struct_or_union IDENTIFIER \n"); }
+                    ;
 
 struct_or_union:
-                STRUCT
-                | UNION
-                ;
+                    STRUCT
+                    { printf("struct_or_union -> STRUCT\n"); }
+                    | UNION
+                    { printf("struct_or_union -> union\n"); }
+                    ;
 
-struct_declaration_list
-	: struct_declaration
-	| struct_declaration_list struct_declaration
-	;
+struct_declaration_list: 
+                    struct_declaration
+                    { printf("struct_declaration_list -> struct_declaration\n"); }
+                    | struct_declaration_list struct_declaration
+                    { printf("struct_declaration_list -> struct_declaration_list struct_declaration\n"); }
+                    ;
 
-struct_declaration
-	: specifier_qualifier_list ';'	/* for anonymous struct/union */
-	| specifier_qualifier_list struct_declarator_list ';'
-	;
+struct_declaration:
+                    specifier_qualifier_list ';'
+                    { printf("struct_declaration -> specifier_qualifier_list\n"); }
+                    | specifier_qualifier_list struct_declarator_list ';'
+                    { printf("struct_declarator -> specifier_qualifier_list\n"); }
+                    ;
 
-struct_declarator_list
-	: struct_declarator
-	| struct_declarator_list ',' struct_declarator
-	;
-struct_declarator
-	: ':' constant_expression
-	| declarator ':' constant_expression
-	| declarator
-	;
+struct_declarator_list:
+                    struct_declarator
+                    { printf("struct_declarator_list -> struct_declarator\n"); }
+                    | struct_declarator_list ',' struct_declarator
+                    { printf("struct_declarator_list -> struct_declarator_list , struct_declarator\n");}
+                    ;
+struct_declarator:
+                    ':' constant_expression
+                    { printf("struct_declarator -> : constant_expression\n"); }
+                    | declarator ':' constant_expression
+                    { printf("struct_declarator -> declarator : constant_expression\n"); }
+                    | declarator
+                    { printf("struct_declarator -> declarator\n"); }
+                    ;
 
 enum_specifier:
                     ENUM identifier_opt '{' enumerator_list '}'
@@ -410,7 +427,7 @@ enumerator_list:
                     { printf("enumerator_list -> enumerator_list, enumerator\n");}
                     ;
 
-/*Enumeration_const? */
+
 enumerator:
                     IDENTIFIER
                     { printf("enumerator -> enumerator_constant\n");}
@@ -420,13 +437,13 @@ enumerator:
                 
 
 type_qualifier:
-                CONST
-                { printf("type_qualifier -> const\n"); }
-                | RESTRICT
-                { printf("type_qualifier -> restrict\n"); }
-                | VOLATILE
-                { printf("type_qualifier -> volatile\n"); }
-                ;
+                    CONST
+                    { printf("type_qualifier -> const\n"); }
+                    | RESTRICT
+                    { printf("type_qualifier -> restrict\n"); }
+                    | VOLATILE
+                    { printf("type_qualifier -> volatile\n"); }
+                    ;
 
 function_specifier:
                     INLINE
@@ -434,14 +451,14 @@ function_specifier:
                     ;
 
 declarator:
-                pointer_opt direct_declarator
-                { printf("declarator -> pointer_opt direct_declarator\n"); }
-                ;
+                    pointer_opt direct_declarator
+                    { printf("declarator -> pointer_opt direct_declarator\n"); }
+                    ;
 
 pointer_opt:
-                pointer
-                | /* epsilon */
-                ;
+                    pointer
+                    | /* epsilon */
+                    ;
 
 direct_declarator:
                     IDENTIFIER
@@ -463,40 +480,40 @@ direct_declarator:
                     ;
 
 type_qualifier_list_opt:
-                            type_qualifier_list
-                            | /* epsilon */
-                            ;
+                    type_qualifier_list
+                    | /* epsilon */
+                    ;
 
 assignment_expression_opt:
-                            assignment_expression
-                            | /* epsilon */
-                            ;
+                    assignment_expression
+                    | /* epsilon */
+                    ;
 
 identifier_list_opt:
-                        identifier_list
-                        | /* epsilon */
-                        ;
+                    identifier_list
+                    | /* epsilon */
+                    ;
 
 pointer:
-            MULT type_qualifier_list_opt 
-            { printf("pointer -> * type_qualifier_list_opt\n"); }
-            | MULT type_qualifier_list_opt pointer
-            { printf("pointer -> * type_qualifier_list_opt pointer\n"); }
-            ;
+                    MULT type_qualifier_list_opt 
+                    { printf("pointer -> * type_qualifier_list_opt\n"); }
+                    | MULT type_qualifier_list_opt pointer
+                    { printf("pointer -> * type_qualifier_list_opt pointer\n"); }
+                    ;
 
 type_qualifier_list:
-                        type_qualifier
-                        { printf("type_qualifier_list -> type_qualifier\n"); }
-                        | type_qualifier_list type_qualifier
-                        { printf("type_qualifier_list -> type_qualifier_list type_qualifier\n"); }
-                        ;
+                    type_qualifier
+                    { printf("type_qualifier_list -> type_qualifier\n"); }
+                    | type_qualifier_list type_qualifier
+                    { printf("type_qualifier_list -> type_qualifier_list type_qualifier\n"); }
+                    ;
 
 parameter_type_list:
-                        parameter_list
-                        { printf("parameter_type_list -> parameter_list\n"); }
-                        | parameter_list ',' ELLIPSIS
-                        { printf("parameter_type_list -> parameter_list , ...\n"); }
-                        ;                       
+                    parameter_list
+                    { printf("parameter_type_list -> parameter_list\n"); }
+                    | parameter_list ',' ELLIPSIS
+                    { printf("parameter_type_list -> parameter_list , ...\n"); }
+                    ;                       
 
 parameter_list:
                     parameter_declaration
@@ -506,11 +523,11 @@ parameter_list:
                     ;
 
 parameter_declaration:
-                        declaration_specifiers declarator
-                        { printf("parameter_declaration -> declaration_specifiers declarator\n"); }
-                        | declaration_specifiers
-                        { printf("parameter_declaration -> declaration_specifiers\n"); }
-                        ;
+                    declaration_specifiers declarator
+                    { printf("parameter_declaration -> declaration_specifiers declarator\n"); }
+                    | declaration_specifiers
+                    { printf("parameter_declaration -> declaration_specifiers\n"); }
+                    ;
 
 identifier_list:
                     IDENTIFIER
@@ -520,18 +537,18 @@ identifier_list:
                     ;
 
 type_name:
-            specifier_qualifier_list
-            { printf("type_name -> specifier_qualifier_list\n"); }
-            ;
+                    specifier_qualifier_list
+                    { printf("type_name -> specifier_qualifier_list\n"); }
+                    ;
 
 initializer:
-                assignment_expression
-                { printf("initializer -> assignment_expression\n"); }
-                | '{' initializer_list '}'
-                { printf("initializer -> { initializer_list }\n"); }
-                | '{' initializer_list ',' '}'
-                { printf("initializer -> { initializer_list , }\n"); }
-                ;
+                    assignment_expression
+                    { printf("initializer -> assignment_expression\n"); }
+                    | '{' initializer_list '}'
+                    { printf("initializer -> { initializer_list }\n"); }
+                    | '{' initializer_list ',' '}'
+                    { printf("initializer -> { initializer_list , }\n"); }
+                    ;
 
 initializer_list:
                     designation_opt initializer
@@ -546,9 +563,9 @@ designation_opt:
                     ;
 
 designation:
-                designator_list ASGN
-                { printf("designation -> designator_list =\n"); }
-                ;
+                    designator_list ASGN
+                    { printf("designation -> designator_list =\n"); }
+                    ;
 
 designator_list:
                     designator
@@ -558,26 +575,26 @@ designator_list:
                     ;
 
 designator:
-                '[' constant_expression ']'
-                { printf("designator -> [ constant_expression ]\n"); }
-                | '.' IDENTIFIER
-                { printf("designator -> . identifier\n"); }
-                ;
+                    '[' constant_expression ']'
+                    { printf("designator -> [ constant_expression ]\n"); }
+                    | '.' IDENTIFIER
+                    { printf("designator -> . identifier\n"); }
+                    ;
 
 statement:
-            labeled_statement
-            { printf("statement -> labeled_statement\n"); }
-            | compound_statement
-            { printf("statement -> compound_statement\n"); }
-            | expression_statement
-            { printf("statement -> expression_statement\n"); }
-            | selection_statement
-            { printf("statement -> selection_statement\n"); }
-            | iteration_statement
-            { printf("statement -> iteration_statement\n"); }
-            | jump_statement
-            { printf("statement -> jump_statement\n"); }
-            ;
+                    labeled_statement
+                    { printf("statement -> labeled_statement\n"); }
+                    | compound_statement
+                    { printf("statement -> compound_statement\n"); }
+                    | expression_statement
+                    { printf("statement -> expression_statement\n"); }
+                    | selection_statement
+                    { printf("statement -> selection_statement\n"); }
+                    | iteration_statement
+                    { printf("statement -> iteration_statement\n"); }
+                    | jump_statement
+                    { printf("statement -> jump_statement\n"); }
+                    ;
 
 labeled_statement:
                     IDENTIFIER ':' statement
@@ -589,9 +606,9 @@ labeled_statement:
                     ;
 
 compound_statement:
-                        '{' block_item_list_opt '}'
-                        { printf("compound_statement -> { block_item_list_opt }\n"); }
-                        ;
+                    '{' block_item_list_opt '}'
+                    { printf("compound_statement -> { block_item_list_opt }\n"); }
+                    ;
 
 block_item_list:
                     block_item
@@ -601,21 +618,21 @@ block_item_list:
                     ;
 
 block_item_list_opt:
-                        block_item_list
-                        | /* epsilon */
-                        ;
+                    block_item_list
+                    | /* epsilon */
+                    ;
 
 block_item:
-            declaration
-            { printf("block_item -> declaration\n"); }
-            | statement
-            { printf("block_item -> statement\n"); }
-            ;
+                    declaration
+                    { printf("block_item -> declaration\n"); }
+                    | statement
+                    { printf("block_item -> statement\n"); }
+                    ;
 
 expression_statement:
-                        expression_opt ';'
-                        { printf("expression_statement-> expression_opt ;\n"); }
-                        ;
+                    expression_opt ';'
+                    { printf("expression_statement-> expression_opt ;\n"); }
+                    ;
 
 selection_statement:
                     IF '(' expression ')' statement
@@ -638,20 +655,20 @@ iteration_statement:
                     ;
 
 expression_opt:
-                expression
-                | /* epsilon */
-                ;
+                    expression
+                    | /* epsilon */
+                    ;
 
 jump_statement:
-                GOTO IDENTIFIER ';'
-                { printf("jump_statement -> goto identifier ;\n"); }
-                | CONTINUE ';'
-                { printf("jump_statement -> continue ;\n"); }
-                | BREAK ';'
-                { printf("jump_statement -> break ;\n"); }
-                | RETURN expression_opt ';'
-                { printf("jump_statement -> return expression_opt ;\n"); }
-                ;
+                    GOTO IDENTIFIER ';'
+                    { printf("jump_statement -> goto identifier ;\n"); }
+                    | CONTINUE ';'
+                    { printf("jump_statement -> continue ;\n"); }
+                    | BREAK ';'
+                    { printf("jump_statement -> break ;\n"); }
+                    | RETURN expression_opt ';'
+                    { printf("jump_statement -> return expression_opt ;\n"); }
+                    ;
 
 translation_unit:
                     external_declaration
@@ -661,11 +678,11 @@ translation_unit:
                     ;
 
 external_declaration:
-                        function_definition
-                        { printf("external_declaration -> function_definition\n"); }
-                        | declaration
-                        { printf("external_declaration -> declaration\n"); }
-                        ;
+                    function_definition
+                    { printf("external_declaration -> function_definition\n"); }
+                    | declaration
+                    { printf("external_declaration -> declaration\n"); }
+                    ;
 
 function_definition:
                     declaration_specifiers declarator declaration_list_opt compound_statement
@@ -673,9 +690,9 @@ function_definition:
                     ;
 
 declaration_list_opt:
-                        declaration_list
-                        | /* epsilon */
-                        ;
+                    declaration_list
+                    | /* epsilon */
+                    ;
 
 declaration_list:
                     declaration

@@ -1,9 +1,8 @@
 // lets test some keywords first
-// typedef not working, even struct does not work
-// union not working
+
 static int x = 0;
 
-enum Week { Monday ,Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
+enum Week { Monday = (1*0 - 0) ,Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
 
 extern int check;
 

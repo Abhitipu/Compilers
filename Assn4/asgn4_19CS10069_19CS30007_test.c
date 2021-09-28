@@ -3,7 +3,7 @@
 // union not working
 
 
-enum week;//{ Monday , Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
+enum week;//, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday};
 
 extern int check;
 

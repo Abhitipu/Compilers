@@ -357,10 +357,8 @@ specifier_qualifier_list_opt:
                                 ;
 
 enum_specifier:
-                    ENUM identifier_opt '{' enumerator_list '}'
+                    ENUM identifier_opt '{' enumerator '}'
                     { printf("enum_specifier -> enum identifier_opt { enumerator_list }\n"); }
-                    | ENUM identifier_opt '{' enumerator_list ',' '}'
-                    { printf("enum_specifier -> enum identifier_opt { enumerator_list , }\n"); }
                     | ENUM IDENTIFIER
                     { printf("enum_specifier -> enum identifier\n"); }
                     ;
@@ -512,7 +510,7 @@ designation_opt:
                     ;
 
 designation:
-                designator_list '='
+                designator_list ASGN
                 { printf("designation -> designator_list =\n"); }
                 ;
 

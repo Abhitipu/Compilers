@@ -1,17 +1,26 @@
 /*Declarations*/
 %{
-    #include<stdio.h>
+    #include <bits/stdc++.h>
+    #include <sstream>
+    #include "ass5_19CS10069_19CS30007_translator.h"
     extern int yylex();
-    void yyerror(char*);
+    void yyerror(string s);
+    extern string var_type;
+    extern vector<label> label_table;
+    using namespace std;
 %}
 
 %union {
-    int myIntVal;
-    char myCharVal;
-    float myFloatVal;
-    double myDoubleVal;
-    char myCharArray[60];
-    char* myStringVal;
+    char unaryOp;       // unary operator
+    int int_val;        // integer value
+    char* char_val;     // char value
+    float float_val;    // float value
+    int num_params;     // number of parameters
+    Expression* expr;   // Expression
+    Statement* stat;    // Statement
+    symboltype* sym_type;   // symbol type
+    sym* symp;          // symp
+    Array* A;           // Array type
 }
 
 %token BREAK RETURN CASE FOR WHILE GOTO SIZEOF CONTINUE IF DO SWITCH ELSE
@@ -20,85 +29,337 @@
 %token CONST DEFAULT STATIC REGISTER RESTRICT VOLATILE EXTERN INLINE 
 
 
-%token <myCharArray> IDENTIFIER
-%token <myIntVal> INTEGER_CONST
-%token <myCharVal> CHAR_CONST
-%token <myFloatVal> FLOAT_CONST
-%token <myDoubleVal> DOUBLE_CONST
-%token <myStringVal> STRING_LITERAL
+%token <symp> IDENTIFIER
+%token <int_val> INTEGER_CONST
+%token <char_val> CHAR_CONST
+%token <float_val> FLOAT_CONST
+%token <char_val> STRING_LITERAL
 
 %token PLUS MINUS MULT DIVIDE ARROW INCREMENT DECREMENT RSHIFT LSHIFT LT GT LEQ GEQ EQ NEQ BITWISE_OR LOGICAL_OR BITWISE_AND LOGICAL_AND XOR BITWISE_NOT LOGICAL_NOT ELLIPSIS MODULO ASGN ENUMERATION_CONST
 %token ADD_ASGN SUB_ASGN MULT_ASGN DIV_ASGN MOD_ASGN LSHIFT_ASGN RSHIFT_ASGN AND_ASGN OR_ASGN XOR_ASGN 
 
-%nonassoc ')'
-%nonassoc ELSE
 %start translation_unit
+
+%right "then" ELSE
+
+//unary operator
+%type <unaryOp> unary_operator
+
+//number of parameters
+%type <num_params> argument_expression_list argument_expression_list_opt
+
+
+//Expressions
+%type <expr>
+	expression
+	primary_expression 
+	multiplicative_expression
+	additive_expression
+	shift_expression
+	relational_expression
+	equality_expression
+	and_expression
+	exclusive_or_expression
+	inclusive_or_expression
+	logical_and_expression
+	logical_or_expression
+	conditional_expression
+	assignment_expression
+	expression_statement
+
+//Statements
+%type <stat>  statement
+	compound_statement
+	loop_statement
+	selection_statement
+	iteration_statement
+	labeled_statement 
+	jump_statement
+	block_item
+	block_item_list
+	block_item_list_opt
+
+//symbol type
+%type <sym_type> pointer
+
+//symbol
+%type <symp> initializer
+%type <symp> direct_declarator init_declarator declarator
+
+//arr1s
+%type <A> postfix_expression
+	unary_expression
+	cast_expression
+
+//Auxillary non-terminals M and N
+%type <instr_number> M
+%type <stat> N
 
 /*Rules*/
 %%
+
+M: %empty 
+	{
+		/**
+		  * backpatching,stores the index of the next quad to be generated
+		  * Used in various control statements
+		  */
+		$$ = nextinstr();
+	}   
+	;
+
+F: %empty 
+	{
+		// rule for identifying the start of the for statement
+		loop_name = "FOR";
+	}   
+	;
+
+W: %empty 
+	{
+		// rule for identifying the start of a while loop
+		loop_name = "WHILE";
+	}   
+	;
+
+D: %empty 
+	{
+		// rule for identifyiong the start of the do while statement
+		loop_name = "DO_WHILE";
+	}   
+	;
+
+X: %empty 
+	{
+		/**
+		  * change the current symbol pointer
+		  * This will be used for nested block statements
+		  */
+		string name = ST->name+"."+loop_name+"$"+to_string(table_count); // give name for nested table
+		table_count++; // increment the table count
+		sym* s = ST->lookup(name); // lookup the table for new entry
+		s->nested = new symtable(name);
+		s->nested->parent = ST;
+		s->name = name;
+		s->type = new symboltype("block");
+		currSymbolPtr = s;
+	}   
+	;
+
+N: %empty
+	{
+		/** 
+		  * For backpatching, which inserts a goto 
+		  * and stores the index of the next goto 
+		  * statement to guard against fallthrough
+		  * N->nextlist = makelist(nextinstr) we have defined nextlist for Statements
+		  */
+		$$ = new Statement();
+		$$->nextlist=makelist(nextinstr());
+		emit("goto","");
+	}
+	;
+
+
+changetable: %empty 
+	{    
+		parST = ST;                                                               // Used for changing to symbol table for a function
+		if(currSymbolPtr->nested==NULL) 
+		{
+			changeTable(new symtable(""));	                                           // Function symbol table doesn't already exist	
+		}
+		else 
+		{
+			changeTable(currSymbolPtr ->nested);						               // Function symbol table already exists	
+			emit("label", ST->name);
+		}
+	}
+	;
+
+
+
 constant:
                     INTEGER_CONST
-                    { printf("constant -> INTEGER_CONST\n"); }
+                    { 
+                        $$=new Expression();	
+                        string p=convertIntToString($1);
+                        $$->loc=gentemp(new symboltype("int"),p);
+                        emit("=",$$->loc->name,p);
+                    }
                     | FLOAT_CONST
-                    { printf("CONSTANT -> FLOAT_CONST\n"); }
+                    {                                                                         // create new expression and store the value of the constant in a temporary
+                        $$=new Expression();
+                        $$->loc=gentemp(new symboltype("float"),$1);
+                        emit("=",$$->loc->name,string($1));
+                    }
                     | CHAR_CONST
-                    { printf("CONSTANT -> CHAR_CONST\n"); }
+                    {                                                                         // create new expression and store the value of the constant in a temporary
+                        $$=new Expression();
+                        $$->loc=gentemp(new symboltype("char"),$1);
+                        emit("=",$$->loc->name,string($1));
+                    }
                     ;
 
 primary_expression:
                     IDENTIFIER
-                    { printf("primary_expression -> identifier\n"); }
+                    {
+                        $$=new Expression();                                                  // create new expression and store pointer to ST entry in the location			
+                        $$->loc=$1;
+                        $$->type="not-boolean";
+                    }
                     | constant
-                    { printf("primary_expression -> constant\n"); }
+                    {  }
                     | STRING_LITERAL
-                    { printf("primary_expression -> string-literal\n"); }
+                    {                                                                          // create new expression and store the value of the constant in a temporary
+                        $$=new Expression();
+                        $$->loc=gentemp(new symboltype("ptr"),$1);
+                        $$->loc->type->arrtype=new symboltype("char");
+                    }
                     | '(' expression ')'
-                    { printf("primary_expression -> ( expression )\n"); }
+                    {                                                                          // simply equal to expression
+                        $$=$2;
+                    }
                     ;
 
 
 postfix_expression:
                     primary_expression
-                    { printf("postfix_expression -> primary_expression\n"); }
+                    {
+                        $$=new Array();	
+                        $$->Array=$1->loc;	
+                        $$->type=$1->loc->type;	
+                        $$->loc=$$->Array;
+                    }
                     | postfix_expression '[' expression ']'
-                    { printf("postfix_expression -> postfix_expression [ expression ]\n"); }
+                    { 	
+		
+                        $$=new Array();
+                        $$->type=$1->type->arrtype;                 // type=type of element	
+                        $$->Array=$1->Array;                        // copy the base
+                        $$->loc=gentemp(new symboltype("int"));     // store computed address
+                        $$->atype="arr";                            //atype is arr.
+                        if($1->atype=="arr") 
+                        {			                               // if already arr, multiply the size of the sub-type of Array with the expression value and add
+                            sym* t=gentemp(new symboltype("int"));
+                            int p=computeSize($$->type);
+                            string str=convertIntToString(p);
+                            emit("*",t->name,$3->loc->name,str);
+                            emit("+",$$->loc->name,$1->loc->name,t->name);
+                        }
+                        else 
+                        {                        //if a 1D Array, simply calculate size
+                            int p=computeSize($$->type);	
+                            string str=convertIntToString(p);
+                            emit("*",$$->loc->name,$3->loc->name,str);
+                        }
+                    }
                     | postfix_expression '(' argument_expression_list_opt ')'
-                    { printf("postfix_expression -> postfix_expression ( argument_expression_list_opt )\n"); }
+                    {
+                        //call the function with number of parameters from argument_expression_list_opt
+                        $$=new Array();	
+                        $$->Array=gentemp($1->type);
+                        string str=convertIntToString($3);
+                        emit("call",$$->Array->name,$1->Array->name,str);
+                    }
                     | postfix_expression '.' IDENTIFIER
-                    { printf("postfix_expression -> postfix_expression . identifier\n"); }
+                    { }
                     | postfix_expression ARROW IDENTIFIER
-                    { printf("postfix_expression -> postfix_expression -> identifier\n"); }
+                    { }
                     | postfix_expression INCREMENT
-                    { printf("postfix_expression -> postfix_expression ++\n"); }
+                    { 
+                        //generate new temporary, equate it to old one and then add 1
+                        $$=new Array();	
+                        $$->Array=gentemp($1->Array->type);
+                        emit("=",$$->Array->name,$1->Array->name);
+                        emit("+",$1->Array->name,$1->Array->name,"1");
+                    }
                     | postfix_expression DECREMENT
-                    { printf("postfix_expression -> postfix_expression --\n"); }
+                    {
+                        //generate new temporary, equate it to old one and then subtract 1
+                        $$=new Array();	
+                        $$->Array=gentemp($1->Array->type);
+                        emit("=",$$->Array->name,$1->Array->name);
+                        emit("-",$1->Array->name,$1->Array->name,"1");	
+                    }
                     | '(' type_name ')' '{' initializer_list '}'
-                    { printf("postfix_expression -> ( type_name ) { initializer_list }\n"); }
+                    { }
                     | '(' type_name ')' '{' initializer_list ',' '}'     
-                    { printf("postfix_expression -> ( type_name ) { initializer_list , }\n"); }
+                    { }
                     ;  
 
 argument_expression_list:
                     assignment_expression
-                    { printf("argument_expression_list -> assignment_expression\n"); }
+                    {
+                        $$=1;                                      //one argument and emit param
+                        emit("param",$1->loc->name);	
+                    }
                     | argument_expression_list ',' assignment_expression   
-                    { printf("argument_expression_list -> argument_expression_list , assignment_expression\n"); } 
+                    {
+                        $$=$1+1;                                  //one more argument and emit param		 
+                        emit("param",$3->loc->name);
+                    }
                     ;
 
 argument_expression_list_opt:
                     argument_expression_list
-                    | /* epsilon */
+                    {
+                        $$=$1; // assign $$ =  $1
+                    }
+                    | %empty
+                    { 
+                        $$ = 0; // no arguements
+                    }
                     ;
 
 unary_expression:
                     postfix_expression
-                    { printf("unary_expression -> postfix_expression\n"); }
+                    { $$=$1; /* assign $$ =  $1*/} 
                     | INCREMENT unary_expression
-                    { printf("unary_expression -> ++ unary_expression\n"); }
+                    {  	
+                        //simply add 1
+                        emit("+",$2->Array->name,$2->Array->name,"1");		
+                        $$=$2;
+                    }
                     | DECREMENT unary_expression
-                    { printf("unary_expression -> −− unary_expression\n"); }
+                    {
+                        //simply subtract 1
+                        emit("-",$2->Array->name,$2->Array->name,"1");
+                        $$=$2;
+                    }
                     | unary_operator cast_expression
-                    { printf("unary_expression -> unary_operator cast_expression\n"); }
+                    {   //if it is of this type, where unary operator is involved
+                        $$=new Array();
+                        switch($1)
+                        {	  
+                            case '&':                                                  //address of something, then generate a pointer temporary and emit the quad
+                                $$->Array=gentemp(new symboltype("ptr"));
+                                $$->Array->type->arrtype=$2->Array->type; 
+                                emit("=&",$$->Array->name,$2->Array->name);
+                                break;
+                            case '*':                                                   // value of something, then generate a temporary of the corresponding type and emit the quad	
+                                $$->atype="ptr";
+                                $$->loc=gentemp($2->Array->type->arrtype);
+                                $$->Array=$2->Array;
+                                emit("=*",$$->loc->name,$2->Array->name);
+                                break;
+                            case '+':  
+                                $$=$2;
+                                break;                 //unary plus, do nothing
+                            case '-':				   //unary minus, generate new temporary of the same base type and make it negative of current one
+                                $$->Array=gentemp(new symboltype($2->Array->type->type));
+                                emit("uminus",$$->Array->name,$2->Array->name);
+                                break;
+                            case '~':                   //bitwise not, generate new temporary of the same base type and make it negative of current one
+                                $$->Array=gentemp(new symboltype($2->Array->type->type));
+                                emit("~",$$->Array->name,$2->Array->name);
+                                break;
+                            case '!':				//logical not, generate new temporary of the same base type and make it negative of current one
+                                $$->Array=gentemp(new symboltype($2->Array->type->type));
+                                emit("!",$$->Array->name,$2->Array->name);
+                                break;
+                        }
+                        //// done till here
+                    }
                     | SIZEOF unary_expression
                     { printf("unary_expression -> sizeof unary_expression\n"); }
                     | SIZEOF '(' type_name ')'  

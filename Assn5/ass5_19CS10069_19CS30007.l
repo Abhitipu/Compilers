@@ -89,11 +89,11 @@ ENUMERATION_CONST   {IDENTIFIER}
                                 return IDENTIFIER;
                             }
 {FLOATING_CONST}            {
-                                yylval.char_val = yytext; // check
+                                yylval.float_val = atof(yytext); // check
                                 return FLOAT_CONST;
                             }
 {INTEGER_CONST}             {
-                                yylval.intval = atoi(yytext);
+                                yylval.int_val = atoi(yytext);
                                 return INTEGER_CONST;
                             }
 {CHARACTER_CONST}           {
@@ -102,7 +102,7 @@ ENUMERATION_CONST   {IDENTIFIER}
                             }
 "\n"                        { line++; printf("\n#################### LINE NO : %d ####################\n", line); }
 {STRING_LITERAL}            {
-                                yylval.char_value = yytext; //check
+                                yylval.char_val = yytext; //check
                                 return STRING_LITERAL;
                             }
 

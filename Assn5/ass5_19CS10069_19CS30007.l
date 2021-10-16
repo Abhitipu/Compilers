@@ -1,9 +1,16 @@
 /*definitions for each token*/
 %{
-    #include "stdio.h"  // check this, if it does not work replace <, > by ""
+    #include "stdio.h"
+    #include "ass5_19CS10069_19CS30007_translator.h"
     #include "y.tab.h"
     int line = 1;
+
+    extern YYSTYPE yylval;
+    extern int line;
+    line = 1; // check
 %}
+
+/* %option noyywrap check */ 
 
 /* Start conditions */
 %x MULTI_COMMENT_STATE
@@ -77,12 +84,27 @@ ENUMERATION_CONST   {IDENTIFIER}
 "register"                  {return REGISTER;}    
 "union"                     {return UNION;}
 
-{IDENTIFIER}                {return IDENTIFIER;}
-{FLOATING_CONST}            {return FLOAT_CONST;}
-{INTEGER_CONST}             {return INTEGER_CONST;}
-{CHARACTER_CONST}           {return CHAR_CONST;}
+{IDENTIFIER}                {
+                                yylval.symp = ST->lookup(yytext);
+                                return IDENTIFIER;
+                            }
+{FLOATING_CONST}            {
+                                yylval.char_val = yytext; // check
+                                return FLOAT_CONST;
+                            }
+{INTEGER_CONST}             {
+                                yylval.intval = atoi(yytext);
+                                return INTEGER_CONST;
+                            }
+{CHARACTER_CONST}           {
+                                yylval.char_val = yytext;
+                                return CHAR_CONST;
+                            }
 "\n"                        { line++; printf("\n#################### LINE NO : %d ####################\n", line); }
-{STRING_LITERAL}            {return STRING_LITERAL;}
+{STRING_LITERAL}            {
+                                yylval.char_value = yytext; //check
+                                return STRING_LITERAL;
+                            }
 
 "["                         {return '[';                }                                 
 "]"                         {return ']';                }                                 

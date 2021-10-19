@@ -2,12 +2,13 @@
 %{
     #include "stdio.h"
     #include "ass5_19CS10069_19CS30007_translator.h"
-    #include "y.tab.h"
-    int line = 1;
+    // #include "y.tab.h"
+    #include "ass5_19CS10069_19CS30007.tab.h"
+    // int line = 1;
 
     extern YYSTYPE yylval;
-    extern int line;
-    line = 1; // check
+    //extern int line;
+    int line = 1; // check
 %}
 
 /* %option noyywrap check */ 

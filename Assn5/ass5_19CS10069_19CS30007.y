@@ -53,8 +53,7 @@
 //Expressions
 %type <expr>
 	expression
-	primary_expression
-    constant 
+	primary_expression 
 	multiplicative_expression
 	additive_expression
 	shift_expression
@@ -180,8 +179,36 @@ changetable: %empty
 
 
 
-constant:
-                    INTEGER_CONST
+// constant:
+//                     INTEGER_CONST
+//                     { 
+//                         $$=new Expression();	
+//                         string p=convertIntToString($1);
+//                         $$->loc=gentemp(new symboltype("int"),p);
+//                         emit("=",$$->loc->name,p);
+//                     }
+//                     | FLOAT_CONST
+//                     {                                                                         // create new expression and store the value of the constant in a temporary
+//                         $$=new Expression();
+//                         $$->loc=gentemp(new symboltype("char"),$1);
+//                         emit("=",$$->loc->name,string($1));
+//                     }
+//                     | CHAR_CONST
+//                     {                                                                         // create new expression and store the value of the constant in a temporary
+//                         $$=new Expression();
+//                         $$->loc=gentemp(new symboltype("char"),$1);
+//                         emit("=",$$->loc->name,string($1));
+//                     }
+//                     ;
+
+primary_expression:
+                    IDENTIFIER
+                    {
+                        $$=new Expression();                                                  // create new expression and store pointer to ST entry in the location			
+                        $$->loc=$1;
+                        $$->type="not-boolean";
+                    }
+                    | INTEGER_CONST
                     { 
                         $$=new Expression();	
                         string p=convertIntToString($1);
@@ -201,16 +228,6 @@ constant:
                         emit("=",$$->loc->name,string($1));
                     }
                     ;
-
-primary_expression:
-                    IDENTIFIER
-                    {
-                        $$=new Expression();                                                  // create new expression and store pointer to ST entry in the location			
-                        $$->loc=$1;
-                        $$->type="not-boolean";
-                    }
-                    | constant
-                    {  }
                     | STRING_LITERAL
                     {                                                                          // create new expression and store the value of the constant in a temporary
                         $$=new Expression();
@@ -1006,13 +1023,13 @@ direct_declarator:
                     | '(' declarator ')'
                     { $$ = $2; /* simple assign */ }
                     | direct_declarator '[' type_qualifier_list_opt assignment_expression_opt ']'
-                    { printf("direct_declarator -> direct_declarator [ type_qualifier_list_opt assignment_expression_opt ]\n"); }
+                    {  }
                     | direct_declarator '[' STATIC type_qualifier_list_opt assignment_expression ']'
-                    { printf("direct_declarator -> direct_declarator [ static type_qualifier_list_opt assignment_expression ]\n"); }
+                    {  }
                     | direct_declarator '[' type_qualifier_list STATIC assignment_expression ']'
-                    { printf("direct_declarator -> direct_declarator [ type_qualifier_list static assignment_expression ]\n"); }
+                    {  }
                     | direct_declarator '[' type_qualifier_list_opt MULT ']'
-                    { printf("direct_declarator -> direct_declarator [ type_qualifier_list_opt * ]\n"); }
+                    {  }
                     | direct_declarator '(' changetable parameter_type_list ')'
                     {
                         ST->name = $1->name;	
@@ -1050,11 +1067,6 @@ type_qualifier_list_opt:
 assignment_expression_opt:
                     assignment_expression {  }
                     | %empty { /*CHECK */ }
-                    ;
-
-identifier_list_opt:
-                    identifier_list { } 
-                    | %empty { /*CHECK*/ }
                     ;
 
 pointer:
@@ -1277,6 +1289,20 @@ iteration_statement:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
+                    | WHILE W '(' X changetable M expression ')' '{' M block_item_list_opt '}'     
+                    {	
+                        //while statement
+                        $$ = new Statement();    //create statement
+                        convertIntToBool($7);     //convert expression to bool
+                        backpatch($11->nextlist, $6);	// M1 to go back to expression again
+                        backpatch($7->truelist, $10);	// M2 to go to statement if the expression is true
+                        $$->nextlist = $7->falselist;   //when expression is false, move out of loop
+                        // Emit to prevent fallthrough
+                        string str=convertIntToString($6);		
+                        emit("goto",str);	
+                        loop_name = "";
+                        changeTable(ST->parent);
+                    }
                     | DO D M loop_statement M WHILE '(' expression ')' ';'
                     {
                         //do statement
@@ -1287,6 +1313,16 @@ iteration_statement:
                         $$->nextlist = $8->falselist;                       //move out if statement is false
                         loop_name = "";
                     }
+                    | DO D '{' M block_item_list_opt '}' M WHILE '(' expression ')' ';'      
+	                {
+                        //do statement
+		                $$ = new Statement();     //create statement	
+		                convertIntToBool($10);      //convert to bool
+		                backpatch($10->truelist, $4);						// M1 to go back to statement if expression is true
+		                backpatch($5->nextlist, $7);						// M2 to go to check expression if statement is complete
+		                $$->nextlist = $10->falselist;                       //move out if statement is false
+		                loop_name = "";
+	                }
                     | FOR F '(' X changetable declaration M expression_statement M expression N ')' M loop_statement     
                     {
                         //for loop
@@ -1342,11 +1378,6 @@ iteration_statement:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-                    ;
-
-expression_opt:
-                    expression {}
-                    | %empty {}
                     ;
 
 jump_statement:

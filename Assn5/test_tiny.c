@@ -11,23 +11,24 @@ int main()
 	n=5;
 	j=100;
 	i=0;
-
+	// p[1] = 234;
+	
 	while(i<5) // while loop1
 	{
 		i++;
 		++j;
-		p[i]=i*j;
+		// p[i]=i*j;
 	}
 
-	do // do-while loop
-	{
-		sum = sum + p[i];
-	}while(i<n);
+	// do // do-while loop
+	// {
+	// 	sum = sum + p[i];
+	// }while(i<n);
 
-	for(i=0;i<n;i++)
-	{
-		for(j=0;j<n;j++)  // nested for loop
-			dp[i][j]= sum + i*j; // multi dimensional array
-	}
+	//for(i=0;i<n;i++)
+	//{
+	//	for(j=0;j<n;j++)  // nested for loop
+	//		dp[i][j]= sum + i*j; // multi dimensional array
+	//}
 	return 0;
 }

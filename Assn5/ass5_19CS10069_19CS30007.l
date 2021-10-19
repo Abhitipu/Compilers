@@ -7,7 +7,7 @@
     // int line = 1;
 
     extern YYSTYPE yylval;
-    //extern int line;
+    extern int line;
     int line = 1; // check
 %}
 

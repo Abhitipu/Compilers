@@ -1443,7 +1443,7 @@ external_declaration:
                     ;
 
 function_definition:
-                    declaration_specifiers declarator declaration_list_opt compound_statement
+                    declaration_specifiers declarator declaration_list_opt changetable '{' block_item_list_opt '}' 
                     {
                         int next_instr=0;	 	
                         ST->parent=globalST;

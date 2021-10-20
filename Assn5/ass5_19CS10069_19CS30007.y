@@ -14,7 +14,7 @@
     char unaryOp;       // unary operator
     int int_val;        // integer value
     char* char_val;     // char value
-    char float_val;    // float value
+    float float_val;    // float value
     int num_params;     // number of parameters
     int instr_number;   // instruction number: for backpatching
     Expression* expr;   // Expression
@@ -33,7 +33,7 @@
 %token <symp> IDENTIFIER
 %token <int_val> INTEGER_CONST
 %token <char_val> CHAR_CONST
-%token <char_val> FLOAT_CONST
+%token <float_val> FLOAT_CONST
 %token <char_val> STRING_LITERAL
 
 %token PLUS MINUS MULT DIVIDE ARROW INCREMENT DECREMENT RSHIFT LSHIFT LT GT LEQ GEQ EQ NEQ BITWISE_OR LOGICAL_OR BITWISE_AND LOGICAL_AND XOR BITWISE_NOT LOGICAL_NOT ELLIPSIS MODULO ASGN ENUMERATION_CONST
@@ -191,8 +191,9 @@ constant:
                     | FLOAT_CONST
                     {                                                                         // create new expression and store the value of the constant in a temporary
                         $$=new Expression();
-                        $$->loc=gentemp(new symboltype("char"),$1);
-                        emit("=",$$->loc->name,string($1));
+                        string p=convertFloatToString($1);
+                        $$->loc=gentemp(new symboltype("float"),p);
+                        emit("=",$$->loc->name,p);
                     }
                     | CHAR_CONST
                     {                                                                         // create new expression and store the value of the constant in a temporary

@@ -61,10 +61,10 @@
 	relational_expression
 	equality_expression
 	and_expression
-	exclusive_OR_expression
-	inclusive_OR_expression
-	logical_AND_expression
-	logical_OR_expression
+	exclusive_or_expression
+	inclusive_or_expression
+	logical_and_expression
+	logical_or_expression
 	conditional_expression
 	assignment_expression
 	expression_statement
@@ -638,10 +638,10 @@ and_expression:
                     }
                     ;
 
-exclusive_OR_expression:
+exclusive_or_expression:
                     and_expression
                     { $$=$1;/* Simple assign */ }
-                    | exclusive_OR_expression XOR and_expression
+                    | exclusive_or_expression XOR and_expression
                     {
                         if(!compareSymbolType($1->loc, $3->loc))    //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and emit
                         {
@@ -659,10 +659,10 @@ exclusive_OR_expression:
                     }
                     ;
 
-inclusive_OR_expression:
-                    exclusive_OR_expression
+inclusive_or_expression:
+                    exclusive_or_expression
                     { $$=$1;/* Simple assign */ }
-                    | inclusive_OR_expression BITWISE_OR exclusive_OR_expression
+                    | inclusive_or_expression BITWISE_OR exclusive_or_expression
                     { 
                         if(!compareSymbolType($1->loc, $3->loc))   //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and emit
                         { yyerror("Type Error in Program"); }
@@ -678,13 +678,13 @@ inclusive_OR_expression:
                     }
                     ;
 
-logical_AND_expression:
-                    inclusive_OR_expression
+logical_and_expression:
+                    inclusive_or_expression
                     { $$=$1;/* Simple assign */ }
-                    | logical_AND_expression LOGICAL_AND M inclusive_OR_expression
+                    | logical_and_expression LOGICAL_AND M inclusive_or_expression
                     { 
                         convertIntToBool($4);                                  //convert inclusive_or_expression int to bool	
-                        convertIntToBool($1);                                  //convert logical_AND_expression to bool
+                        convertIntToBool($1);                                  //convert logical_and_expression to bool
                         $$ = new Expression();                                 //make new boolean expression 
                         $$->type = "bool";
                         backpatch($1->truelist, $3);                           //if $1 is true, we move to $5
@@ -693,12 +693,12 @@ logical_AND_expression:
                     }
                     ;
 
-logical_OR_expression:
-                    logical_AND_expression
+logical_or_expression:
+                    logical_and_expression
                     { $$=$1;/* Simple assign */ }
-                    | logical_OR_expression LOGICAL_OR M logical_AND_expression
+                    | logical_or_expression LOGICAL_OR M logical_and_expression
                     { 
-                        convertIntToBool($4);			 //convert logical_AND_expression int to bool	
+                        convertIntToBool($4);			 //convert logical_and_expression int to bool	
                         convertIntToBool($1);			 //convert logical_or_expression to bool
                         $$ = new Expression();			 //make new boolean expression
                         $$->type = "bool";
@@ -709,9 +709,9 @@ logical_OR_expression:
                     ;
 
 conditional_expression:
-                    logical_OR_expression
+                    logical_or_expression
                     { $$=$1;/* Simple assign */ }
-                    | logical_OR_expression N '?' M expression N ':' M conditional_expression
+                    | logical_or_expression N '?' M expression N ':' M conditional_expression
                     {
                         //normal conversion method to get conditional expressions
                         $$->loc = gentemp($5->loc->type);       //generate temporary for expression

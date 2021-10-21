@@ -1,181 +1,77 @@
 
-#################### LINE NO : 2 ####################
-
-#################### LINE NO : 3 ####################
-
-#################### LINE NO : 4 ####################
-
-#################### LINE NO : 5 ####################
-
-#################### LINE NO : 6 ####################
-
-#################### LINE NO : 7 ####################
-
-#################### LINE NO : 8 ####################
-
-#################### LINE NO : 9 ####################
-
-#################### LINE NO : 10 ####################
-
-#################### LINE NO : 11 ####################
-
-#################### LINE NO : 12 ####################
-
-#################### LINE NO : 13 ####################
-
-#################### LINE NO : 14 ####################
-
-#################### LINE NO : 15 ####################
-
-#################### LINE NO : 16 ####################
-
-#################### LINE NO : 17 ####################
-
-#################### LINE NO : 18 ####################
-
-#################### LINE NO : 19 ####################
-
-#################### LINE NO : 20 ####################
-
-#################### LINE NO : 21 ####################
-
-#################### LINE NO : 22 ####################
-
-#################### LINE NO : 23 ####################
-
-#################### LINE NO : 24 ####################
-
-#################### LINE NO : 25 ####################
-
-#################### LINE NO : 26 ####################
-
-#################### LINE NO : 27 ####################
-
-#################### LINE NO : 28 ####################
-
-#################### LINE NO : 29 ####################
-
-#################### LINE NO : 30 ####################
-
-#################### LINE NO : 31 ####################
-
-#################### LINE NO : 32 ####################
-
-#################### LINE NO : 33 ####################
-
-#################### LINE NO : 34 ####################
-
-#################### LINE NO : 35 ####################
-
-#################### LINE NO : 36 ####################
-
-#################### LINE NO : 37 ####################
-
-#################### LINE NO : 38 ####################
-
-#################### LINE NO : 39 ####################
-
-#################### LINE NO : 40 ####################
-
-#################### LINE NO : 41 ####################
-
-#################### LINE NO : 42 ####################
-
-#################### LINE NO : 43 ####################
-
-#################### LINE NO : 44 ####################
-
-#################### LINE NO : 45 ####################
-
-#################### LINE NO : 46 ####################
-
-#################### LINE NO : 47 ####################
-
-#################### LINE NO : 48 ####################
-
-#################### LINE NO : 49 ####################
-
-#################### LINE NO : 50 ####################
-
-#################### LINE NO : 51 ####################
-
-#################### LINE NO : 52 ####################
-
-#################### LINE NO : 53 ####################
-
 ________________________________________________________________________________________________________________________
 THREE ADDRESS CODE (TAC): 
 ________________________________________________________________________________________________________________________
-0:     t_0 = 2.3t_0 = 2.3t_0 = 2.3t_0 = 2.3t_0 = 2.3t_0 = 2.3t_0 = 2.3t_0 = 2.3
-1:     d = t_0d = t_0d = t_0d = t_0d = t_0d = t_0d = t_0d = t_0
-2:     t_1 = 10t_1 = 10t_1 = 10t_1 = 10t_1 = 10t_1 = 10t_1 = 10t_1 = 10
-3:     t_2 = 2t_2 = 2t_2 = 2t_2 = 2t_2 = 2t_2 = 2t_2 = 2t_2 = 2
-4:     t_3 = 2t_3 = 2t_3 = 2t_3 = 2t_3 = 2t_3 = 2t_3 = 2t_3 = 2
-5:     t_4 = 4t_4 = 4t_4 = 4t_4 = 4t_4 = 4t_4 = 4t_4 = 4t_4 = 4
-6:     a = t_4a = t_4a = t_4a = t_4a = t_4a = t_4a = t_4a = t_4
+0:     t_0 = 2.3
+1:     d = t_0
+2:     t_1 = 10
+3:     t_2 = 2
+4:     t_3 = 2
+5:     t_4 = 4
+6:     a = t_4
 
-7: fun: fun: fun: fun: fun: fun: fun: fun: 
-8:     t_0 = 1t_0 = 1t_0 = 1t_0 = 1t_0 = 1t_0 = 1t_0 = 1t_0 = 1
-9:     m = t_0m = t_0m = t_0m = t_0m = t_0m = t_0m = t_0m = t_0
+7: fun: 
+8:     t_0 = 1
+9:     m = t_0
 
-10: fun.$0: fun.$0: fun.$0: fun.$0: fun.$0: fun.$0: fun.$0: fun.$0: 
-11:     t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2
-12:     n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0
+10: fun.$0: 
+11:     t_0 = 2
+12:     n = t_0
 
-13: fun.$0.$1: fun.$0.$1: fun.$0.$1: fun.$0.$1: fun.$0.$1: fun.$0.$1: fun.$0.$1: fun.$0.$1: 
-14:     t_0 = 3t_0 = 3t_0 = 3t_0 = 3t_0 = 3t_0 = 3t_0 = 3t_0 = 3
-15:     o = t_0o = t_0o = t_0o = t_0o = t_0o = t_0o = t_0o = t_0
+13: fun.$0.$1: 
+14:     t_0 = 3
+15:     o = t_0
 
-16: fun.$0.$1.$2: fun.$0.$1.$2: fun.$0.$1.$2: fun.$0.$1.$2: fun.$0.$1.$2: fun.$0.$1.$2: fun.$0.$1.$2: fun.$0.$1.$2: 
-17:     t_0 = 4t_0 = 4t_0 = 4t_0 = 4t_0 = 4t_0 = 4t_0 = 4t_0 = 4
-18:     p = t_0p = t_0p = t_0p = t_0p = t_0p = t_0p = t_0p = t_0
+16: fun.$0.$1.$2: 
+17:     t_0 = 4
+18:     p = t_0
 
-19: fun.$0.$1.$2.$3: fun.$0.$1.$2.$3: fun.$0.$1.$2.$3: fun.$0.$1.$2.$3: fun.$0.$1.$2.$3: fun.$0.$1.$2.$3: fun.$0.$1.$2.$3: fun.$0.$1.$2.$3: 
-20:     t_0 = 1t_0 = 1t_0 = 1t_0 = 1t_0 = 1t_0 = 1t_0 = 1t_0 = 1
-21:     t_1 = 2t_1 = 2t_1 = 2t_1 = 2t_1 = 2t_1 = 2t_1 = 2t_1 = 2
-22:     if t_0 < t_1 goto 25if t_0 < t_1 goto 25if t_0 < t_1 goto 25if t_0 < t_1 goto 25if t_0 < t_1 goto 25if t_0 < t_1 goto 25if t_0 < t_1 goto 25if t_0 < t_1 goto 25
-23:     goto 27goto 27goto 27goto 27goto 27goto 27goto 27goto 27
-24:     goto 32goto 32goto 32goto 32goto 32goto 32goto 32goto 32
-25:     t_2 = 1t_2 = 1t_2 = 1t_2 = 1t_2 = 1t_2 = 1t_2 = 1t_2 = 1
-26:     goto 30goto 30goto 30goto 30goto 30goto 30goto 30goto 30
-27:     t_3 = 2t_3 = 2t_3 = 2t_3 = 2t_3 = 2t_3 = 2t_3 = 2t_3 = 2
-28:     t_4 = t_3t_4 = t_3t_4 = t_3t_4 = t_3t_4 = t_3t_4 = t_3t_4 = t_3t_4 = t_3
-29:     goto 32goto 32goto 32goto 32goto 32goto 32goto 32goto 32
-30:     t_4 = t_2t_4 = t_2t_4 = t_2t_4 = t_2t_4 = t_2t_4 = t_2t_4 = t_2t_4 = t_2
-31:     goto 32goto 32goto 32goto 32goto 32goto 32goto 32goto 32
-32:     q = t_4q = t_4q = t_4q = t_4q = t_4q = t_4q = t_4q = t_4
+19: fun.$0.$1.$2.$3: 
+20:     t_0 = 1
+21:     t_1 = 2
+22:     if t_0 < t_1 goto 25
+23:     goto 27
+24:     goto 32
+25:     t_2 = 1
+26:     goto 30
+27:     t_3 = 2
+28:     t_4 = t_3
+29:     goto 32
+30:     t_4 = t_2
+31:     goto 32
+32:     q = t_4
 
-33: main: main: main: main: main: main: main: main: 
-34:     t_0 = 120t_0 = 120t_0 = 120t_0 = 120t_0 = 120t_0 = 120t_0 = 120t_0 = 120
-35:     x = t_0x = t_0x = t_0x = t_0x = t_0x = t_0x = t_0x = t_0
-36:     t_1 = 17t_1 = 17t_1 = 17t_1 = 17t_1 = 17t_1 = 17t_1 = 17t_1 = 17
-37:     y = t_1y = t_1y = t_1y = t_1y = t_1y = t_1y = t_1y = t_1
-38:     t_2 = 'c't_2 = 'c't_2 = 'c't_2 = 'c't_2 = 'c't_2 = 'c't_2 = 'c't_2 = 'c'
-39:     ch = t_2ch = t_2ch = t_2ch = t_2ch = t_2ch = t_2ch = t_2ch = t_2
-40:     t_3 = 'a't_3 = 'a't_3 = 'a't_3 = 'a't_3 = 'a't_3 = 'a't_3 = 'a't_3 = 'a'
-41:     d = t_3d = t_3d = t_3d = t_3d = t_3d = t_3d = t_3d = t_3
-42:     t_4 = x + yCan't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+
-43:     i = t_4i = t_4i = t_4i = t_4i = t_4i = t_4i = t_4i = t_4
-44:     Can't find the operator-t_6 = x - yCan't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-
-45:     j = t_6j = t_6j = t_6j = t_6j = t_6j = t_6j = t_6j = t_6
-46:     Can't find the operator*Can't find the operator*t_8 = x * yCan't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
-47:     k = t_8k = t_8k = t_8k = t_8k = t_8k = t_8k = t_8k = t_8
-48:     Can't find the operator/Can't find the operator/Can't find the operator/t_10 = x / yCan't find the operator/Can't find the operator/Can't find the operator/Can't find the operator/
-49:     l = t_10l = t_10l = t_10l = t_10l = t_10l = t_10l = t_10l = t_10
-50:     Can't find the operator%Can't find the operator%Can't find the operator%Can't find the operator%t_12 = x % yCan't find the operator%Can't find the operator%Can't find the operator%
-51:     m = t_12m = t_12m = t_12m = t_12m = t_12m = t_12m = t_12m = t_12
-52:     Can't find the operator&Can't find the operator&Can't find the operator&Can't find the operator&Can't find the operator&Can't find the operator&Can't find the operator&t_14 = x & y
-53:     n = t_14n = t_14n = t_14n = t_14n = t_14n = t_14n = t_14n = t_14
-54:     Can't find the operator|Can't find the operator|Can't find the operator|Can't find the operator|Can't find the operator|t_16 = x | yCan't find the operator|Can't find the operator|
-55:     o = t_16o = t_16o = t_16o = t_16o = t_16o = t_16o = t_16o = t_16
-56:     t_18 = 2t_18 = 2t_18 = 2t_18 = 2t_18 = 2t_18 = 2t_18 = 2t_18 = 2
-57:     t_19 = i << t_18t_19 = i << t_18t_19 = i << t_18t_19 = i << t_18t_19 = i << t_18t_19 = i << t_18t_19 = i << t_18t_19 = i << t_18
-58:     y = t_19y = t_19y = t_19y = t_19y = t_19y = t_19y = t_19y = t_19
-59:     t_21 = 1t_21 = 1t_21 = 1t_21 = 1t_21 = 1t_21 = 1t_21 = 1t_21 = 1
-60:     t_22 = i >> t_21t_22 = i >> t_21t_22 = i >> t_21t_22 = i >> t_21t_22 = i >> t_21t_22 = i >> t_21t_22 = i >> t_21t_22 = i >> t_21
-61:     x = t_22x = t_22x = t_22x = t_22x = t_22x = t_22x = t_22x = t_22
-62:     t_24 = 0t_24 = 0t_24 = 0t_24 = 0t_24 = 0t_24 = 0t_24 = 0t_24 = 0
-63:     return t_24return t_24return t_24return t_24return t_24return t_24return t_24return t_24
+33: main: 
+34:     t_0 = 120
+35:     x = t_0
+36:     t_1 = 17
+37:     y = t_1
+38:     t_2 = 'c'
+39:     ch = t_2
+40:     t_3 = 'a'
+41:     d = t_3
+42:     t_4 = x + y
+43:     i = t_4
+44:     t_6 = x - y
+45:     j = t_6
+46:     t_8 = x * y
+47:     k = t_8
+48:     t_10 = x / y
+49:     l = t_10
+50:     t_12 = x % y
+51:     m = t_12
+52:     t_14 = x & y
+53:     n = t_14
+54:     t_16 = x | y
+55:     o = t_16
+56:     t_18 = 2
+57:     t_19 = i << t_18
+58:     y = t_19
+59:     t_21 = 1
+60:     t_22 = i >> t_21
+61:     x = t_22
+62:     t_24 = 0
+63:     return t_24
 __________________________________________________________________________________________________________________________________
 __________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL

@@ -1,93 +1,45 @@
 
-#################### LINE NO : 2 ####################
-
-#################### LINE NO : 3 ####################
-
-#################### LINE NO : 4 ####################
-
-#################### LINE NO : 5 ####################
-
-#################### LINE NO : 6 ####################
-
-#################### LINE NO : 7 ####################
-
-#################### LINE NO : 8 ####################
-
-#################### LINE NO : 9 ####################
-
-#################### LINE NO : 10 ####################
-
-#################### LINE NO : 11 ####################
-
-#################### LINE NO : 12 ####################
-
-#################### LINE NO : 13 ####################
-
-#################### LINE NO : 14 ####################
-
-#################### LINE NO : 15 ####################
-
-#################### LINE NO : 16 ####################
-
-#################### LINE NO : 17 ####################
-
-#################### LINE NO : 18 ####################
-
-#################### LINE NO : 19 ####################
-
-#################### LINE NO : 20 ####################
-
-#################### LINE NO : 21 ####################
-
-#################### LINE NO : 22 ####################
-
-#################### LINE NO : 23 ####################
-
-#################### LINE NO : 24 ####################
-
-#################### LINE NO : 25 ####################
-
 ________________________________________________________________________________________________________________________
 THREE ADDRESS CODE (TAC): 
 ________________________________________________________________________________________________________________________
 
-0: swapTwoNumbers: swapTwoNumbers: swapTwoNumbers: swapTwoNumbers: swapTwoNumbers: swapTwoNumbers: swapTwoNumbers: swapTwoNumbers: 
-1:     t_0 = *at_0 = *at_0 = *at_0 = *at_0 = *at_0 = *at_0 = *at_0 = *a
-2:     temp = t_0temp = t_0temp = t_0temp = t_0temp = t_0temp = t_0temp = t_0temp = t_0
-3:     t_1 = *at_1 = *at_1 = *at_1 = *at_1 = *at_1 = *at_1 = *at_1 = *a
-4:     t_2 = *bt_2 = *bt_2 = *bt_2 = *bt_2 = *bt_2 = *bt_2 = *bt_2 = *b
-5:     *a = t_2*a = t_2*a = t_2*a = t_2*a = t_2*a = t_2*a = t_2*a = t_2
-6:     t_3 = *bt_3 = *bt_3 = *bt_3 = *bt_3 = *bt_3 = *bt_3 = *bt_3 = *b
-7:     *b = temp*b = temp*b = temp*b = temp*b = temp*b = temp*b = temp*b = temp
-8:     return return return return return return return return 
+0: swapTwoNumbers: 
+1:     t_0 = *a
+2:     temp = t_0
+3:     t_1 = *a
+4:     t_2 = *b
+5:     *a = t_2
+6:     t_3 = *b
+7:     *b = temp
+8:     return 
 
-9: division: division: division: division: division: division: division: division: 
-10:     Can't find the operator/Can't find the operator/Can't find the operator/t_0 = a / bCan't find the operator/Can't find the operator/Can't find the operator/Can't find the operator/
-11:     t_1 = float2int(t_0)t_1 = float2int(t_0)t_1 = float2int(t_0)t_1 = float2int(t_0)t_1 = float2int(t_0)t_1 = float2int(t_0)t_1 = float2int(t_0)t_1 = float2int(t_0)
-12:     quotient = t_1quotient = t_1quotient = t_1quotient = t_1quotient = t_1quotient = t_1quotient = t_1quotient = t_1
-13:     return quotientreturn quotientreturn quotientreturn quotientreturn quotientreturn quotientreturn quotientreturn quotient
+9: division: 
+10:     t_0 = a / b
+11:     t_1 = float2int(t_0)
+12:     quotient = t_1
+13:     return quotient
 
-14: main: main: main: main: main: main: main: main: 
-15:     t_0 = 0t_0 = 0t_0 = 0t_0 = 0t_0 = 0t_0 = 0t_0 = 0t_0 = 0
-16:     q = t_0q = t_0q = t_0q = t_0q = t_0q = t_0q = t_0q = t_0
-17:     t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0
-18:     r = t_1r = t_1r = t_1r = t_1r = t_1r = t_1r = t_1r = t_1
-19:     t_2 = 2.5t_2 = 2.5t_2 = 2.5t_2 = 2.5t_2 = 2.5t_2 = 2.5t_2 = 2.5t_2 = 2.5
-20:     x = t_2x = t_2x = t_2x = t_2x = t_2x = t_2x = t_2x = t_2
-21:     param xparam xparam xparam xparam xparam xparam xparam x
-22:     t_3 = 1.2t_3 = 1.2t_3 = 1.2t_3 = 1.2t_3 = 1.2t_3 = 1.2t_3 = 1.2t_3 = 1.2
-23:     param t_3param t_3param t_3param t_3param t_3param t_3param t_3param t_3
-24:     t_4 = call division, 2t_4 = call division, 2t_4 = call division, 2t_4 = call division, 2t_4 = call division, 2t_4 = call division, 2t_4 = call division, 2t_4 = call division, 2
-25:     q = t_4q = t_4q = t_4q = t_4q = t_4q = t_4q = t_4q = t_4
-26:     t_6 = 10t_6 = 10t_6 = 10t_6 = 10t_6 = 10t_6 = 10t_6 = 10t_6 = 10
-27:     r = t_6r = t_6r = t_6r = t_6r = t_6r = t_6r = t_6r = t_6
-28:     t_8 = &qt_8 = &qt_8 = &qt_8 = &qt_8 = &qt_8 = &qt_8 = &qt_8 = &q
-29:     param t_8param t_8param t_8param t_8param t_8param t_8param t_8param t_8
-30:     t_9 = &rt_9 = &rt_9 = &rt_9 = &rt_9 = &rt_9 = &rt_9 = &rt_9 = &r
-31:     param t_9param t_9param t_9param t_9param t_9param t_9param t_9param t_9
-32:     t_10 = call swapTwoNumbers, 2t_10 = call swapTwoNumbers, 2t_10 = call swapTwoNumbers, 2t_10 = call swapTwoNumbers, 2t_10 = call swapTwoNumbers, 2t_10 = call swapTwoNumbers, 2t_10 = call swapTwoNumbers, 2t_10 = call swapTwoNumbers, 2
-33:     t_11 = 0t_11 = 0t_11 = 0t_11 = 0t_11 = 0t_11 = 0t_11 = 0t_11 = 0
-34:     return t_11return t_11return t_11return t_11return t_11return t_11return t_11return t_11
+14: main: 
+15:     t_0 = 0
+16:     q = t_0
+17:     t_1 = 0
+18:     r = t_1
+19:     t_2 = 2.5
+20:     x = t_2
+21:     param x
+22:     t_3 = 1.2
+23:     param t_3
+24:     t_4 = call division, 2
+25:     q = t_4
+26:     t_6 = 10
+27:     r = t_6
+28:     t_8 = &q
+29:     param t_8
+30:     t_9 = &r
+31:     param t_9
+32:     t_10 = call swapTwoNumbers, 2
+33:     t_11 = 0
+34:     return t_11
 __________________________________________________________________________________________________________________________________
 __________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL

@@ -13,17 +13,20 @@ using namespace std;
 //              global variables                //
 //          (Reference from the headers)        //
 //**********************************************//
-quadArray Q;                                                                                       // Quad Array
-symtable* ST;                                                                                      // Points to current symbol table
 basicType bt;                                                                                      // basic types
-bool debug_on;                                                                                     // bool for printing debug output
-string var_type;                                                                                   // Stores latest type
+
 symtable* globalST;                                                                                // Global Symbol Table
 symtable* parST;                                                                                   // denotes the Parent of the current Symbol Table
+symtable* ST;                                                                                      // Points to current symbol table
+
+quadArray Q;                                                                                       // Quad Array
 sym* currSymbolPtr;                                                                                // points to current symbol
-long long int table_count;                                                                         // count of table
-string loop_name;                                                                                  // get the name of the loop
 vector<label>label_table;                                                                          // table to store the labels
+
+string var_type;                                                                                   // Stores latest type
+long long table_count;                                                                             // count of table
+bool debug_on;                                                                                     // bool for printing debug output
+string loop_name;                                                                                  // get the name of the loop
 
 
 //***********************************************************//
@@ -32,9 +35,9 @@ vector<label>label_table;                                                       
 
 symboltype::symboltype(string type,symboltype* arrtype,int width)                                  // Constructor for a symbol type
 {
-    (*this).type   = type;
-    (*this).width  = width;
-    (*this).arrtype= arrtype;
+    this->type   = type;
+    this->width  = width;
+    this->arrtype= arrtype;
 }
 
 //**************************************************************//
@@ -53,7 +56,7 @@ sym::sym(string name, string t, symboltype* arrtype, int width)
 sym* sym::update(symboltype* t) 
 {
     type=t;                                                                                        // Update the new type
-    (*this).size=computeSize(t);                                                                   // new size
+    this->size=computeSize(t);                                                                   // new size
     return this;                                                                                   // return the same variable	
 }
 
@@ -220,70 +223,63 @@ void symtable::print()                                                          
 // --------- (string, string, string, string)
 quad::quad(string res,string arg1,string op,string arg2)
 {
-	(*this).op=op;
-	(*this).arg1=arg1;
-	(*this).arg2=arg2;
-	(*this).res=res;
+	this->op=op;
+	this->arg1=arg1;
+	this->arg2=arg2;
+	this->res=res;
 }
 
 // --------- (string, int, string, string)
 quad::quad(string res,int arg1,string op,string arg2)
 {	
-	(*this).op=op;
-	(*this).arg1=convertIntToString(arg1);
-	(*this).arg2=arg2;
-	(*this).res=res;	
+	this->op=op;
+	this->arg1=convertIntToString(arg1);
+	this->arg2=arg2;
+	this->res=res;	
 }
 
 // --------- (string, float, string, string)
 quad::quad(string res,float arg1,string op,string arg2)
 {
-	(*this).op=op;
-	(*this).arg1=convertFloatToString(arg1);
-	(*this).arg2=arg2;
-	(*this).res=res;
+	this->op=op;
+	this->arg1=convertFloatToString(arg1);
+	this->arg2=arg2;
+	this->res=res;
 }
 
 //------------- Helper function to print the quads -----------------
 void quad::print() 
 {
-    ///////////////////////////////////////
-    //          BINARY OPERATORS         //
-    ///////////////////////////////////////
-
 	int next_instr=0;
 
+    // Binary Assignment Instruction
     vector<string> binary_ops = {"+", "-", "*", "/", "%", "|", "^", "&"};
     for(auto check: binary_ops)
-        if(op == check)
+        if(op == check) {
             type1();
+            cout << '\n';
+            return;
+        }
 
-    ///////////////////////////////////////
-    //       RELATIONAL OPERATORS        //
-    ///////////////////////////////////////
+    // Relational operators | Conditional Jump Instruction
+    vector<string> relational_ops = {"==", "!=", "<=", "<", ">", ">="};
+    for(auto check: relational_ops)
+        if(op == check) {
+            type2();
+            cout << '\n';
+            return;
+        }
+    // Unconditional Jump Instructi
+	if(op=="goto") cout<<"goto "<<res;
 
-	else if(op=="==") (*this).type2();
-	else if(op=="!=") (*this).type2();
-	else if(op=="<=") (*this).type2();
-	else if(op=="<") (*this).type2();
-	else if(op==">") (*this).type2();
-	else if(op==">=") (*this).type2();
-	else if(op=="goto") cout<<"goto "<<res;
+    // Shift operators| Binary Assignment Instruction
+	else if(op==">>") type1();
+	else if(op=="<<") type1();
 
-    ///////////////////////////////////////
-    //         SHIFT OPERATORS           //
-    ///////////////////////////////////////
-
-	else if(op==">>") (*this).type1();
-	else if(op=="<<") (*this).type1();
-
-	//**************************************************************--
+    // Assignment operator | copy Assignment Instruction
 	else if(op=="=") cout<<res<<" = "<<arg1 ;	
 
-    ///////////////////////////////////////
-    //         ASSIGNMENT + OPERATION    //
-    ///////////////////////////////////////
-
+    // Assignment + operation | Unary Assignment Instruction
 	else if(op=="=&") cout<<res<<" = &"<<arg1;         // reference
 	else if(op=="=*") cout<<res<<" = *"<<arg1;         // pointer
 	else if(op=="*=") cout<<"*"<<res<<" = "<<arg1;     // multiplication
@@ -291,14 +287,14 @@ void quad::print()
 	else if(op=="~") cout<<res<<" = ~"<<arg1;
 	else if(op=="!") cout<<res<<" = !"<<arg1;
 
-    ///////////////////////////////////////
-    //         OTHER OPERATORS           //
-    ///////////////////////////////////////
-
+    // Other operators
+    // Indexed Copy Instruction
 	else if(op=="=[]") cout<<res<<" = "<<arg1<<"["<<arg2<<"]";
 	else if(op=="[]=") cout<<res<<"["<<arg1<<"]"<<" = "<< arg2;
-	else if(op=="return") cout<<"return "<<res;
-	else if(op=="param") cout<<"param "<<res;
+	// Return Value
+    else if(op=="return") cout<<"return "<<res;
+	// procedure call
+    else if(op=="param") cout<<"param "<<res;
 	else if(op=="call") cout<<res<<" = "<<"call "<<arg1<<", "<<arg2;
 	else if(op=="label") cout<<res<<": ";
 	else cout<<"Can't find the operator"<<op;		

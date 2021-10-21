@@ -64,5 +64,4 @@ clean:
 	   ass5_19CS10069_19CS30007.tab.o\
 	   ass5_19CS10069_19CS30007.output\
 	   ass5_19CS10069_19CS30007_translator.o\
-	   ass5_19CS10069_19CS30007_translator.h.gch\
 	   testcases/output/*

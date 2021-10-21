@@ -1132,7 +1132,7 @@ case 42:
 /* rule 42 can match eol */
 YY_RULE_SETUP
 #line 104 "ass5_19CS10069_19CS30007.l"
-{ line++; printf("\n#################### LINE NO : %d ####################\n", line); }
+{  }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
@@ -1386,7 +1386,7 @@ case 92:
 /* rule 92 can match eol */
 YY_RULE_SETUP
 #line 160 "ass5_19CS10069_19CS30007.l"
-{line++; printf("\n#################### LINE NO : %d ####################\n", line);BEGIN(INITIAL);}
+{BEGIN(INITIAL);}
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
@@ -1412,7 +1412,7 @@ case 97:
 /* rule 97 can match eol */
 YY_RULE_SETUP
 #line 165 "ass5_19CS10069_19CS30007.l"
-{line++; printf("\n#################### LINE NO : %d ####################\n", line);}
+{;}
 	YY_BREAK
 case 98:
 YY_RULE_SETUP

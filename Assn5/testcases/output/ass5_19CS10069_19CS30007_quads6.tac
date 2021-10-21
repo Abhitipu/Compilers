@@ -1,95 +1,51 @@
 
-#################### LINE NO : 2 ####################
-
-#################### LINE NO : 3 ####################
-
-#################### LINE NO : 4 ####################
-
-#################### LINE NO : 5 ####################
-
-#################### LINE NO : 6 ####################
-
-#################### LINE NO : 7 ####################
-
-#################### LINE NO : 8 ####################
-
-#################### LINE NO : 9 ####################
-
-#################### LINE NO : 10 ####################
-
-#################### LINE NO : 11 ####################
-
-#################### LINE NO : 12 ####################
-
-#################### LINE NO : 13 ####################
-
-#################### LINE NO : 14 ####################
-
-#################### LINE NO : 15 ####################
-
-#################### LINE NO : 16 ####################
-
-#################### LINE NO : 17 ####################
-
-#################### LINE NO : 18 ####################
-
-#################### LINE NO : 19 ####################
-
-#################### LINE NO : 20 ####################
-
-#################### LINE NO : 21 ####################
-
-#################### LINE NO : 22 ####################
-
-#################### LINE NO : 23 ####################
-
 ________________________________________________________________________________________________________________________
 THREE ADDRESS CODE (TAC): 
 ________________________________________________________________________________________________________________________
 
-0: fib: fib: fib: fib: fib: fib: fib: fib: 
-1:     t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100
-2:     t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0
-3:     Can't find the operator*Can't find the operator*t_2 = t_1 * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
-4:     t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0
-5:     f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3
-6:     t_5 = 1t_5 = 1t_5 = 1t_5 = 1t_5 = 1t_5 = 1t_5 = 1t_5 = 1
-7:     Can't find the operator*Can't find the operator*t_6 = t_5 * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
-8:     t_7 = 1t_7 = 1t_7 = 1t_7 = 1t_7 = 1t_7 = 1t_7 = 1t_7 = 1
-9:     f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7
+0: fib: 
+1:     t_0 = 100
+2:     t_1 = 0
+3:     t_2 = t_1 * 4
+4:     t_3 = 0
+5:     f[t_2] = t_3
+6:     t_5 = 1
+7:     t_6 = t_5 * 4
+8:     t_7 = 1
+9:     f[t_6] = t_7
 
-10: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: 
-11:     t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2
-12:     i = t_0i = t_0i = t_0i = t_0i = t_0i = t_0i = t_0i = t_0
-13:     if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18
-14:     goto 30goto 30goto 30goto 30goto 30goto 30goto 30goto 30
-15:     t_1 = it_1 = it_1 = it_1 = it_1 = it_1 = it_1 = it_1 = i
-16:     i = i + 1Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+
-17:     goto 13goto 13goto 13goto 13goto 13goto 13goto 13goto 13
-18:     Can't find the operator*Can't find the operator*t_2 = i * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
-19:     t_3 = 1t_3 = 1t_3 = 1t_3 = 1t_3 = 1t_3 = 1t_3 = 1t_3 = 1
-20:     Can't find the operator-t_4 = i - t_3Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-
-21:     Can't find the operator*Can't find the operator*t_5 = t_4 * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
-22:     t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]
-23:     t_7 = 2t_7 = 2t_7 = 2t_7 = 2t_7 = 2t_7 = 2t_7 = 2t_7 = 2
-24:     Can't find the operator-t_8 = i - t_7Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-
-25:     Can't find the operator*Can't find the operator*t_9 = t_8 * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
-26:     t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]
-27:     t_11 = t_6 + t_10Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+
-28:     f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11
-29:     goto 15goto 15goto 15goto 15goto 15goto 15goto 15goto 15
-30:     Can't find the operator*Can't find the operator*t_9 = n * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
-31:     t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]
-32:     return t_10return t_10return t_10return t_10return t_10return t_10return t_10return t_10
+10: fib.FOR$0: 
+11:     t_0 = 2
+12:     i = t_0
+13:     if i <= n goto 18
+14:     goto 30
+15:     t_1 = i
+16:     i = i + 1
+17:     goto 13
+18:     t_2 = i * 4
+19:     t_3 = 1
+20:     t_4 = i - t_3
+21:     t_5 = t_4 * 4
+22:     t_6 = f[t_5]
+23:     t_7 = 2
+24:     t_8 = i - t_7
+25:     t_9 = t_8 * 4
+26:     t_10 = f[t_9]
+27:     t_11 = t_6 + t_10
+28:     f[t_2] = t_11
+29:     goto 15
+30:     t_9 = n * 4
+31:     t_10 = f[t_9]
+32:     return t_10
 
-33: main: main: main: main: main: main: main: main: 
-34:     t_0 = 9t_0 = 9t_0 = 9t_0 = 9t_0 = 9t_0 = 9t_0 = 9t_0 = 9
-35:     n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0
-36:     param nparam nparam nparam nparam nparam nparam nparam n
-37:     t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1
-38:     fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1
-39:     t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0
-40:     return t_3return t_3return t_3return t_3return t_3return t_3return t_3return t_3
+33: main: 
+34:     t_0 = 9
+35:     n = t_0
+36:     param n
+37:     t_1 = call fib, 1
+38:     fib_num = t_1
+39:     t_3 = 0
+40:     return t_3
 __________________________________________________________________________________________________________________________________
 __________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL

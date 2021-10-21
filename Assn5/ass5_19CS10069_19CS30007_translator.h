@@ -1,14 +1,17 @@
 #ifndef __TRANSLATOR__H__
 #define __TRANSLATOR__H__
+
 #include <iostream>
 #include <vector>
 #include <list>
 #include <string>
+#include <map>
+
+using namespace std;
 
 extern  char* yytext;
 extern  int yyparse();
 
-using namespace std;
 
 //--------------------------------------------------//
 //                  Class Declarations              //
@@ -141,15 +144,13 @@ class quadArray
 class basicType 
 {                                                                                            // To denote a basic type
     public:
-    // update here
-        vector<string> type;                                                                 // type name
-        vector<int> size;                                                                    // size of the type
-        void addType(string ,int );
+        static map<string, int> getSize;
 };
 
 //----------------------------------------------//
 //     Definition of the expression type        //
 //----------------------------------------------//
+
 // TODO: change to class?
 struct Expression {
     s* loc;                                                                                  // pointer to the symbol table entry
@@ -213,6 +214,7 @@ list<int> merge (list<int> &l1, list <int> &l2);                                
 //----------------------------------------------------------------------//
 
 label* find_label(string name);
+
 //------------- Type checking and Type conversion functions -------------
 string convertIntToString(int);                                                              // helper function to convert integer to string
 string convertFloatToString(float);                                                          // helper function to convert float to string

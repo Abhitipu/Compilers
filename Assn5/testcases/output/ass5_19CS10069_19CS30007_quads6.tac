@@ -47,114 +47,114 @@ ________________________________________________________________________________
 THREE ADDRESS CODE (TAC): 
 ________________________________________________________________________________________________________________________
 
-0: fib: 
-1:     t0 = 100
-2:     t1 = 0
-3:     t2 = t1 * 4
-4:     t3 = 0
-5:     f[t2] = t3
-6:     t5 = 1
-7:     t6 = t5 * 4
-8:     t7 = 1
-9:     f[t6] = t7
+0: fib: fib: fib: fib: fib: fib: fib: fib: 
+1:     t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100
+2:     t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0
+3:     Can't find the operator*Can't find the operator*t_2 = t_1 * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
+4:     t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0
+5:     f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3f[t_2] = t_3
+6:     t_5 = 1t_5 = 1t_5 = 1t_5 = 1t_5 = 1t_5 = 1t_5 = 1t_5 = 1
+7:     Can't find the operator*Can't find the operator*t_6 = t_5 * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
+8:     t_7 = 1t_7 = 1t_7 = 1t_7 = 1t_7 = 1t_7 = 1t_7 = 1t_7 = 1
+9:     f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7f[t_6] = t_7
 
-10: fib.FOR$0: 
-11:     t0 = 2
-12:     i = t0
-13:     if i <= n goto 18
-14:     goto 30
-15:     t1 = i
-16:     i = i + 1
-17:     goto 13
-18:     t2 = i * 4
-19:     t3 = 1
-20:     t4 = i - t3
-21:     t5 = t4 * 4
-22:     t6 = f[t5]
-23:     t7 = 2
-24:     t8 = i - t7
-25:     t9 = t8 * 4
-26:     t10 = f[t9]
-27:     t11 = t6 + t10
-28:     f[t2] = t11
-29:     goto 15
-30:     t9 = n * 4
-31:     t10 = f[t9]
-32:     return t10
+10: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: fib.FOR$0: 
+11:     t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2
+12:     i = t_0i = t_0i = t_0i = t_0i = t_0i = t_0i = t_0i = t_0
+13:     if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18if i <= n goto 18
+14:     goto 30goto 30goto 30goto 30goto 30goto 30goto 30goto 30
+15:     t_1 = it_1 = it_1 = it_1 = it_1 = it_1 = it_1 = it_1 = i
+16:     i = i + 1Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+
+17:     goto 13goto 13goto 13goto 13goto 13goto 13goto 13goto 13
+18:     Can't find the operator*Can't find the operator*t_2 = i * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
+19:     t_3 = 1t_3 = 1t_3 = 1t_3 = 1t_3 = 1t_3 = 1t_3 = 1t_3 = 1
+20:     Can't find the operator-t_4 = i - t_3Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-
+21:     Can't find the operator*Can't find the operator*t_5 = t_4 * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
+22:     t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]t_6 = f[t_5]
+23:     t_7 = 2t_7 = 2t_7 = 2t_7 = 2t_7 = 2t_7 = 2t_7 = 2t_7 = 2
+24:     Can't find the operator-t_8 = i - t_7Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-Can't find the operator-
+25:     Can't find the operator*Can't find the operator*t_9 = t_8 * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
+26:     t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]
+27:     t_11 = t_6 + t_10Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+Can't find the operator+
+28:     f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11f[t_2] = t_11
+29:     goto 15goto 15goto 15goto 15goto 15goto 15goto 15goto 15
+30:     Can't find the operator*Can't find the operator*t_9 = n * 4Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*Can't find the operator*
+31:     t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]t_10 = f[t_9]
+32:     return t_10return t_10return t_10return t_10return t_10return t_10return t_10return t_10
 
-33: main: 
-34:     t0 = 9
-35:     n = t0
-36:     param n
-37:     t1 = call fib, 1
-38:     fib_num = t1
-39:     t3 = 0
-40:     return t3
+33: main: main: main: main: main: main: main: main: 
+34:     t_0 = 9t_0 = 9t_0 = 9t_0 = 9t_0 = 9t_0 = 9t_0 = 9t_0 = 9
+35:     n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0n = t_0
+36:     param nparam nparam nparam nparam nparam nparam nparam n
+37:     t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1t_1 = call fib, 1
+38:     fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1fib_num = t_1
+39:     t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0t_3 = 0
+40:     return t_3return t_3return t_3return t_3return t_3return t_3return t_3return t_3
 __________________________________________________________________________________________________________________________________
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
-fib                                     int                 -                   4              0              fib
-main                                    int                 -                   4              4              main
+fib                                     func                -                   0              0              fib
+main                                    func                -                   0              0              main
 ----------------------------------------------------------------------------------------------------------------------------------
 
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: fib                                                   Parent Name: Global
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
 n                                       int                 -                   4              0              NULL
 return                                  int                 -                   4              4              NULL
 f                                       arr(100,int)        -                   400            8              NULL
-t0                                      int                 100                 4              408            NULL
-t1                                      int                 0                   4              412            NULL
-t2                                      int                                     4              416            NULL
-t3                                      int                 0                   4              420            NULL
-t4                                      int                                     4              424            NULL
-t5                                      int                 1                   4              428            NULL
-t6                                      int                                     4              432            NULL
-t7                                      int                 1                   4              436            NULL
-t8                                      int                                     4              440            NULL
+t_0                                     int                 100                 4              408            NULL
+t_1                                     int                 0                   4              412            NULL
+t_2                                     int                                     4              416            NULL
+t_3                                     int                 0                   4              420            NULL
+t_4                                     int                                     4              424            NULL
+t_5                                     int                 1                   4              428            NULL
+t_6                                     int                                     4              432            NULL
+t_7                                     int                 1                   4              436            NULL
+t_8                                     int                                     4              440            NULL
 fib.FOR$0                               block               -                   4              444            fib.FOR$0
-t9                                      int                                     4              448            NULL
-t10                                     int                                     4              452            NULL
+t_9                                     int                                     4              448            NULL
+t_10                                    int                                     4              452            NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: fib.FOR$0                                             Parent Name: fib
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
 i                                       int                 2                   4              0              NULL
-t0                                      int                 2                   4              4              NULL
-t1                                      int                                     4              8              NULL
+t_0                                     int                 2                   4              4              NULL
+t_1                                     int                                     4              8              NULL
 x                                       int                 -                   4              12             NULL
-t2                                      int                                     4              16             NULL
-t3                                      int                 1                   4              20             NULL
-t4                                      int                                     4              24             NULL
-t5                                      int                                     4              28             NULL
-t6                                      int                                     4              32             NULL
-t7                                      int                 2                   4              36             NULL
-t8                                      int                                     4              40             NULL
-t9                                      int                                     4              44             NULL
-t10                                     int                                     4              48             NULL
-t11                                     int                                     4              52             NULL
-t12                                     int                                     4              56             NULL
+t_2                                     int                                     4              16             NULL
+t_3                                     int                 1                   4              20             NULL
+t_4                                     int                                     4              24             NULL
+t_5                                     int                                     4              28             NULL
+t_6                                     int                                     4              32             NULL
+t_7                                     int                 2                   4              36             NULL
+t_8                                     int                                     4              40             NULL
+t_9                                     int                                     4              44             NULL
+t_10                                    int                                     4              48             NULL
+t_11                                    int                                     4              52             NULL
+t_12                                    int                                     4              56             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: main                                                  Parent Name: Global
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
 return                                  int                 -                   4              0              NULL
 n                                       int                 9                   4              4              NULL
-t0                                      int                 9                   4              8              NULL
+t_0                                     int                 9                   4              8              NULL
 fib_num                                 int                 -                   4              12             NULL
-t1                                      int                                     4              16             NULL
-t2                                      int                                     4              20             NULL
-t3                                      int                 0                   4              24             NULL
+t_1                                     func                                    0              16             NULL
+t_2                                     int                                     4              16             NULL
+t_3                                     int                 0                   4              20             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 

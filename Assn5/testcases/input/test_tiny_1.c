@@ -14,7 +14,8 @@ int main()
 	j=100;
 	i=0;
 	p[1] = 234;
-	
+	t1 = dp[5][6];
+	ftemp = 5 * ftemp;
 	while(i<5) // while loop1
 	{
 		i++;

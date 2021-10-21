@@ -57,78 +57,78 @@ ________________________________________________________________________________
 THREE ADDRESS CODE (TAC): 
 ________________________________________________________________________________________________________________________
 
-0: euclidGCD: 
-1:     t0 = 0
-2:     if a == t0 goto 5
-3:     goto 7
-4:     goto 7
-5:     return b
-6:     goto 7
-7:     t1 = b % a
-8:     param t1
-9:     param a
-10:     t2 = call euclidGCD, 2
-11:     return t2
+0: euclidGCD: euclidGCD: euclidGCD: euclidGCD: euclidGCD: euclidGCD: euclidGCD: euclidGCD: 
+1:     t_0 = 0t_0 = 0t_0 = 0t_0 = 0t_0 = 0t_0 = 0t_0 = 0t_0 = 0
+2:     if a == t_0 goto 5if a == t_0 goto 5if a == t_0 goto 5if a == t_0 goto 5if a == t_0 goto 5if a == t_0 goto 5if a == t_0 goto 5if a == t_0 goto 5
+3:     goto 7goto 7goto 7goto 7goto 7goto 7goto 7goto 7
+4:     goto 7goto 7goto 7goto 7goto 7goto 7goto 7goto 7
+5:     return breturn breturn breturn breturn breturn breturn breturn b
+6:     goto 7goto 7goto 7goto 7goto 7goto 7goto 7goto 7
+7:     Can't find the operator%Can't find the operator%Can't find the operator%Can't find the operator%t_1 = b % aCan't find the operator%Can't find the operator%Can't find the operator%
+8:     param t_1param t_1param t_1param t_1param t_1param t_1param t_1param t_1
+9:     param aparam aparam aparam aparam aparam aparam aparam a
+10:     t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2
+11:     return t_2return t_2return t_2return t_2return t_2return t_2return t_2return t_2
 
-12: main: 
-13:     t0 = 2
-14:     flag = t0
-15:     t1 = 0
-16:     if flag == t1 goto 19
-17:     goto 25
-18:     goto 37
+12: main: main: main: main: main: main: main: main: 
+13:     t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2t_0 = 2
+14:     flag = t_0flag = t_0flag = t_0flag = t_0flag = t_0flag = t_0flag = t_0flag = t_0
+15:     t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0t_1 = 0
+16:     if flag == t_1 goto 19if flag == t_1 goto 19if flag == t_1 goto 19if flag == t_1 goto 19if flag == t_1 goto 19if flag == t_1 goto 19if flag == t_1 goto 19if flag == t_1 goto 19
+17:     goto 25goto 25goto 25goto 25goto 25goto 25goto 25goto 25
+18:     goto 37goto 37goto 37goto 37goto 37goto 37goto 37goto 37
 
-19: main.$0: 
-20:     t0 = 100
-21:     a = t0
-22:     t2 = 25
-23:     b = t2
-24:     goto 37
+19: main.$0: main.$0: main.$0: main.$0: main.$0: main.$0: main.$0: main.$0: 
+20:     t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100t_0 = 100
+21:     a = t_0a = t_0a = t_0a = t_0a = t_0a = t_0a = t_0a = t_0
+22:     t_2 = 25t_2 = 25t_2 = 25t_2 = 25t_2 = 25t_2 = 25t_2 = 25t_2 = 25
+23:     b = t_2b = t_2b = t_2b = t_2b = t_2b = t_2b = t_2b = t_2
+24:     goto 37goto 37goto 37goto 37goto 37goto 37goto 37goto 37
 
-25: main.$1: 
-26:     t0 = 20
-27:     a = t0
-28:     t2 = 1
-29:     if flag == t2 goto 32
-30:     goto 35
-31:     goto 37
-32:     t3 = 5
-33:     b = t3
-34:     goto 37
-35:     t5 = 4
-36:     b = t5
-37:     param a
-38:     param b
-39:     t2 = call euclidGCD, 2
-40:     g = t2
-41:     t4 = 0
-42:     return t4
+25: main.$1: main.$1: main.$1: main.$1: main.$1: main.$1: main.$1: main.$1: 
+26:     t_0 = 20t_0 = 20t_0 = 20t_0 = 20t_0 = 20t_0 = 20t_0 = 20t_0 = 20
+27:     a = t_0a = t_0a = t_0a = t_0a = t_0a = t_0a = t_0a = t_0
+28:     t_2 = 1t_2 = 1t_2 = 1t_2 = 1t_2 = 1t_2 = 1t_2 = 1t_2 = 1
+29:     if flag == t_2 goto 32if flag == t_2 goto 32if flag == t_2 goto 32if flag == t_2 goto 32if flag == t_2 goto 32if flag == t_2 goto 32if flag == t_2 goto 32if flag == t_2 goto 32
+30:     goto 35goto 35goto 35goto 35goto 35goto 35goto 35goto 35
+31:     goto 37goto 37goto 37goto 37goto 37goto 37goto 37goto 37
+32:     t_3 = 5t_3 = 5t_3 = 5t_3 = 5t_3 = 5t_3 = 5t_3 = 5t_3 = 5
+33:     b = t_3b = t_3b = t_3b = t_3b = t_3b = t_3b = t_3b = t_3
+34:     goto 37goto 37goto 37goto 37goto 37goto 37goto 37goto 37
+35:     t_5 = 4t_5 = 4t_5 = 4t_5 = 4t_5 = 4t_5 = 4t_5 = 4t_5 = 4
+36:     b = t_5b = t_5b = t_5b = t_5b = t_5b = t_5b = t_5b = t_5
+37:     param aparam aparam aparam aparam aparam aparam aparam a
+38:     param bparam bparam bparam bparam bparam bparam bparam b
+39:     t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2t_2 = call euclidGCD, 2
+40:     g = t_2g = t_2g = t_2g = t_2g = t_2g = t_2g = t_2g = t_2
+41:     t_4 = 0t_4 = 0t_4 = 0t_4 = 0t_4 = 0t_4 = 0t_4 = 0t_4 = 0
+42:     return t_4return t_4return t_4return t_4return t_4return t_4return t_4return t_4
 __________________________________________________________________________________________________________________________________
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
-euclidGCD                               int                 -                   4              0              euclidGCD
-main                                    int                 -                   4              4              main
+euclidGCD                               func                -                   0              0              euclidGCD
+main                                    func                -                   0              0              main
 ----------------------------------------------------------------------------------------------------------------------------------
 
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: euclidGCD                                             Parent Name: Global
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
 a                                       int                 -                   4              0              NULL
 b                                       int                 -                   4              4              NULL
 return                                  int                 -                   4              8              NULL
-t0                                      int                 0                   4              12             NULL
-t1                                      int                                     4              16             NULL
-t2                                      int                                     4              20             NULL
+t_0                                     int                 0                   4              12             NULL
+t_1                                     int                                     4              16             NULL
+t_2                                     int                                     4              20             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: main                                                  Parent Name: Global
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
 return                                  int                 -                   4              0              NULL
@@ -136,37 +136,37 @@ a                                       int                 -                   
 b                                       int                 -                   4              8              NULL
 g                                       int                 -                   4              12             NULL
 flag                                    int                 2                   4              16             NULL
-t0                                      int                 2                   4              20             NULL
-t1                                      int                 0                   4              24             NULL
+t_0                                     int                 2                   4              20             NULL
+t_1                                     int                 0                   4              24             NULL
 main.$0                                 block               -                   4              28             main.$0
 main.$1                                 block               -                   4              32             main.$1
-t2                                      int                                     4              36             NULL
-t3                                      int                                     4              40             NULL
-t4                                      int                 0                   4              44             NULL
+t_2                                     func                                    0              36             NULL
+t_3                                     int                                     4              36             NULL
+t_4                                     int                 0                   4              40             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: main.$0                                               Parent Name: main
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
-t0                                      int                 100                 4              0              NULL
-t1                                      int                                     4              4              NULL
-t2                                      int                 25                  4              8              NULL
-t3                                      int                                     4              12             NULL
+t_0                                     int                 100                 4              0              NULL
+t_1                                     int                                     4              4              NULL
+t_2                                     int                 25                  4              8              NULL
+t_3                                     int                                     4              12             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Table Name: main.$1                                               Parent Name: main
-__________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________
 Name                                    Type                Initial Value       Size           Offset         Nested
                                                                                                     
-t0                                      int                 20                  4              0              NULL
-t1                                      int                                     4              4              NULL
-t2                                      int                 1                   4              8              NULL
-t3                                      int                 5                   4              12             NULL
-t4                                      int                                     4              16             NULL
-t5                                      int                 4                   4              20             NULL
-t6                                      int                                     4              24             NULL
+t_0                                     int                 20                  4              0              NULL
+t_1                                     int                                     4              4              NULL
+t_2                                     int                 1                   4              8              NULL
+t_3                                     int                 5                   4              12             NULL
+t_4                                     int                                     4              16             NULL
+t_5                                     int                 4                   4              20             NULL
+t_6                                     int                                     4              24             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 

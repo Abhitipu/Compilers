@@ -630,7 +630,7 @@ static const yytype_int16 yyrline[] =
     1202,  1203,  1204,  1207,  1221,  1223,  1228,  1236,  1238,  1246,
     1248,  1252,  1254,  1259,  1261,  1266,  1276,  1287,  1292,  1306,
     1320,  1330,  1340,  1354,  1368,  1382,  1398,  1415,  1417,  1419,
-    1424,  1432,  1434,  1439,  1441,  1446,  1457,  1458,  1462,  1464
+    1424,  1432,  1434,  1439,  1441,  1446,  1458,  1459,  1463,  1465
 };
 #endif
 
@@ -3979,39 +3979,40 @@ yyreduce:
                     {
                         int next_instr=0;	 	
                         ST->parent=globalST;
+                        (yyvsp[-5].symp)->update(new symboltype("func"));
                         table_count = 0;
                         label_table.clear();
                         changeTable(globalST);                     //once we come back to this at the end, change the table to global Symbol table
                     }
-#line 3987 "ass5_19CS10069_19CS30007.tab.c"
+#line 3988 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 236:
-#line 1457 "ass5_19CS10069_19CS30007.y"
+#line 1458 "ass5_19CS10069_19CS30007.y"
                                      { }
-#line 3993 "ass5_19CS10069_19CS30007.tab.c"
+#line 3994 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 237:
-#line 1458 "ass5_19CS10069_19CS30007.y"
+#line 1459 "ass5_19CS10069_19CS30007.y"
                              { }
-#line 3999 "ass5_19CS10069_19CS30007.tab.c"
+#line 4000 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 238:
-#line 1463 "ass5_19CS10069_19CS30007.y"
+#line 1464 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 4005 "ass5_19CS10069_19CS30007.tab.c"
+#line 4006 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 239:
-#line 1465 "ass5_19CS10069_19CS30007.y"
+#line 1466 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 4011 "ass5_19CS10069_19CS30007.tab.c"
+#line 4012 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
 
-#line 4015 "ass5_19CS10069_19CS30007.tab.c"
+#line 4016 "ass5_19CS10069_19CS30007.tab.c"
 
       default: break;
     }
@@ -4243,7 +4244,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1468 "ass5_19CS10069_19CS30007.y"
+#line 1469 "ass5_19CS10069_19CS30007.y"
 
 /*Auxiliaries*/
 void yyerror(string s)

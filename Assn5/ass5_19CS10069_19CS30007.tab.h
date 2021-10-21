@@ -139,7 +139,7 @@ union YYSTYPE
     char unaryOp;       // unary operator
     int int_val;        // integer value
     char* char_val;     // char value
-    char float_val;    // float value
+    float float_val;    // float value
     int num_params;     // number of parameters
     int instr_number;   // instruction number: for backpatching
     Expression* expr;   // Expression

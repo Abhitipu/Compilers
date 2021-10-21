@@ -14,7 +14,7 @@
     char unaryOp;       // unary operator
     int int_val;        // integer value
     char* char_val;     // char value
-    char float_val;    // float value
+    float float_val;    // float value
     int num_params;     // number of parameters
     int instr_number;   // instruction number: for backpatching
     Expression* expr;   // Expression
@@ -33,7 +33,7 @@
 %token <symp> IDENTIFIER
 %token <int_val> INTEGER_CONST
 %token <char_val> CHAR_CONST
-%token <char_val> FLOAT_CONST
+%token <float_val> FLOAT_CONST
 %token <char_val> STRING_LITERAL
 
 %token PLUS MINUS MULT DIVIDE ARROW INCREMENT DECREMENT RSHIFT LSHIFT LT GT LEQ GEQ EQ NEQ BITWISE_OR LOGICAL_OR BITWISE_AND LOGICAL_AND XOR BITWISE_NOT LOGICAL_NOT ELLIPSIS MODULO ASGN ENUMERATION_CONST
@@ -53,6 +53,7 @@
 //Expressions
 %type <expr>
 	expression
+    constant
 	primary_expression 
 	multiplicative_expression
 	additive_expression
@@ -60,10 +61,10 @@
 	relational_expression
 	equality_expression
 	and_expression
-	exclusive_OR_expression
-	inclusive_OR_expression
-	logical_AND_expression
-	logical_OR_expression
+	exclusive_or_expression
+	inclusive_or_expression
+	logical_and_expression
+	logical_or_expression
 	conditional_expression
 	assignment_expression
 	expression_statement
@@ -179,36 +180,8 @@ changetable: %empty
 
 
 
-// constant:
-//                     INTEGER_CONST
-//                     { 
-//                         $$=new Expression();	
-//                         string p=convertIntToString($1);
-//                         $$->loc=gentemp(new symboltype("int"),p);
-//                         emit("=",$$->loc->name,p);
-//                     }
-//                     | FLOAT_CONST
-//                     {                                                                         // create new expression and store the value of the constant in a temporary
-//                         $$=new Expression();
-//                         $$->loc=gentemp(new symboltype("char"),$1);
-//                         emit("=",$$->loc->name,string($1));
-//                     }
-//                     | CHAR_CONST
-//                     {                                                                         // create new expression and store the value of the constant in a temporary
-//                         $$=new Expression();
-//                         $$->loc=gentemp(new symboltype("char"),$1);
-//                         emit("=",$$->loc->name,string($1));
-//                     }
-//                     ;
-
-primary_expression:
-                    IDENTIFIER
-                    {
-                        $$=new Expression();                                                  // create new expression and store pointer to ST entry in the location			
-                        $$->loc=$1;
-                        $$->type="not-boolean";
-                    }
-                    | INTEGER_CONST
+constant:
+                    INTEGER_CONST
                     { 
                         $$=new Expression();	
                         string p=convertIntToString($1);
@@ -218,8 +191,9 @@ primary_expression:
                     | FLOAT_CONST
                     {                                                                         // create new expression and store the value of the constant in a temporary
                         $$=new Expression();
-                        $$->loc=gentemp(new symboltype("char"),$1);
-                        emit("=",$$->loc->name,string($1));
+                        string p=convertFloatToString($1);
+                        $$->loc=gentemp(new symboltype("float"),p);
+                        emit("=",$$->loc->name,p);
                     }
                     | CHAR_CONST
                     {                                                                         // create new expression and store the value of the constant in a temporary
@@ -228,11 +202,17 @@ primary_expression:
                         emit("=",$$->loc->name,string($1));
                     }
                     ;
-                    | STRING_LITERAL
-                    {                                                                          // create new expression and store the value of the constant in a temporary
-                        $$=new Expression();
-                        $$->loc=gentemp(new symboltype("ptr"),$1);
-                        $$->loc->type->arrtype=new symboltype("char");
+
+primary_expression:
+                    IDENTIFIER
+                    {
+                        $$=new Expression();                                                  // create new expression and store pointer to ST entry in the location			
+                        $$->loc=$1;
+                        $$->type="not-boolean";
+                    }
+                    | constant
+                    { 
+                        $$ = $1; 
                     }
                     | '(' expression ')'
                     {                                                                          // simply equal to expression
@@ -658,10 +638,10 @@ and_expression:
                     }
                     ;
 
-exclusive_OR_expression:
+exclusive_or_expression:
                     and_expression
                     { $$=$1;/* Simple assign */ }
-                    | exclusive_OR_expression XOR and_expression
+                    | exclusive_or_expression XOR and_expression
                     {
                         if(!compareSymbolType($1->loc, $3->loc))    //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and emit
                         {
@@ -679,10 +659,10 @@ exclusive_OR_expression:
                     }
                     ;
 
-inclusive_OR_expression:
-                    exclusive_OR_expression
+inclusive_or_expression:
+                    exclusive_or_expression
                     { $$=$1;/* Simple assign */ }
-                    | inclusive_OR_expression BITWISE_OR exclusive_OR_expression
+                    | inclusive_or_expression BITWISE_OR exclusive_or_expression
                     { 
                         if(!compareSymbolType($1->loc, $3->loc))   //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and emit
                         { yyerror("Type Error in Program"); }
@@ -698,13 +678,13 @@ inclusive_OR_expression:
                     }
                     ;
 
-logical_AND_expression:
-                    inclusive_OR_expression
+logical_and_expression:
+                    inclusive_or_expression
                     { $$=$1;/* Simple assign */ }
-                    | logical_AND_expression LOGICAL_AND M inclusive_OR_expression
+                    | logical_and_expression LOGICAL_AND M inclusive_or_expression
                     { 
                         convertIntToBool($4);                                  //convert inclusive_or_expression int to bool	
-                        convertIntToBool($1);                                  //convert logical_AND_expression to bool
+                        convertIntToBool($1);                                  //convert logical_and_expression to bool
                         $$ = new Expression();                                 //make new boolean expression 
                         $$->type = "bool";
                         backpatch($1->truelist, $3);                           //if $1 is true, we move to $5
@@ -713,12 +693,12 @@ logical_AND_expression:
                     }
                     ;
 
-logical_OR_expression:
-                    logical_AND_expression
+logical_or_expression:
+                    logical_and_expression
                     { $$=$1;/* Simple assign */ }
-                    | logical_OR_expression LOGICAL_OR M logical_AND_expression
+                    | logical_or_expression LOGICAL_OR M logical_and_expression
                     { 
-                        convertIntToBool($4);			 //convert logical_AND_expression int to bool	
+                        convertIntToBool($4);			 //convert logical_and_expression int to bool	
                         convertIntToBool($1);			 //convert logical_or_expression to bool
                         $$ = new Expression();			 //make new boolean expression
                         $$->type = "bool";
@@ -729,9 +709,9 @@ logical_OR_expression:
                     ;
 
 conditional_expression:
-                    logical_OR_expression
+                    logical_or_expression
                     { $$=$1;/* Simple assign */ }
-                    | logical_OR_expression N '?' M expression N ':' M conditional_expression
+                    | logical_or_expression N '?' M expression N ':' M conditional_expression
                     {
                         //normal conversion method to get conditional expressions
                         $$->loc = gentemp($5->loc->type);       //generate temporary for expression
@@ -1014,23 +994,61 @@ declarator:
 
 
 direct_declarator:
-                    IDENTIFIER
+                    IDENTIFIER                 
                     {
-                        /* Add a new variable with var_type */
+                        //if ID, simply add a new variable of var_type
                         $$ = $1->update(new symboltype(var_type));
                         currSymbolPtr = $$;	
                     }
-                    | '(' declarator ')'
-                    { $$ = $2; /* simple assign */ }
-                    | direct_declarator '[' type_qualifier_list_opt assignment_expression_opt ']'
-                    {  }
-                    | direct_declarator '[' STATIC type_qualifier_list_opt assignment_expression ']'
-                    {  }
-                    | direct_declarator '[' type_qualifier_list STATIC assignment_expression ']'
-                    {  }
-                    | direct_declarator '[' type_qualifier_list_opt MULT ']'
-                    {  }
-                    | direct_declarator '(' changetable parameter_type_list ')'
+                    | '(' declarator ')' {$$=$2;}        //simply equate
+                    | direct_declarator '[' type_qualifier_list assignment_expression ']' {	}
+                    | direct_declarator '[' type_qualifier_list ']' {	}
+                    | direct_declarator '[' assignment_expression ']' 
+                    {
+                        symboltype *t = $1 -> type;
+                        symboltype *prev = NULL;
+                        while(t->type == "arr") 
+                        {
+                            prev = t;	
+                            t = t->arrtype;      //keep moving recursively to get basetype
+                        }
+                        if(prev==NULL) 
+                        {
+                            int temp = atoi($3->loc->val.c_str());      //get initial value
+                            symboltype* s = new symboltype("arr", $1->type, temp);        //create new symbol with that initial value
+                            $$ = $1->update(s);   //update the symbol table
+                        }
+                        else 
+                        {
+                            prev->arrtype =  new symboltype("arr", t, atoi($3->loc->val.c_str()));     //similar arguments as above		
+                            $$ = $1->update($1->type);
+                        }
+                    }
+                    | direct_declarator '[' ']' 
+                    {
+                        symboltype *t = $1 -> type;
+                        symboltype *prev = NULL;
+                        while(t->type == "arr") 
+                        {
+                            prev = t;	
+                            t = t->arrtype;         //keep moving recursively to base type
+                        }
+                        if(prev==NULL) 
+                        {
+                            symboltype* s = new symboltype("arr", $1->type, 0);    //no initial values, simply keep 0
+                            $$ = $1->update(s);
+                        }
+                        else 
+                        {
+                            prev->arrtype =  new symboltype("arr", t, 0);
+                            $$ = $1->update($1->type);
+                        }
+                    }
+                    | direct_declarator '[' STATIC type_qualifier_list assignment_expression ']' {	}
+                    | direct_declarator '[' STATIC assignment_expression ']' {	}
+                    | direct_declarator '[' type_qualifier_list MULT ']' {	}
+                    | direct_declarator '[' MULT ']' {	}
+                    | direct_declarator '(' changetable parameter_type_list ')' 
                     {
                         ST->name = $1->name;	
                         if($1->type->type !="void") 
@@ -1045,7 +1063,7 @@ direct_declarator:
                     }
                     | direct_declarator '(' identifier_list ')' {	}
                     | direct_declarator '(' changetable ')' 
-                    {        //similar as above , CHECK
+                    {        //similar as above
                         ST->name = $1->name;
                         if($1->type->type !="void") 
                         {
@@ -1064,10 +1082,6 @@ type_qualifier_list_opt:
                     | %empty {  }
                     ;
 
-assignment_expression_opt:
-                    assignment_expression {  }
-                    | %empty { /*CHECK */ }
-                    ;
 
 pointer:
                     MULT type_qualifier_list_opt 
@@ -1429,7 +1443,7 @@ external_declaration:
                     ;
 
 function_definition:
-                    declaration_specifiers declarator declaration_list_opt compound_statement
+                    declaration_specifiers declarator declaration_list_opt changetable '{' block_item_list_opt '}' 
                     {
                         int next_instr=0;	 	
                         ST->parent=globalST;

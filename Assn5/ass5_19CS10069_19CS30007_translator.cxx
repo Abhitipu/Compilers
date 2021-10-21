@@ -157,7 +157,7 @@ void symtable::print()                                                          
     generateSpaces(36);
 
     cout<<"Type";                                                                                // Type of the symbol table entry
-    generateSpaces(16);
+    generateSpaces(26);
 
     cout<<"Initial Value";                                                                       // Initial Value of the symbol table entry
     generateSpaces(7);
@@ -179,7 +179,7 @@ void symtable::print()                                                          
 
         string rec_type=printType(it.type);                                                          // Use PrintType to print type of the symbol entry
         cout << rec_type;
-        generateSpaces(20-rec_type.length());
+        generateSpaces(30-rec_type.length());
 
         cout << it.val;                                                                         // Print initial value of the current symbol table entry
         generateSpaces(20-it.val.length());
@@ -561,7 +561,9 @@ bool compareSymbolType(symboltype* t1,symboltype* t2)                           
 
 void generateSpaces(int n)                                                                              // Generate required number of spaces
 {
-    while(n--) cout<<" ";
+    cout<<" ";
+    n--;
+    while(n-- > 0) cout<<" ";
 }
 
 int nextinstr() 

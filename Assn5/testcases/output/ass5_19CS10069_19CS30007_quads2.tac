@@ -13,91 +13,94 @@ ________________________________________________________________________________
 7:     *b = temp
 8:     return 
 
-9: division: 
-10:     t_0 = a / b
-11:     t_1 = float2int(t_0)
-12:     quotient = t_1
-13:     return quotient
+9: areaOfCircle: 
+10:     t_0 = 3.14
+11:     pi = t_0
+12:     rSquare = r
+13:     t_1 = int2float(rSquare)
+14:     area = t_1
+15:     return area
 
-14: main: 
-15:     t_0 = 0
-16:     q = t_0
-17:     t_1 = 0
-18:     r = t_1
-19:     t_2 = 2.5
-20:     x = t_2
-21:     param x
-22:     t_3 = 1.2
-23:     param t_3
-24:     t_4 = call division, 2
-25:     q = t_4
-26:     t_6 = 10
-27:     r = t_6
-28:     t_8 = &q
-29:     param t_8
-30:     t_9 = &r
-31:     param t_9
-32:     t_10 = call swapTwoNumbers, 2
-33:     t_11 = 0
-34:     return t_11
+16: main: 
+17:     t_0 = 8
+18:     q = t_0
+19:     t_1 = 2
+20:     r = t_1
+21:     t_2 = 2.5
+22:     x = t_2
+23:     param r
+24:     t_3 = call areaOfCircle, 1
+25:     area = t_3
+26:     t_5 = &q
+27:     param t_5
+28:     t_6 = &r
+29:     param t_6
+30:     t_7 = call swapTwoNumbers, 2
+31:     param r
+32:     t_8 = call areaOfCircle, 1
+33:     area = t_8
+34:     t_10 = 0
+35:     return t_10
 __________________________________________________________________________________________________________________________________
 __________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-swapTwoNumbers                          func                -                   0              0              swapTwoNumbers
-division                                func                -                   0              0              division
-main                                    func                -                   0              0              main
+swapTwoNumbers                          func                          -                   0              0              swapTwoNumbers
+areaOfCircle                            func                          -                   0              0              areaOfCircle
+main                                    func                          -                   0              0              main
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
 Table Name: swapTwoNumbers                                        Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-a                                       ptr(int)            -                   8              0              NULL
-b                                       ptr(int)            -                   8              8              NULL
-temp                                    int                 -                   4              16             NULL
-t_0                                     int                                     4              20             NULL
-t_1                                     int                                     4              24             NULL
-t_2                                     int                                     4              28             NULL
-t_3                                     int                                     4              32             NULL
+a                                       ptr(int)                      -                   8              0              NULL
+b                                       ptr(int)                      -                   8              8              NULL
+temp                                    int                           -                   4              16             NULL
+t_0                                     int                                               4              20             NULL
+t_1                                     int                                               4              24             NULL
+t_2                                     int                                               4              28             NULL
+t_3                                     int                                               4              32             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
-Table Name: division                                              Parent Name: Global
+Table Name: areaOfCircle                                          Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-a                                       float               -                   4              0              NULL
-b                                       float               -                   4              4              NULL
-return                                  int                 -                   4              8              NULL
-quotient                                int                 -                   4              12             NULL
-t_0                                     float                                   4              16             NULL
-t_1                                     int                                     4              20             NULL
+r                                       int                           -                   4              0              NULL
+return                                  float                         -                   4              4              NULL
+pi                                      float                         3.14                4              8              NULL
+t_0                                     float                         3.14                4              12             NULL
+area                                    float                         -                   4              16             NULL
+rSquare                                 int                           -                   4              20             NULL
+t_1                                     float                                             4              24             NULL
+t_2                                     float                                             4              28             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
 Table Name: main                                                  Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-return                                  int                 -                   4              0              NULL
-q                                       int                 0                   4              4              NULL
-t_0                                     int                 0                   4              8              NULL
-r                                       int                 0                   4              12             NULL
-t_1                                     int                 0                   4              16             NULL
-x                                       float               2.5                 4              20             NULL
-t_2                                     float               2.5                 4              24             NULL
-t_3                                     float               1.2                 4              28             NULL
-t_4                                     func                                    0              32             NULL
-t_5                                     int                                     4              32             NULL
-t_6                                     int                 10                  4              36             NULL
-t_7                                     int                                     4              40             NULL
-t_8                                     ptr(int)                                8              44             NULL
-t_9                                     ptr(int)                                8              52             NULL
-t_10                                    func                                    0              60             NULL
-t_11                                    int                 0                   4              60             NULL
+return                                  int                           -                   4              0              NULL
+q                                       int                           8                   4              4              NULL
+t_0                                     int                           8                   4              8              NULL
+r                                       int                           2                   4              12             NULL
+t_1                                     int                           2                   4              16             NULL
+x                                       float                         2.5                 4              20             NULL
+t_2                                     float                         2.5                 4              24             NULL
+area                                    float                         -                   4              28             NULL
+t_3                                     func                                              0              32             NULL
+t_4                                     float                                             4              32             NULL
+t_5                                     ptr(int)                                          8              36             NULL
+t_6                                     ptr(int)                                          8              44             NULL
+t_7                                     func                                              0              52             NULL
+t_8                                     func                                              0              52             NULL
+t_9                                     float                                             4              52             NULL
+t_10                                    int                           0                   4              56             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 

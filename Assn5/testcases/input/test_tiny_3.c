@@ -1,53 +1,35 @@
-// declarations ( variables(int, float, char), 1D array, 2D array, functions) and arithmetic operations
-
-// global declarations
-float d = 2.3;
-int s, w[10];                            // 1D array declaration
-float z[2][2];                           // 2D array declaration
-int a = 4, *p, b;                        // pointer declaration
-void quotient(int i, float d);           // function declaration
-char c;		
-
-int fun(int a){
-	// nested blocks
-	int m;
-	m = 1;
-	{
-		int n;
-		n = 2;
-		{
-			int o;
-			o = 3;
-			{
-				int p;
-				p = 4;
-				{
-					int q;
-					q = 1<2?1:2;
-				}
-			}
-		}
-	}
+int f(int a, int b){
+    return a>>1 + b;
 }
 
-void main()
-{
-	// Variable Declaration
-	int x=120;
-	int y=17,i,j,k,l,m,n,o;
-	char ch='c', d = 'a';                // character definitions
+int fun(int x){
+    f(x, x);
+    {
+        int y = 0;
+        y = f(x, y);
+        {
+            int yy = 1;
+            yy = f(yy, y);
+        }
+    }
+}
 
-	// Arithmetic Operations
-	i = x+y;
-	j = x-y;
-	k = x*y;
-	l = x/y;
-	m = x%y;
-	n = x&y;
-	o = x|y;
-	
-	y = i<<2;
-	x = i>>1;
+int main(){
+    int dp[10][10];
+    int x = 10, r;
 
-	return 0;
+    for(int l=1;l<10;l++){
+        for(int i=0;i<10;i++){                        // NESTED FOR
+            for(int j=i+l;j<10;j++){
+                while(i<l && i>=0 || l<10){           // BOOLEAN CONJUGATED
+                    do{
+                        x = x>1?1:0;
+                        if(x<0)x++;
+                    } while(r<10);
+                }
+            }
+        }
+    }
+    r = 10;
+    fun(r);
 }

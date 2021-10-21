@@ -7,19 +7,20 @@ void swapTwoNumbers(int* a, int* b) //pointers
 	return;
 }
 
-int division(float a, float b)
+float areaOfCircle(int r)
 {
-	int quotient;
-	quotient = a/b; // type casting float -> int
-	return quotient;
+	float pi = 3.14, area;
+	int rSquare = r*r;
+	area = rSquare * pi; // type casting int -> float
+	return area;
 }
 
 int main()
 {
-	int q=0,r=0;
-	float x=2.5;
-	q = division(x,1.2);
-	r=10;
+	int q=8,r=2;
+	float x=2.5, area;
+	area = areaOfCircle(r);
 	swapTwoNumbers(&q,&r);
+	area = areaOfCircle(r);
 	return 0;
 }

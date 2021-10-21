@@ -3,137 +3,132 @@ ________________________________________________________________________________
 THREE ADDRESS CODE (TAC): 
 ________________________________________________________________________________________________________________________
 
-0: max: 
-1:     if x > y goto 4
-2:     goto 6
+0: abs: 
+1:     t_0 = 0
+2:     if x > t_0 goto 5
 3:     goto 7
-4:     ans = x
-5:     goto 7
-6:     ans = y
+4:     goto 15
+5:     ans = x
+6:     goto 15
 7:     t_2 = 0
-8:     if ans < t_2 goto 11
-9:     goto 14
-10:     goto 14
-11:     t_3 = -ans
-12:     ans = t_3
-13:     goto 14
-14:     return ans
+8:     if x < t_2 goto 11
+9:     goto 13
+10:     goto 15
+11:     ans = x
+12:     goto 15
+13:     t_4 = 0
+14:     ans = t_4
+15:     return ans
 
-15: min: 
-16:     if x > y goto 19
-17:     goto 20
-18:     goto 24
-19:     goto 22
-20:     t_0 = x
-21:     goto 24
-22:     t_0 = y
-23:     goto 24
-24:     ans = t_0
-25:     param x
-26:     param y
-27:     t_2 = call max, 2
+16: min: 
+17:     if x > y goto 20
+18:     goto 21
+19:     goto 25
+20:     goto 23
+21:     t_0 = x
+22:     goto 25
+23:     t_0 = y
+24:     goto 25
+25:     ans = t_0
+26:     t_2 = 1
+27:     ans = t_2
 28:     return ans
 
-29: cal: 
+29: absMin: 
 30:     param a
 31:     param b
 32:     t_0 = call min, 2
 33:     i = t_0
-34:     param a
-35:     param b
-36:     t_2 = call max, 2
-37:     j = t_2
-38:     t_4 = j - i
-39:     d = t_4
-40:     return d
+34:     param i
+35:     t_2 = call abs, 1
+36:     j = t_2
+37:     return j
 
-41: main: 
-42:     t_0 = 10
-43:     a = t_0
-44:     t_2 = 5
-45:     b = t_2
-46:     param a
-47:     param b
-48:     t_4 = call cal, 2
-49:     d = t_4
-50:     t_6 = 0
-51:     return t_6
+38: main: 
+39:     t_0 = 10
+40:     a = t_0
+41:     t_2 = 5
+42:     b = t_2
+43:     param a
+44:     param b
+45:     t_4 = call absMin, 2
+46:     d = t_4
+47:     t_6 = 0
+48:     return t_6
 __________________________________________________________________________________________________________________________________
 __________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-max                                     func                -                   0              0              max
-min                                     func                -                   0              0              min
-a                                       int                 -                   4              0              NULL
-cal                                     func                -                   0              4              cal
-main                                    func                -                   0              4              main
+abs                                     func                          -                   0              0              abs
+min                                     func                          -                   0              0              min
+a                                       int                           -                   4              0              NULL
+absMin                                  func                          -                   0              4              absMin
+main                                    func                          -                   0              4              main
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
-Table Name: max                                                   Parent Name: Global
+Table Name: abs                                                   Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-x                                       int                 -                   4              0              NULL
-y                                       int                 -                   4              4              NULL
-return                                  int                 -                   4              8              NULL
-ans                                     int                 -                   4              12             NULL
-t_0                                     int                                     4              16             NULL
-t_1                                     int                                     4              20             NULL
-t_2                                     int                 0                   4              24             NULL
-t_3                                     int                                     4              28             NULL
-t_4                                     int                                     4              32             NULL
+x                                       int                           -                   4              0              NULL
+return                                  int                           -                   4              4              NULL
+ans                                     int                           -                   4              8              NULL
+t_0                                     int                           0                   4              12             NULL
+t_1                                     int                                               4              16             NULL
+t_2                                     int                           0                   4              20             NULL
+t_3                                     int                                               4              24             NULL
+t_4                                     int                           0                   4              28             NULL
+t_5                                     int                                               4              32             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
 Table Name: min                                                   Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-x                                       int                 -                   4              0              NULL
-y                                       int                 -                   4              4              NULL
-return                                  int                 -                   4              8              NULL
-ans                                     int                 -                   4              12             NULL
-t_0                                     int                                     4              16             NULL
-t_1                                     int                                     4              20             NULL
-t_2                                     func                                    0              24             NULL
+x                                       int                           -                   4              0              NULL
+y                                       int                           -                   4              4              NULL
+return                                  int                           -                   4              8              NULL
+ans                                     int                           -                   4              12             NULL
+t_0                                     int                                               4              16             NULL
+t_1                                     int                                               4              20             NULL
+t_2                                     int                           1                   4              24             NULL
+t_3                                     int                                               4              28             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
-Table Name: cal                                                   Parent Name: Global
+Table Name: absMin                                                Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-a                                       int                 -                   4              0              NULL
-b                                       int                 -                   4              4              NULL
-return                                  int                 -                   4              8              NULL
-i                                       int                 -                   4              12             NULL
-j                                       int                 -                   4              16             NULL
-d                                       int                 -                   4              20             NULL
-t_0                                     func                                    0              24             NULL
-t_1                                     int                                     4              24             NULL
-t_2                                     func                                    0              28             NULL
-t_3                                     int                                     4              28             NULL
-t_4                                     int                                     4              32             NULL
-t_5                                     int                                     4              36             NULL
+a                                       int                           -                   4              0              NULL
+b                                       int                           -                   4              4              NULL
+return                                  int                           -                   4              8              NULL
+i                                       int                           -                   4              12             NULL
+j                                       int                           -                   4              16             NULL
+t_0                                     func                                              0              20             NULL
+t_1                                     int                                               4              20             NULL
+t_2                                     func                                              0              24             NULL
+t_3                                     int                                               4              24             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
 Table Name: main                                                  Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-return                                  int                 -                   4              0              NULL
-b                                       int                 -                   4              4              NULL
-d                                       int                 -                   4              8              NULL
-t_0                                     int                 10                  4              12             NULL
-t_1                                     int                                     4              16             NULL
-t_2                                     int                 5                   4              20             NULL
-t_3                                     int                                     4              24             NULL
-t_4                                     func                                    0              28             NULL
-t_5                                     int                                     4              28             NULL
-t_6                                     int                 0                   4              32             NULL
+return                                  int                           -                   4              0              NULL
+b                                       int                           -                   4              4              NULL
+d                                       int                           -                   4              8              NULL
+t_0                                     int                           10                  4              12             NULL
+t_1                                     int                                               4              16             NULL
+t_2                                     int                           5                   4              20             NULL
+t_3                                     int                                               4              24             NULL
+t_4                                     func                                              0              28             NULL
+t_5                                     int                                               4              28             NULL
+t_6                                     int                           0                   4              32             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 

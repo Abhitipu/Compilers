@@ -50,67 +50,67 @@ ________________________________________________________________________________
 __________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-fib                                     func                -                   0              0              fib
-main                                    func                -                   0              0              main
+fib                                     func                          -                   0              0              fib
+main                                    func                          -                   0              0              main
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
 Table Name: fib                                                   Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-n                                       int                 -                   4              0              NULL
-return                                  int                 -                   4              4              NULL
-f                                       arr(100,int)        -                   400            8              NULL
-t_0                                     int                 100                 4              408            NULL
-t_1                                     int                 0                   4              412            NULL
-t_2                                     int                                     4              416            NULL
-t_3                                     int                 0                   4              420            NULL
-t_4                                     int                                     4              424            NULL
-t_5                                     int                 1                   4              428            NULL
-t_6                                     int                                     4              432            NULL
-t_7                                     int                 1                   4              436            NULL
-t_8                                     int                                     4              440            NULL
-fib.FOR$0                               block               -                   4              444            fib.FOR$0
-t_9                                     int                                     4              448            NULL
-t_10                                    int                                     4              452            NULL
+n                                       int                           -                   4              0              NULL
+return                                  int                           -                   4              4              NULL
+f                                       arr(100,int)                  -                   400            8              NULL
+t_0                                     int                           100                 4              408            NULL
+t_1                                     int                           0                   4              412            NULL
+t_2                                     int                                               4              416            NULL
+t_3                                     int                           0                   4              420            NULL
+t_4                                     int                                               4              424            NULL
+t_5                                     int                           1                   4              428            NULL
+t_6                                     int                                               4              432            NULL
+t_7                                     int                           1                   4              436            NULL
+t_8                                     int                                               4              440            NULL
+fib.FOR$0                               block                         -                   4              444            fib.FOR$0
+t_9                                     int                                               4              448            NULL
+t_10                                    int                                               4              452            NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
 Table Name: fib.FOR$0                                             Parent Name: fib
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-i                                       int                 2                   4              0              NULL
-t_0                                     int                 2                   4              4              NULL
-t_1                                     int                                     4              8              NULL
-x                                       int                 -                   4              12             NULL
-t_2                                     int                                     4              16             NULL
-t_3                                     int                 1                   4              20             NULL
-t_4                                     int                                     4              24             NULL
-t_5                                     int                                     4              28             NULL
-t_6                                     int                                     4              32             NULL
-t_7                                     int                 2                   4              36             NULL
-t_8                                     int                                     4              40             NULL
-t_9                                     int                                     4              44             NULL
-t_10                                    int                                     4              48             NULL
-t_11                                    int                                     4              52             NULL
-t_12                                    int                                     4              56             NULL
+i                                       int                           2                   4              0              NULL
+t_0                                     int                           2                   4              4              NULL
+t_1                                     int                                               4              8              NULL
+x                                       int                           -                   4              12             NULL
+t_2                                     int                                               4              16             NULL
+t_3                                     int                           1                   4              20             NULL
+t_4                                     int                                               4              24             NULL
+t_5                                     int                                               4              28             NULL
+t_6                                     int                                               4              32             NULL
+t_7                                     int                           2                   4              36             NULL
+t_8                                     int                                               4              40             NULL
+t_9                                     int                                               4              44             NULL
+t_10                                    int                                               4              48             NULL
+t_11                                    int                                               4              52             NULL
+t_12                                    int                                               4              56             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
 Table Name: main                                                  Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
-Name                                    Type                Initial Value       Size           Offset         Nested
+Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-return                                  int                 -                   4              0              NULL
-n                                       int                 9                   4              4              NULL
-t_0                                     int                 9                   4              8              NULL
-fib_num                                 int                 -                   4              12             NULL
-t_1                                     func                                    0              16             NULL
-t_2                                     int                                     4              16             NULL
-t_3                                     int                 0                   4              20             NULL
+return                                  int                           -                   4              0              NULL
+n                                       int                           9                   4              4              NULL
+t_0                                     int                           9                   4              8              NULL
+fib_num                                 int                           -                   4              12             NULL
+t_1                                     func                                              0              16             NULL
+t_2                                     int                                               4              16             NULL
+t_3                                     int                           0                   4              20             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 

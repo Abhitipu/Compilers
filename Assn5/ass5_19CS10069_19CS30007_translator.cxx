@@ -1,6 +1,9 @@
 #include "ass5_19CS10069_19CS30007_translator.h"
 #include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <vector>
+#include <list>
+#include <string>
 
 
 //----------------------------------------------//
@@ -43,6 +46,7 @@ sym::sym(string name, string t, symboltype* arrtype, int width)
     nested = NULL;                                                                                 // no nested table
 }
 
+// Typecasting
 sym* sym::update(symboltype* t) 
 {
     type=t;                                                                                        // Update the new type
@@ -58,6 +62,7 @@ label::label(string _name, int _addr):name(_name),addr(_addr){}
 //------------------------------------------------------//
 //      Implementation of the Symbol Table functions    //
 //------------------------------------------------------//
+
 symtable::symtable(string name)                                                                    // constructor for a symbol table
 {
     (*this).name=name;                                                                             // Initialize the name of the symbol table
@@ -77,43 +82,38 @@ sym* symtable::lookup(string name)                                              
     }
 
     sym *ptr = nullptr;
-    if(this->parent)ptr = this->parent->lookup(name);
+    if(this->parent) ptr = this->parent->lookup(name);
 	/**
 	 * If the symbol has not been found 
-	 * in the symbol table then craete 
+	 * in the symbol table then create 
 	 * a new entry for the symbol table
 	 * and insert in the table
 	 * 
 	 * Return the pointer to this 
 	 * new element inserted
 	 */
+
+    // Activated only from the current symbol table
     if(ST == this and !ptr){
         symbol = new sym(name);
         table.push_back(*symbol);                                                                  // push the symbol into the table
         return &table.back();                                                                      // return the symbol
     } else if(ptr) return ptr;
+
     return nullptr;
 }
 
-void symtable::update()                                                                            // Update the symbol table and the offsets in it
+void symtable::update()                                                                            // Update the symbol table and sets the offsets in it
 {
     list<symtable*> tb;                                                                            // list of tables
-    int off;
+    int off = 0;
     list<sym>::iterator it;                                                                        // list iterator for elements in the symbol table
     it=table.begin();
-    while(it!=table.end()) 
-    {
-        if(it==table.begin()) 
-        {
-            it->offset=0;                                                                           // initial offset should be 0
-            off=it->size;
-        }
-        else 
-        {
-            it->offset=off;
-            off=it->offset+it->size;                                                                 // subsequent offset is the sum of the current offset and the space occupied by the current element
-        }
-        if(it->nested!=NULL) 
+
+    while(it!=table.end()) {
+        it->offset = off;
+        off += it->size;
+        if(it->nested!=NULL)                                                                        // if there is something nested, store it for future updates
             tb.push_back(it->nested);
         it++;
     }
@@ -127,11 +127,12 @@ void symtable::update()                                                         
     }
 }
 
+// TODO: Maybe use ostream
 void symtable::print()                                                                                // print a symbol table
 {
     int next_instr=0;
     list<symtable*> tb;                                                                               // list of tables
-    for(int t1=0;t1<65;t1++) std::cout<<"__";                                                         // print lines for the border of the table
+    for(int i=0;i<65;i++) std::cout<<"__";                                                            // print lines for the border of the table
     std::cout<<std::endl;
 
     std::cout << "Table Name: " << (*this).name ;
@@ -226,7 +227,7 @@ quad::quad(string res,int arg1,string op,string arg2)
 	(*this).res=res;	
 }
 
-// --------- (string, int, string, string)
+// --------- (string, float, string, string)
 quad::quad(string res,float arg1,string op,string arg2)
 {
 	(*this).op=op;
@@ -275,13 +276,13 @@ void quad::print()
 	else if(op=="=") std::cout<<res<<" = "<<arg1 ;	
 
     ///////////////////////////////////////
-    //         SHIFT OPERATORS           //
+    //         ASSIGNMENT + OPERATION    //
     ///////////////////////////////////////
 
-	else if(op=="=&") std::cout<<res<<" = &"<<arg1;
-	else if(op=="=*") std::cout<<res<<" = *"<<arg1;
-	else if(op=="*=") std::cout<<"*"<<res<<" = "<<arg1;
-	else if(op=="uminus") std::cout<<res<<" = -"<<arg1;
+	else if(op=="=&") std::cout<<res<<" = &"<<arg1;         // reference
+	else if(op=="=*") std::cout<<res<<" = *"<<arg1;         // pointer
+	else if(op=="*=") std::cout<<"*"<<res<<" = "<<arg1;     // multiplication
+	else if(op=="uminus") std::cout<<res<<" = -"<<arg1;         
 	else if(op=="~") std::cout<<res<<" = ~"<<arg1;
 	else if(op=="!") std::cout<<res<<" = !"<<arg1;
 
@@ -394,11 +395,12 @@ void emit(string op, string res, float arg1, string arg2)
  */
 sym* gentemp(symboltype* t, string str_new) 
 {                                                                                                       // generate temp variable
-    string tmp_name = "t"+convertIntToString(ST->count++);                                              // generate name of temporary variable
+    string tmp_name = "__t"+convertIntToString(ST->count++);                                              // generate name of temporary variable
     sym* s = new sym(tmp_name);
     (*s).type = t;
     (*s).size=computeSize(t);                                                                           // calculate the size of the current symbol
     (*s).val = str_new;
+
     ST->table.push_back(*s);                                                                            // push the newly created symbol in the Symbol table
     return &ST->table.back();
 }
@@ -578,6 +580,7 @@ int nextinstr()
 
 int computeSize(symboltype* t)                                                                          // calculate size function
 {
+    // TODO: Remove Hardcoding Maybe make a map, no if else lol
     if(t->type.compare("void")==0) return bt.size[1];
     else if(t->type.compare("char")==0) return bt.size[2];
     else if(t->type.compare("int")==0) return bt.size[3];
@@ -590,6 +593,7 @@ int computeSize(symboltype* t)                                                  
 
 string printType(symboltype* t)                                                                         // Print type of variable(imp for multidimensional arrays)
 {
+    // TODO: change this also
     if(t==NULL) return bt.type[0];
     if(t->type.compare("void")==0)	return bt.type[1];
     else if(t->type.compare("char")==0) return bt.type[2];
@@ -612,7 +616,7 @@ int main()
     ////////////////////////////////////////
     //             BASIC TYPES            //
     ////////////////////////////////////////
-    
+    // TODO: update here
     bt.addType("null",0);                                                                               // Add base types initially
     bt.addType("void",0);
     bt.addType("char",1);

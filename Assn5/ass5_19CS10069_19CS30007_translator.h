@@ -1,6 +1,9 @@
 #ifndef __TRANSLATOR__H__
 #define __TRANSLATOR__H__
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <string>
 
 extern  char* yytext;
 extern  int yyparse();
@@ -40,7 +43,7 @@ extern string loop_name;                                                        
 extern vector<label>label_table;                                                           // table to store the labels
 
 //----------------------------------------------------------------------//
-//      Defination of structure of each element of the symbol table     //
+//      Definition of structure of each element of the symbol table     //
 //----------------------------------------------------------------------//
 class sym 
 {                                                                                          // For an entry in ST, we have
@@ -57,7 +60,7 @@ class sym
 };
 
 //--------------------------------------------------//
-//      Defination of the label symbol              //
+//      Definition of the label symbol              //
 //--------------------------------------------------//
 class label                                                                                // class of label symbols
 {
@@ -70,7 +73,7 @@ class label                                                                     
 };
 
 //--------------------------------------------------//
-//      Defination of the type of symbol            //
+//      Definition of the type of symbol            //
 //--------------------------------------------------//
 class symboltype 
 {                                                                                           // Class to store the type of the symbol
@@ -90,6 +93,7 @@ class symtable
     public:
         string name;                                                                        // Name of the Table
         int count;                                                                          // Count of the temporary variables
+        // TODO: change name to symbols
         list<sym> table;                                                                    // The table of symbols which is essentially a list of sym
         symtable* parent;                                                                   // Parent ST of the current ST
         
@@ -100,7 +104,7 @@ class symtable
 };
 
 //--------------------------------------------------//
-//      Defination of the struct of quad element    //
+//      Definition of the struct of quad element    //
 //--------------------------------------------------//
 class quad 
 {                                                                                            // A single quad has four components:
@@ -122,7 +126,7 @@ class quad
 };
 
 //----------------------------------------------------------//
-//          Defination of the quad array type               //
+//          Definition of the quad array type               //
 //----------------------------------------------------------//
 class quadArray 
 {                                                                                            // Quad Array Class declaration
@@ -132,19 +136,21 @@ class quadArray
 };
 
 //----------------------------------------------------------//
-//          Defination of the basic type                    //
+//          Definition of the basic type                    //
 //----------------------------------------------------------//
 class basicType 
 {                                                                                            // To denote a basic type
     public:
+    // update here
         vector<string> type;                                                                 // type name
         vector<int> size;                                                                    // size of the type
         void addType(string ,int );
 };
 
 //----------------------------------------------//
-//     Defination of the expression type        //
+//     Definition of the expression type        //
 //----------------------------------------------//
+// TODO: change to class?
 struct Expression {
     s* loc;                                                                                  // pointer to the symbol table entry
     string type;                                                                             // to store whether the expression is of type int or bool or float or char
@@ -170,6 +176,7 @@ struct Statement {
 //------------------------------------------------------------------//
 //          Overloaded emit function used by the parser             //
 //------------------------------------------------------------------//
+// TODO: Make static
 void emit(string , string , string arg1="", string arg2 = "");  
 void emit(string , string , int, string arg2 = "");		  
 void emit(string , string , float , string arg2 = "");   

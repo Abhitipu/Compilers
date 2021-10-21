@@ -9,8 +9,6 @@ int lot = 0;
 char of;
 int* history;
 
-int fib(int);
-
 // A really useless nested function
 int NestyFunction(int n) {
 	int k = 2;
@@ -43,7 +41,7 @@ int main() {
 
 	n=5, j=100, i=0;
 
-	my1DArray[1] = 234;
+	my1DArray[1] = -234;
 	int t1 = my1DArray[1];
 
 	my2DArray[5][3] = 122;
@@ -94,8 +92,3 @@ int main() {
 	return 0;
 }
 
-
-// Our slow fibonacci function
-int fib(int n) {
-	return fib(n-1) + fib(n-2);
-}

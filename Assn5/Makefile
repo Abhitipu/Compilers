@@ -27,7 +27,11 @@ test: a.out
 	@echo "TRANSLATING TEST FILE 7 \n(UNCONDITIONAL JUMP GOTO)==>\n\n"
 	./a.out < testcases/input/test_tiny_7.c > testcases/output/ass5_19CS10069_19CS30007_quads7.tac
 	@echo "Test File 7 Successfully Translated !\n"
-	
+
+	@echo "TRANSLATING TEST FILE 8 \n(UNCONDITIONAL JUMP GOTO)==>\n\n"
+	./a.out < testcases/input/test_tiny_8.c > testcases/output/ass5_19CS10069_19CS30007_quads8.tac
+	@echo "Test File 8 Successfully Translated !\n"
+
 	@echo "\nALL TEST FILES SUCCESSFULLY TRANSLATED !!\n"
 
 a.out: lex.yy.o ass5_19CS10069_19CS30007.tab.o ass5_19CS10069_19CS30007_translator.o

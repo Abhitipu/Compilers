@@ -3,174 +3,165 @@ ________________________________________________________________________________
 THREE ADDRESS CODE (TAC): 
 ________________________________________________________________________________________________________________________
 
-0: max: 
-1:     if a > b goto 4
-2:     goto 5
-3:     goto 9
-4:     goto 7
-5:     t_0 = b
-6:     goto 9
-7:     t_0 = a
-8:     goto 9
-9:     ans = t_0
-10:     return ans
-11:     t_0 = 100
+0: min: 
+1:     if a < b goto 4
+2:     goto 6
+3:     goto 6
+4:     return a
+5:     goto 6
+6:     return b
 
-12: func: 
-13:     t_1 = 100
-14:     t_2 = 0
-15:     t_3 = t_2 * 4
-16:     t_4 = 0
-17:     val[t_3] = t_4
-18:     t_6 = 10000
-19:     max_val = t_6
+7: MatrixChainMultiplication: 
+8:     if start == end goto 11
+9:     goto 14
+10:     goto 14
+11:     t_0 = 0
+12:     return t_0
+13:     goto 14
+14:     t_1 = 100000000
+15:     min_val = t_1
 
-20: func.FOR$0: 
-21:     t_0 = 1
-22:     i = t_0
-23:     if i <= n goto 28
-24:     goto 52
-25:     t_2 = i
-26:     i = i + 1
-27:     goto 23
+16: MatrixChainMultiplication.FOR$0: 
+17:     k = start
+18:     if k < end goto 23
+19:     goto 52
+20:     t_1 = k
+21:     k = k + 1
+22:     goto 18
+23:     param p
+24:     param start
+25:     param k
+26:     t_2 = call MatrixChainMultiplication, 3
+27:     param p
+28:     t_3 = 1
+29:     t_4 = k + t_3
+30:     param t_4
+31:     param end
+32:     t_5 = call MatrixChainMultiplication, 3
+33:     t_6 = t_2 * t_5
+34:     count = t_6
+35:     t_8 = 1
+36:     t_9 = start - t_8
+37:     t_10 = t_9 * 4
+38:     t_11 = p[t_10]
+39:     extra = t_11
+40:     t_12 = k * 4
+41:     t_13 = p[t_12]
+42:     extra = t_13
+43:     t_15 = end * 4
+44:     t_16 = p[t_15]
+45:     extra = t_16
+46:     count = extra
+47:     param min_val
+48:     param count
+49:     t_19 = call min, 2
+50:     min_val = t_19
+51:     goto 20
+52:     return min_val
 
-28: func.FOR$0.FOR$1: 
-29:     t_0 = 0
-30:     j = t_0
-31:     if j < i goto 36
-32:     goto 49
-33:     t_2 = j
-34:     j = j + 1
-35:     goto 31
-36:     param max_val
-37:     t_3 = j * 4
-38:     t_4 = price[t_3]
-39:     t_5 = i - j
-40:     t_6 = 1
-41:     t_7 = t_5 - t_6
-42:     t_8 = t_7 * 4
-43:     t_9 = val[t_8]
-44:     t_10 = t_4 + t_9
-45:     param t_10
-46:     t_11 = call max, 2
-47:     max_val = t_11
-48:     goto 33
-49:     t_3 = i * 4
-50:     val[t_3] = max_val
-51:     goto 25
-52:     t_7 = n * 4
-53:     t_8 = val[t_7]
-54:     return t_8
-
-55: main: 
-56:     goto 79
-57:     t_0 = 'a'
-58:     c = t_0
-59:     t_1 = 'x'
-60:     b = t_1
-61:     t_2 = 100
-62:     t_3 = 0
-63:     size = t_3
-64:     t_4 = 100
-65:     n = t_4
-
-66: main.FOR$0: 
-67:     t_0 = 0
-68:     i = t_0
-69:     if i < n goto 74
-70:     goto 77
-71:     t_2 = i
-72:     i = i + 1
-73:     goto 69
-74:     t_3 = i * 4
-75:     arr[t_3] = i
-76:     goto 71
-77:     t_5 = 0
-78:     ans = t_5
-79:     param arr
-80:     param size
-81:     t_6 = call func, 2
-82:     ans = t_6
-83:     t_8 = 0
-84:     return t_8
+53: main: 
+54:     t_0 = 6
+55:     t_1 = 0
+56:     t_2 = t_1 * 4
+57:     t_3 = 1
+58:     myInput[t_2] = t_3
+59:     t_5 = 1
+60:     t_6 = t_5 * 4
+61:     t_7 = 23
+62:     myInput[t_6] = t_7
+63:     t_9 = 2
+64:     t_10 = t_9 * 4
+65:     t_11 = 45
+66:     myInput[t_10] = t_11
+67:     t_13 = 3
+68:     t_14 = t_13 * 4
+69:     t_15 = 222
+70:     myInput[t_14] = t_15
+71:     t_17 = 4
+72:     t_18 = t_17 * 4
+73:     t_19 = 1
+74:     myInput[t_18] = t_19
+75:     t_21 = 5
+76:     t_22 = t_21 * 4
+77:     t_23 = 1222
+78:     myInput[t_22] = t_23
+79:     t_25 = 6
+80:     n = t_25
+81:     param myInput
+82:     t_26 = 1
+83:     param t_26
+84:     t_27 = 1
+85:     t_28 = n - t_27
+86:     param t_28
+87:     t_29 = call MatrixChainMultiplication, 3
+88:     minMults = t_29
+89:     t_30 = 0
+90:     return t_30
 __________________________________________________________________________________________________________________________________
 __________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL
 __________________________________________________________________________________________________________________________________________________
 Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-max                                     func                          -                   0              0              max
-func                                    func                          -                   0              0              func
+min                                     func                          -                   0              0              min
+MatrixChainMultiplication               func                          -                   0              0              MatrixChainMultiplication
 main                                    func                          -                   0              0              main
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
-Table Name: max                                                   Parent Name: Global
+Table Name: min                                                   Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
 Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
 a                                       int                           -                   4              0              NULL
 b                                       int                           -                   4              4              NULL
 return                                  int                           -                   4              8              NULL
-ans                                     int                           -                   4              12             NULL
-t_0                                     int                                               4              16             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
-Table Name: func                                                  Parent Name: Global
+Table Name: MatrixChainMultiplication                             Parent Name: Global
 __________________________________________________________________________________________________________________________________________________
 Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-price                                   arr(100,int)                  -                   400            0              NULL
-t_0                                     int                           100                 4              400            NULL
-n                                       int                           -                   4              404            NULL
-return                                  int                           -                   4              408            NULL
-val                                     arr(100,int)                  -                   400            412            NULL
-t_1                                     int                           100                 4              812            NULL
-t_2                                     int                           0                   4              816            NULL
-t_3                                     int                                               4              820            NULL
-t_4                                     int                           0                   4              824            NULL
-t_5                                     int                                               4              828            NULL
-i                                       int                           -                   4              832            NULL
-j                                       int                           -                   4              836            NULL
-max_val                                 int                           10000               4              840            NULL
-t_6                                     int                           10000               4              844            NULL
-func.FOR$0                              block                         -                   4              848            func.FOR$0
-t_7                                     int                                               4              852            NULL
-t_8                                     int                                               4              856            NULL
+p                                       arr(0,int)                    -                   0              0              NULL
+start                                   int                           -                   4              0              NULL
+end                                     int                           -                   4              4              NULL
+return                                  int                           -                   4              8              NULL
+t_0                                     int                           0                   4              12             NULL
+k                                       int                           -                   4              16             NULL
+min_val                                 int                           100000000           4              20             NULL
+t_1                                     int                           100000000           4              24             NULL
+count                                   int                           -                   4              28             NULL
+MatrixChainMultiplication.FOR$0         block                         -                   4              32             MatrixChainMultiplication.FOR$0
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
-Table Name: func.FOR$0                                            Parent Name: func
+Table Name: MatrixChainMultiplication.FOR$0                       Parent Name: MatrixChainMultiplication
 __________________________________________________________________________________________________________________________________________________
 Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
-t_0                                     int                           1                   4              0              NULL
+t_0                                     int                                               4              0              NULL
 t_1                                     int                                               4              4              NULL
 t_2                                     int                                               4              8              NULL
-func.FOR$0.FOR$1                        block                         -                   4              12             func.FOR$0.FOR$1
-t_3                                     int                                               4              16             NULL
-t_4                                     int                                               4              20             NULL
-----------------------------------------------------------------------------------------------------------------------------------
-
-__________________________________________________________________________________________________________________________________________________
-Table Name: func.FOR$0.FOR$1                                      Parent Name: func.FOR$0
-__________________________________________________________________________________________________________________________________________________
-Name                                    Type                          Initial Value       Size           Offset         Nested
-                                                                                                    
-t_0                                     int                           0                   4              0              NULL
-t_1                                     int                                               4              4              NULL
-t_2                                     int                                               4              8              NULL
-t_3                                     int                                               4              12             NULL
+t_3                                     int                           1                   4              12             NULL
 t_4                                     int                                               4              16             NULL
 t_5                                     int                                               4              20             NULL
-t_6                                     int                           1                   4              24             NULL
+t_6                                     int                                               4              24             NULL
 t_7                                     int                                               4              28             NULL
-t_8                                     int                                               4              32             NULL
-t_9                                     int                                               4              36             NULL
-t_10                                    int                                               4              40             NULL
-t_11                                    func                                              0              44             NULL
-t_12                                    int                                               4              44             NULL
+extra                                   int                           -                   4              32             NULL
+t_8                                     int                           1                   4              36             NULL
+t_9                                     int                                               4              40             NULL
+t_10                                    int                                               4              44             NULL
+t_11                                    int                                               4              48             NULL
+t_12                                    int                                               4              52             NULL
+t_13                                    int                                               4              56             NULL
+t_14                                    int                                               4              60             NULL
+t_15                                    int                                               4              64             NULL
+t_16                                    int                                               4              68             NULL
+t_17                                    int                                               4              72             NULL
+t_18                                    int                                               4              76             NULL
+t_19                                    func                                              0              80             NULL
+t_20                                    int                                               4              80             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 
 __________________________________________________________________________________________________________________________________________________
@@ -179,35 +170,39 @@ ________________________________________________________________________________
 Name                                    Type                          Initial Value       Size           Offset         Nested
                                                                                                     
 return                                  int                           -                   4              0              NULL
-L                                       int                           -                   4              4              NULL
-c                                       char                          'a'                 1              8              NULL
-t_0                                     char                          'a'                 1              9              NULL
-b                                       char                          'x'                 1              10             NULL
-t_1                                     char                          'x'                 1              11             NULL
-arr                                     arr(100,int)                  -                   400            12             NULL
-t_2                                     int                           100                 4              412            NULL
-size                                    int                           0                   4              416            NULL
-t_3                                     int                           0                   4              420            NULL
-i                                       int                           -                   4              424            NULL
-n                                       int                           100                 4              428            NULL
-t_4                                     int                           100                 4              432            NULL
-main.FOR$0                              block                         -                   4              436            main.FOR$0
-ans                                     int                           0                   4              440            NULL
-t_5                                     int                           0                   4              444            NULL
-t_6                                     func                                              0              448            NULL
-t_7                                     int                                               4              448            NULL
-t_8                                     int                           0                   4              452            NULL
-----------------------------------------------------------------------------------------------------------------------------------
-
-__________________________________________________________________________________________________________________________________________________
-Table Name: main.FOR$0                                            Parent Name: main
-__________________________________________________________________________________________________________________________________________________
-Name                                    Type                          Initial Value       Size           Offset         Nested
-                                                                                                    
-t_0                                     int                           0                   4              0              NULL
-t_1                                     int                                               4              4              NULL
-t_2                                     int                                               4              8              NULL
-t_3                                     int                                               4              12             NULL
-t_4                                     int                                               4              16             NULL
+myInput                                 arr(6,int)                    -                   24             4              NULL
+t_0                                     int                           6                   4              28             NULL
+t_1                                     int                           0                   4              32             NULL
+t_2                                     int                                               4              36             NULL
+t_3                                     int                           1                   4              40             NULL
+t_4                                     int                                               4              44             NULL
+t_5                                     int                           1                   4              48             NULL
+t_6                                     int                                               4              52             NULL
+t_7                                     int                           23                  4              56             NULL
+t_8                                     int                                               4              60             NULL
+t_9                                     int                           2                   4              64             NULL
+t_10                                    int                                               4              68             NULL
+t_11                                    int                           45                  4              72             NULL
+t_12                                    int                                               4              76             NULL
+t_13                                    int                           3                   4              80             NULL
+t_14                                    int                                               4              84             NULL
+t_15                                    int                           222                 4              88             NULL
+t_16                                    int                                               4              92             NULL
+t_17                                    int                           4                   4              96             NULL
+t_18                                    int                                               4              100            NULL
+t_19                                    int                           1                   4              104            NULL
+t_20                                    int                                               4              108            NULL
+t_21                                    int                           5                   4              112            NULL
+t_22                                    int                                               4              116            NULL
+t_23                                    int                           1222                4              120            NULL
+t_24                                    int                                               4              124            NULL
+n                                       int                           6                   4              128            NULL
+t_25                                    int                           6                   4              132            NULL
+minMults                                int                           -                   4              136            NULL
+t_26                                    int                           1                   4              140            NULL
+t_27                                    int                           1                   4              144            NULL
+t_28                                    int                                               4              148            NULL
+t_29                                    func                                              0              152            NULL
+t_30                                    int                           0                   4              152            NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 

@@ -15,7 +15,7 @@ int min(int x, int y)
    int ans;
    // TODO: check
    ans = x > y ? y : x; // ternary
-   ans = 1;
+   max(x,y);
    return ans;
 }
 

@@ -2354,12 +2354,12 @@ yyreduce:
                         //if we have multiplication
                         if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].A)->Array))         
                             cout<<"Type Error in Program"<< endl;	// error
-                        // else 								 //if types are compatible, generate new temporary and equate to the product
-                        // {
-                        //     $$ = new Expression();	
-                        //     $$->loc = gentemp(new symboltype($1->loc->type->type));
-                        //     emit("*", $$->loc->name, $1->loc->name, $3->Array->name);
-                        // }
+                        else 								 //if types are compatible, generate new temporary and equate to the product
+                        {
+                            (yyval.expr) = new Expression();	
+                            (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
+                            emit("*", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);
+                        }
                     }
 #line 2365 "ass5_19CS10069_19CS30007.tab.c"
     break;

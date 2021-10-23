@@ -80,7 +80,7 @@ sym* symtable::lookup(string name)                                              
     sym* symbol;
 
     // iterating over the table and checking
-    for(auto &it : table) {
+    for(auto &it : symbols) {
         if(it.name==name) 
             return &it;                                                                         // if the name of the symbol is found in the table then return the address of the element
     }
@@ -103,8 +103,8 @@ sym* symtable::lookup(string name)                                              
     // Activated only from the current symbol table
     if(ST == this and !ptr){
         symbol = new sym(name);
-        table.push_back(*symbol);                                                                  // push the symbol into the table
-        return &table.back();                                                                      // return the symbol
+        symbols.push_back(*symbol);                                                                  // push the symbol into the table
+        return &symbols.back();                                                                      // return the symbol
     } else if(ptr) 
         return ptr;
 
@@ -116,7 +116,7 @@ void symtable::update()                                                         
     list<symtable*> tb;                                                                            // list of tables
     int off = 0;
 
-    for(auto &it: table) {
+    for(auto &it: symbols) {
         it.offset = off;
         off += it.size;
         if(it.nested!=NULL)                                                                        // if there is something nested, store it for future updates
@@ -172,7 +172,7 @@ void symtable::print()                                                          
     generateSpaces(100);
     cout<<'\n';
 
-    for(auto &it : table) {                                // iterate through all the elements in the symbol table and print their details
+    for(auto &it : symbols) {                                // iterate through all the elements in the symbol table and print their details
     
         cout << it.name;                                                                        // Print name of the symbol entry	
         generateSpaces(40-it.name.length());
@@ -394,8 +394,8 @@ sym* gentemp(symboltype* t, string str_new)
     (*s).size=computeSize(t);                                                                           // calculate the size of the current symbol
     (*s).val = str_new;
 
-    ST->table.push_back(*s);                                                                            // push the newly created symbol in the Symbol table
-    return &ST->table.back();
+    ST->symbols.push_back(*s);                                                                            // push the newly created symbol in the Symbol table
+    return &ST->symbols.back();
 }
 
 

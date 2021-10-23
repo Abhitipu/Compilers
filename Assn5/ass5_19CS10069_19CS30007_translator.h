@@ -97,7 +97,7 @@ class symtable
         string name;                                                                        // Name of the Table
         int count;                                                                          // Count of the temporary variables
         // TODO: change name to symbols
-        list<sym> table;                                                                    // The table of symbols which is essentially a list of sym
+        list<sym> symbols;                                                                    // The table of symbols which is essentially a list of sym
         symtable* parent;                                                                   // Parent ST of the current ST
         
         symtable (string name="NULL");                                                      // Constructor

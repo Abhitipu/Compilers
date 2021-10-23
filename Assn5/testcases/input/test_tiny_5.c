@@ -1,28 +1,31 @@
-// nested if else and recursive functions  
-int euclidGCD(int a, int b) 
-{ 
-    if (a == 0) 
-        return b; 
-    return euclidGCD(b % a, a); 
+// Our famous gcd algorithm
+
+int fib(int n);
+
+int gcdAlgorithm(int a, int b) { 
+    if (a == 0) return b; 
+    return gcdAlgorithm(b % a, a); 
 } 
 
 int main()  
 {  
-    int a, b, g;
-    int flag=2;
-    if(flag==0)
-    {
-    	a=100;
-    	b=25;
+    int num1 = 10;
+    int num2 = 20;
+
+    if(num2 != 0) {
+        int g = euclidGCD(num1, num2);   // recursive function call
+        num1 /= g;
+        num2 /= g;
+    } else {
+        // cant divide by zeroooo!!
     }
-    else
-    {
-    	a=20;
-    	if(flag==1)   // nested if else
-    		b=5;
-    	else
-    		b=4;
-    }
-    g = euclidGCD(a, b);   // recursive function call
+
+    int xx = fib(100);  // this will take ages
+
     return 0;  
 }  
+
+// Our slow fibonacci function
+int fib(int n) {
+	return fib(n-1) + fib(n-2);
+}

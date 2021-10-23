@@ -4,14 +4,12 @@
     #include "ass5_19CS10069_19CS30007_translator.h"
     // #include "y.tab.h"
     #include "ass5_19CS10069_19CS30007.tab.h"
-    // int line = 1;
 
     extern YYSTYPE yylval;
     extern int line;
-    int line = 1; // check
+    int line = 1;
 %}
 
-/* %option noyywrap check */ 
 
 /* Start conditions */
 %x MULTI_COMMENT_STATE
@@ -90,7 +88,7 @@ ENUMERATION_CONST   {IDENTIFIER}
                                 return IDENTIFIER;
                             }
 {FLOATING_CONST}            {
-                                yylval.float_val = atof(yytext); // check
+                                yylval.float_val = atof(yytext);
                                 return FLOAT_CONST;
                             }
 {INTEGER_CONST}             {
@@ -101,9 +99,9 @@ ENUMERATION_CONST   {IDENTIFIER}
                                 yylval.char_val = yytext;
                                 return CHAR_CONST;
                             }
-"\n"                        { line++; printf("\n#################### LINE NO : %d ####################\n", line); }
+"\n"                        {  }
 {STRING_LITERAL}            {
-                                yylval.char_val = yytext; //check
+                                yylval.char_val = yytext;
                                 return STRING_LITERAL;
                             }
 
@@ -157,12 +155,12 @@ ENUMERATION_CONST   {IDENTIFIER}
 
 
 "//"                        {BEGIN(SINGLE_COMMENT_STATE);}
-<SINGLE_COMMENT_STATE>"\n"  {line++; printf("\n#################### LINE NO : %d ####################\n", line);BEGIN(INITIAL);}
+<SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL);}
 <SINGLE_COMMENT_STATE>.     {;}
 "/*"                        {BEGIN(MULTI_COMMENT_STATE);}
 <MULTI_COMMENT_STATE>"*/"   {BEGIN(INITIAL);}
 <MULTI_COMMENT_STATE>.      {;}
-<MULTI_COMMENT_STATE>"\n"   {line++; printf("\n#################### LINE NO : %d ####################\n", line);}
+<MULTI_COMMENT_STATE>"\n"   {;}
 [ \t]                       {;}
 %%
 

@@ -1,19 +1,19 @@
-// Dynamic Programming solution for n-th fibonacci number
-int fib(int n) 
-{ 
-  int f[100]; 
 
-  f[0] = 0; 
-  f[1] = 1; 
-  
-  for (int i = 2; i <= n; i++) 
-  { 
-      int x;
-      f[i] = f[i-1] + f[i-2]; 
-  } 
-  return f[n]; 
-} 
-  
+int checkPrime (int n) {
+  int i = 2;
+  int n1 = 1;
+  int flag = 0;
+  for(i = 2; i<n; i++) {
+      n1 = n%i;
+      if(n1 == 0) {
+	      flag = 1;
+	      break;
+	  }	
+  }
+
+  return (flag);
+}
+
 int main () 
 { 
   int n = 9; 

@@ -1,37 +1,36 @@
-// function calling and conditional statements (ternery and if-else)
-int max(int x, int y) 
-{
-   int ans;
-   if(x>y)  // if-else
-   	ans=x;
-   else
-   	ans=y;
-   if(ans<0)
-    ans = -ans;
-   return ans;
+// function calling and conditional statements (ternary and if-else)
+int abs(int x) {
+   	int ans;
+   	if(x > 0)  // if-else-if-else
+   		ans = x;
+   	else if( x < 0)
+   		ans= x;
+	else
+		ans = 0;
+    return ans;
 }
 
 int min(int x, int y) 
 {
    int ans;
-   ans = x > y ? y : x; // ternery
+   // TODO: check
+   ans = x > y ? y : x; // ternary
    max(x,y);
    return ans;
 }
 
 int a;
 
-int cal(int a, int b){
-	int i, j, d;
+int absMin(int a, int b){
+	int i, j;
 	i = min(a, b);
-	j = max(a, b);
-	d = j - i;
-	return d;
+	j = abs(i);
+	return j;
 }
 
 int main(){
 	int a, b, d;
 	a = 10, b = 5;
-	d = cal(a,b);
+	d = absMin(a,b);
 	return 0;
 }

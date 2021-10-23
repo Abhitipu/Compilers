@@ -1,35 +1,45 @@
-// Dynamic Programming solution for Rod cutting problem 
+// Matrix chain multiplication recursive
 
-int max(int a, int b) 
-{ 
-	int ans = a > b ? a : b;
-	return ans;
-} 
+int min(int a, int b) {
+	if (a < b)
+		return a;
+	return b;
+}
 
-int func(int price[100], int n) 
-{ 
-	int val[100]; 
-	val[0] = 0; 
-	int i, j; 
-	int max_val = 10000;   
-	for (i = 1; i<=n; i++) 
-	{ 
-		for (j = 0; j < i; j++) 
-			max_val = max(max_val, price[j] + val[i-j-1]); 
-		val[i] = max_val; 
-	} 
-	return val[n]; 
-} 
+int MatrixChainMultiplication(int p[], int start, int end)
+{
+	if (start == end)
+		return 0;
 
-int main() 
-{ 
-	goto L;
-	char c='a',b='x';
-	int arr[100], size=0; 
-	int i,n=100;
-	for(i=0;i<n;i++)
-		arr[i]=i; 
-	int ans = 0;
-	L : ans = func(arr, size); 
-	return 0; 
-} 
+	int k;
+	int min_val = 100000000;
+	int count;
+
+	for (k = start; k < end; k++) {
+		count = MatrixChainMultiplication(p, start, k) * MatrixChainMultiplication(p, k + 1, end);
+		// TODO: check expression (2 arrays multiplied)
+		int extra = p[start - 1];
+		extra *= p[k];
+		extra *= p[end];
+		count += extra;
+		min_val = min(min_val, count);
+	}
+
+	return min_val;
+}
+
+int main()
+{
+	int myInput[6];
+	myInput[0] = 1;
+	myInput[1] = 23;
+	myInput[2] = 45;
+	myInput[3] = 222;
+	myInput[4] = 1;
+	myInput[5]= 1222;
+	int n = 6;
+
+	int minMults = MatrixChainMultiplication(myInput, 1, n - 1);
+
+	return 0;
+}

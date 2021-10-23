@@ -349,22 +349,22 @@ void quadArray::print()                                                         
 //**************************************************************//
 
 //----------------- Emit a three address code TAC and add it to the Quad Array ------------
-void emit(string op, string res, string arg1, string arg2) 
+void quadArray::emit(string op, string res, string arg1, string arg2) 
 {
 	quad *q1= new quad(res,arg1,op,arg2);
-	Q.Array.push_back(*q1);
+	this->Array.push_back(*q1);
 }
 
-void emit(string op, string res, int arg1, string arg2) 
+void quadArray::emit(string op, string res, int arg1, string arg2) 
 {
     quad *q2= new quad(res,arg1,op,arg2);
-    Q.Array.push_back(*q2);
+    this->Array.push_back(*q2);
 }
 
-void emit(string op, string res, float arg1, string arg2) 
+void quadArray::emit(string op, string res, float arg1, string arg2) 
 {
     quad *q3= new quad(res,arg1,op,arg2);
-    Q.Array.push_back(*q3);
+    this->Array.push_back(*q3);
 }
 
 /**
@@ -455,12 +455,12 @@ Expression* convertBoolToInt(Expression* e)                                     
     {
         e->loc=gentemp(new symboltype("int"));                                                          // use general goto statements and standard procedure
         backpatch(e->truelist,nextinstr());
-        emit("=",e->loc->name,"true");
+        Q.emit("=",e->loc->name,"true");
         int p=nextinstr()+1;
         string str=convertIntToString(p);
-        emit("goto",str);
+        Q.emit("goto",str);
         backpatch(e->falselist,nextinstr());
-        emit("=",e->loc->name,"false");
+        Q.emit("=",e->loc->name,"false");
     }
     return e;
 }
@@ -470,9 +470,9 @@ Expression* convertIntToBool(Expression* e)                                     
     if(e->type!="bool")                
     {
         e->falselist=makelist(nextinstr());                                                             // update the falselist
-        emit("==","",e->loc->name,"0");                                                                 // emit general goto statements
+        Q.emit("==","",e->loc->name,"0");                                                                 // Q.emit general goto statements
         e->truelist=makelist(nextinstr());                                                              // update the truelist
-        emit("goto","");
+        Q.emit("goto","");
     }
     return e;
 }
@@ -484,12 +484,12 @@ sym* convertType(sym* s, string rettype)                                        
     {
         if(rettype=="int")                                                                              // converting float to int
         {
-            emit("=",temp->name,"float2int("+(*s).name+")");
+            Q.emit("=",temp->name,"float2int("+(*s).name+")");
             return temp;
         }
         else if(rettype=="char")                                                                        // or converting to char
         {
-            emit("=",temp->name,"float2char("+(*s).name+")");
+            Q.emit("=",temp->name,"float2char("+(*s).name+")");
             return temp;
         }
         return s;
@@ -498,12 +498,12 @@ sym* convertType(sym* s, string rettype)                                        
     {
         if(rettype=="float")                                                                            // converting int to float
         {
-            emit("=",temp->name,"int2float("+(*s).name+")");
+            Q.emit("=",temp->name,"int2float("+(*s).name+")");
             return temp;
         }
         else if(rettype=="char")                                                                        // or converting to char
         {
-            emit("=",temp->name,"int2char("+(*s).name+")");
+            Q.emit("=",temp->name,"int2char("+(*s).name+")");
             return temp;
         }
         return s;
@@ -512,12 +512,12 @@ sym* convertType(sym* s, string rettype)                                        
     {
         if(rettype=="int")                                                                              // converting char to int
         {
-            emit("=",temp->name,"char2int("+(*s).name+")");
+            Q.emit("=",temp->name,"char2int("+(*s).name+")");
             return temp;
         }
         if(rettype=="double")                                                                           // or converting to double
         {
-            emit("=",temp->name,"char2double("+(*s).name+")");
+            Q.emit("=",temp->name,"char2double("+(*s).name+")");
             return temp;
         }
         return s;

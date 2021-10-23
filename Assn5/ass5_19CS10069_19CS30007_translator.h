@@ -96,7 +96,6 @@ class symtable
     public:
         string name;                                                                        // Name of the Table
         int count;                                                                          // Count of the temporary variables
-        // TODO: change name to symbols
         list<sym> symbols;                                                                    // The table of symbols which is essentially a list of sym
         symtable* parent;                                                                   // Parent ST of the current ST
         
@@ -136,6 +135,13 @@ class quadArray
     public:
         vector<quad> Array;                                                                  // Simply an Array (vector) of quads
         void print();                                                                        // Print the quadArray
+        //------------------------------------------------------------------//
+        //          Overloaded emit function used by the parser             //
+        //------------------------------------------------------------------//
+        // TODO: Make static fuction of Quad Array
+        void emit(string , string , string arg1="", string arg2 = "");  
+        void emit(string , string , int, string arg2 = "");		  
+        void emit(string , string , float , string arg2 = "");   
 };
 
 //----------------------------------------------------------//
@@ -174,13 +180,7 @@ struct Statement {
     list<int> nextlist;                                                                      // nextlist for Statement with dangling exit
 };
 
-//------------------------------------------------------------------//
-//          Overloaded emit function used by the parser             //
-//------------------------------------------------------------------//
-// TODO: Make static
-void emit(string , string , string arg1="", string arg2 = "");  
-void emit(string , string , int, string arg2 = "");		  
-void emit(string , string , float , string arg2 = "");   
+
 
 /**
  * GENTEMP
@@ -235,5 +235,4 @@ int nextinstr();                                                                
 string printType(symboltype *);                                                              // print type of symbol
 void generateSpaces(int);
 
-//int line;
 #endif

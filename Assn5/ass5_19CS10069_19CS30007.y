@@ -158,7 +158,7 @@ N: %empty
 		  */
 		$$ = new Statement();
 		$$->nextlist=makelist(nextinstr());
-		emit("goto","");
+		Q.emit("goto","");
 	}
 	;
 
@@ -173,7 +173,7 @@ changetable: %empty
 		else 
 		{
 			changeTable(currSymbolPtr ->nested);						               // Function symbol table already exists	
-			emit("label", ST->name);
+			Q.emit("label", ST->name);
 		}
 	}
 	;
@@ -186,20 +186,20 @@ constant:
                         $$=new Expression();	
                         string p=convertIntToString($1);
                         $$->loc=gentemp(new symboltype("int"),p);
-                        emit("=",$$->loc->name,p);
+                        Q.emit("=",$$->loc->name,p);
                     }
                     | FLOAT_CONST
                     {                                                                         // create new expression and store the value of the constant in a temporary
                         $$=new Expression();
                         string p=convertFloatToString($1);
                         $$->loc=gentemp(new symboltype("float"),p);
-                        emit("=",$$->loc->name,p);
+                        Q.emit("=",$$->loc->name,p);
                     }
                     | CHAR_CONST
                     {                                                                         // create new expression and store the value of the constant in a temporary
                         $$=new Expression();
                         $$->loc=gentemp(new symboltype("char"),$1);
-                        emit("=",$$->loc->name,string($1));
+                        Q.emit("=",$$->loc->name,string($1));
                     }
                     ;
 
@@ -242,14 +242,14 @@ postfix_expression:
                             sym* t=gentemp(new symboltype("int"));
                             int p=computeSize($$->type);
                             string str=convertIntToString(p);
-                            emit("*",t->name,$3->loc->name,str);
-                            emit("+",$$->loc->name,$1->loc->name,t->name);
+                            Q.emit("*",t->name,$3->loc->name,str);
+                            Q.emit("+",$$->loc->name,$1->loc->name,t->name);
                         }
                         else 
                         {                        //if a 1D Array, simply calculate size
                             int p=computeSize($$->type);	
                             string str=convertIntToString(p);
-                            emit("*",$$->loc->name,$3->loc->name,str);
+                            Q.emit("*",$$->loc->name,$3->loc->name,str);
                         }
                     }
                     | postfix_expression '(' argument_expression_list_opt ')'
@@ -258,7 +258,7 @@ postfix_expression:
                         $$=new Array();	
                         $$->Array=gentemp($1->type);
                         string str=convertIntToString($3);
-                        emit("call",$$->Array->name,$1->Array->name,str);
+                        Q.emit("call",$$->Array->name,$1->Array->name,str);
                     }
                     | postfix_expression '.' IDENTIFIER
                     { }
@@ -269,16 +269,16 @@ postfix_expression:
                         //generate new temporary, equate it to old one and then add 1
                         $$=new Array();	
                         $$->Array=gentemp($1->Array->type);
-                        emit("=",$$->Array->name,$1->Array->name);
-                        emit("+",$1->Array->name,$1->Array->name,"1");
+                        Q.emit("=",$$->Array->name,$1->Array->name);
+                        Q.emit("+",$1->Array->name,$1->Array->name,"1");
                     }
                     | postfix_expression DECREMENT
                     {
                         //generate new temporary, equate it to old one and then subtract 1
                         $$=new Array();	
                         $$->Array=gentemp($1->Array->type);
-                        emit("=",$$->Array->name,$1->Array->name);
-                        emit("-",$1->Array->name,$1->Array->name,"1");	
+                        Q.emit("=",$$->Array->name,$1->Array->name);
+                        Q.emit("-",$1->Array->name,$1->Array->name,"1");	
                     }
                     | '(' type_name ')' '{' initializer_list '}'
                     { }
@@ -289,13 +289,13 @@ postfix_expression:
 argument_expression_list:
                     assignment_expression
                     {
-                        $$=1;                                      //one argument and emit param
-                        emit("param",$1->loc->name);	
+                        $$=1;                                      //one argument and Q.emit param
+                        Q.emit("param",$1->loc->name);	
                     }
                     | argument_expression_list ',' assignment_expression   
                     {
-                        $$=$1+1;                                  //one more argument and emit param		 
-                        emit("param",$3->loc->name);
+                        $$=$1+1;                                  //one more argument and Q.emit param		 
+                        Q.emit("param",$3->loc->name);
                     }
                     ;
 
@@ -316,13 +316,13 @@ unary_expression:
                     | INCREMENT unary_expression
                     {  	
                         //simply add 1
-                        emit("+",$2->Array->name,$2->Array->name,"1");		
+                        Q.emit("+",$2->Array->name,$2->Array->name,"1");		
                         $$=$2;
                     }
                     | DECREMENT unary_expression
                     {
                         //simply subtract 1
-                        emit("-",$2->Array->name,$2->Array->name,"1");
+                        Q.emit("-",$2->Array->name,$2->Array->name,"1");
                         $$=$2;
                     }
                     | unary_operator cast_expression
@@ -330,31 +330,31 @@ unary_expression:
                         $$=new Array();
                         switch($1)
                         {	  
-                            case '&':                                                  //address of something, then generate a pointer temporary and emit the quad
+                            case '&':                                                  //address of something, then generate a pointer temporary and Q.emit the quad
                                 $$->Array=gentemp(new symboltype("ptr"));
                                 $$->Array->type->arrtype=$2->Array->type; 
-                                emit("=&",$$->Array->name,$2->Array->name);
+                                Q.emit("=&",$$->Array->name,$2->Array->name);
                                 break;
-                            case '*':                                                   // value of something, then generate a temporary of the corresponding type and emit the quad	
+                            case '*':                                                   // value of something, then generate a temporary of the corresponding type and Q.emit the quad	
                                 $$->atype="ptr";
                                 $$->loc=gentemp($2->Array->type->arrtype);
                                 $$->Array=$2->Array;
-                                emit("=*",$$->loc->name,$2->Array->name);
+                                Q.emit("=*",$$->loc->name,$2->Array->name);
                                 break;
                             case '+':  
                                 $$=$2;
                                 break;                 //unary plus, do nothing
                             case '-':				   //unary minus, generate new temporary of the same base type and make it negative of current one
                                 $$->Array=gentemp(new symboltype($2->Array->type->type));
-                                emit("uminus",$$->Array->name,$2->Array->name);
+                                Q.emit("uminus",$$->Array->name,$2->Array->name);
                                 break;
                             case '~':                   //bitwise not, generate new temporary of the same base type and make it negative of current one
                                 $$->Array=gentemp(new symboltype($2->Array->type->type));
-                                emit("~",$$->Array->name,$2->Array->name);
+                                Q.emit("~",$$->Array->name,$2->Array->name);
                                 break;
                             case '!':				//logical not, generate new temporary of the same base type and make it negative of current one
                                 $$->Array=gentemp(new symboltype($2->Array->type->type));
-                                emit("!",$$->Array->name,$2->Array->name);
+                                Q.emit("!",$$->Array->name,$2->Array->name);
                                 break;
                         }
                     }
@@ -397,7 +397,7 @@ multiplicative_expression:
                         if($1->atype=="arr") 			   //if it is of type arr
                         {
                             $$->loc = gentemp($1->loc->type);	
-                            emit("=[]", $$->loc->name, $1->Array->name, $1->loc->name);     //emit with Array right
+                            Q.emit("=[]", $$->loc->name, $1->Array->name, $1->loc->name);     //Q.emit with Array right
                         }
                         else if($1->atype=="ptr")         //if it is of type ptr
                         { 
@@ -417,7 +417,7 @@ multiplicative_expression:
                         {
                             $$ = new Expression();	
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
-                            emit("*", $$->loc->name, $1->loc->name, $3->Array->name);
+                            Q.emit("*", $$->loc->name, $1->loc->name, $3->Array->name);
                         }
                     }
                     | multiplicative_expression DIVIDE cast_expression
@@ -431,7 +431,7 @@ multiplicative_expression:
                             //if types are compatible, generate new temporary and equate to the quotient
                             $$ = new Expression();
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
-                            emit("/", $$->loc->name, $1->loc->name, $3->Array->name);
+                            Q.emit("/", $$->loc->name, $1->loc->name, $3->Array->name);
                         }
                     }
                     | multiplicative_expression MODULO cast_expression     
@@ -442,7 +442,7 @@ multiplicative_expression:
                             //if types are compatible, generate new temporary and equate to the quotient
                             $$ = new Expression();
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
-                            emit("%", $$->loc->name, $1->loc->name, $3->Array->name);	
+                            Q.emit("%", $$->loc->name, $1->loc->name, $3->Array->name);	
                         }
                     }
                     ;
@@ -459,7 +459,7 @@ additive_expression:
                         {
                             $$ = new Expression();	
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
-                            emit("+", $$->loc->name, $1->loc->name, $3->loc->name);
+                            Q.emit("+", $$->loc->name, $1->loc->name, $3->loc->name);
                         }
                     }
                     | additive_expression MINUS multiplicative_expression
@@ -471,7 +471,7 @@ additive_expression:
                         {	
                             $$ = new Expression();	
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
-                            emit("-", $$->loc->name, $1->loc->name, $3->loc->name);
+                            Q.emit("-", $$->loc->name, $1->loc->name, $3->loc->name);
                         }
                     }
                     ;
@@ -487,7 +487,7 @@ shift_expression:
                         {		
                             $$ = new Expression();		
                             $$->loc = gentemp(new symboltype("int"));
-                            emit("<<", $$->loc->name, $1->loc->name, $3->loc->name);		
+                            Q.emit("<<", $$->loc->name, $1->loc->name, $3->loc->name);		
                         }
                     }
                     | shift_expression RSHIFT additive_expression
@@ -500,7 +500,7 @@ shift_expression:
                         {			
                             $$ = new Expression();	
                             $$->loc = gentemp(new symboltype("int"));
-                            emit(">>", $$->loc->name, $1->loc->name, $3->loc->name);			
+                            Q.emit(">>", $$->loc->name, $1->loc->name, $3->loc->name);			
                         }
                     }
                     ;
@@ -520,13 +520,13 @@ relational_expression:
                             $$->type = "bool";                         //new type is boolean
                             $$->truelist = makelist(nextinstr());     //makelist for truelist and falselist
                             $$->falselist = makelist(nextinstr()+1);
-                            emit("<", "", $1->loc->name, $3->loc->name);     //emit statement if a<b goto .. 
-                            emit("goto", "");	//emit statement goto ..
+                            Q.emit("<", "", $1->loc->name, $3->loc->name);     //Q.emit statement if a<b goto .. 
+                            Q.emit("goto", "");	//Q.emit statement goto ..
                         }
                     }
                     | relational_expression GT shift_expression
                     {
-                        // similar to above, check compatible types,make new lists and emit
+                        // similar to above, check compatible types,make new lists and Q.emit
                         if(!compareSymbolType($1->loc, $3->loc)) 
                         {
                             yyerror("Type Error in Program");
@@ -537,8 +537,8 @@ relational_expression:
                             $$->type = "bool";
                             $$->truelist = makelist(nextinstr());
                             $$->falselist = makelist(nextinstr()+1);
-                            emit(">", "", $1->loc->name, $3->loc->name);
-                            emit("goto", "");
+                            Q.emit(">", "", $1->loc->name, $3->loc->name);
+                            Q.emit("goto", "");
                         }	
                     }
                     | relational_expression LEQ shift_expression
@@ -553,8 +553,8 @@ relational_expression:
                             $$->type = "bool";
                             $$->truelist = makelist(nextinstr());
                             $$->falselist = makelist(nextinstr()+1);
-                            emit("<=", "", $1->loc->name, $3->loc->name);
-                            emit("goto", "");
+                            Q.emit("<=", "", $1->loc->name, $3->loc->name);
+                            Q.emit("goto", "");
                         }		
                     }
                     | relational_expression GEQ shift_expression
@@ -569,8 +569,8 @@ relational_expression:
                             $$->type = "bool";
                             $$->truelist = makelist(nextinstr());
                             $$->falselist = makelist(nextinstr()+1);
-                            emit(">=", "", $1->loc->name, $3->loc->name);
-                            emit("goto", "");
+                            Q.emit(">=", "", $1->loc->name, $3->loc->name);
+                            Q.emit("goto", "");
                         }
                     }
                     ;
@@ -592,8 +592,8 @@ equality_expression:
                             $$->type = "bool";
                             $$->truelist = makelist(nextinstr());            //make lists for new expression
                             $$->falselist = makelist(nextinstr()+1); 
-                            emit("==", "", $1->loc->name, $3->loc->name);      //emit if a==b goto ..
-                            emit("goto", "");				//emit goto ..
+                            Q.emit("==", "", $1->loc->name, $3->loc->name);      //Q.emit if a==b goto ..
+                            Q.emit("goto", "");				//Q.emit goto ..
                         }
                     }
                     | equality_expression NEQ relational_expression
@@ -611,8 +611,8 @@ equality_expression:
                             $$->type = "bool";
                             $$->truelist = makelist(nextinstr());
                             $$->falselist = makelist(nextinstr()+1);
-                            emit("!=", "", $1->loc->name, $3->loc->name);
-                            emit("goto", "");
+                            Q.emit("!=", "", $1->loc->name, $3->loc->name);
+                            Q.emit("goto", "");
                         }
                     }
                     ;
@@ -633,7 +633,7 @@ and_expression:
                             $$ = new Expression();
                             $$->type = "not-boolean";                   //result is not boolean
                             $$->loc = gentemp(new symboltype("int"));
-                            emit("&", $$->loc->name, $1->loc->name, $3->loc->name);               //emit the quad
+                            Q.emit("&", $$->loc->name, $1->loc->name, $3->loc->name);               //Q.emit the quad
                         }
                     }
                     ;
@@ -643,7 +643,7 @@ exclusive_or_expression:
                     { $$=$1;/* Simple assign */ }
                     | exclusive_or_expression XOR and_expression
                     {
-                        if(!compareSymbolType($1->loc, $3->loc))    //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and emit
+                        if(!compareSymbolType($1->loc, $3->loc))    //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and Q.emit
                         {
                             cout << "Type Error in Program"<< endl;
                         }
@@ -654,7 +654,7 @@ exclusive_or_expression:
                             $$ = new Expression();
                             $$->type = "not-boolean";
                             $$->loc = gentemp(new symboltype("int"));
-                            emit("^", $$->loc->name, $1->loc->name, $3->loc->name);
+                            Q.emit("^", $$->loc->name, $1->loc->name, $3->loc->name);
                         }
                     }
                     ;
@@ -664,7 +664,7 @@ inclusive_or_expression:
                     { $$=$1;/* Simple assign */ }
                     | inclusive_or_expression BITWISE_OR exclusive_or_expression
                     { 
-                        if(!compareSymbolType($1->loc, $3->loc))   //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and emit
+                        if(!compareSymbolType($1->loc, $3->loc))   //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and Q.emit
                         { yyerror("Type Error in Program"); }
                         else 
                         {
@@ -673,7 +673,7 @@ inclusive_or_expression:
                             $$ = new Expression();
                             $$->type = "not-boolean";
                             $$->loc = gentemp(new symboltype("int"));
-                            emit("|", $$->loc->name, $1->loc->name, $3->loc->name);
+                            Q.emit("|", $$->loc->name, $1->loc->name, $3->loc->name);
                         } 
                     }
                     ;
@@ -716,14 +716,14 @@ conditional_expression:
                         //normal conversion method to get conditional expressions
                         $$->loc = gentemp($5->loc->type);       //generate temporary for expression
                         $$->loc->update($5->loc->type);
-                        emit("=", $$->loc->name, $9->loc->name);      //make it equal to sconditional_expression
+                        Q.emit("=", $$->loc->name, $9->loc->name);      //make it equal to sconditional_expression
                         list<int> l = makelist(nextinstr());        //makelist next instruction
-                        emit("goto", "");              //prevent fallthrough
+                        Q.emit("goto", "");              //prevent fallthrough
                         backpatch($6->nextlist, nextinstr());        //after N, go to next instruction
-                        emit("=", $$->loc->name, $5->loc->name);
+                        Q.emit("=", $$->loc->name, $5->loc->name);
                         list<int> m = makelist(nextinstr());         //makelist next instruction
                         l = merge(l, m);						//merge the two lists
-                        emit("goto", "");						//prevent fallthrough
+                        Q.emit("goto", "");						//prevent fallthrough
                         backpatch($2->nextlist, nextinstr());   //backpatching
                         convertIntToBool($1);                   //convert expression to boolean
                         backpatch($1->truelist, $4);           //$1 true goes to expression
@@ -737,19 +737,19 @@ assignment_expression:
                     { $$=$1;/* Simple assign */ }
                     | unary_expression assignment_operator assignment_expression
                     {
-                        if($1->atype=="arr")          // if type is arr, simply check if we need to convert and emit
+                        if($1->atype=="arr")          // if type is arr, simply check if we need to convert and Q.emit
                         {
                             $3->loc = convertType($3->loc, $1->type->type);
-                            emit("[]=", $1->Array->name, $1->loc->name, $3->loc->name);		
+                            Q.emit("[]=", $1->Array->name, $1->loc->name, $3->loc->name);		
                         }
-                        else if($1->atype=="ptr")     // if type is ptr, simply emit
+                        else if($1->atype=="ptr")     // if type is ptr, simply Q.emit
                         {
-                            emit("*=", $1->Array->name, $3->loc->name);	
+                            Q.emit("*=", $1->Array->name, $3->loc->name);	
                         }
                         else                              //otherwise assignment
                         {
                             $3->loc = convertType($3->loc, $1->Array->type->type);
-                            emit("=", $1->Array->name, $3->loc->name);
+                            Q.emit("=", $1->Array->name, $3->loc->name);
                         }
                         
                         $$ = $3;
@@ -832,8 +832,8 @@ init_declarator:
                     { $$ = $1; }
                     | declarator ASGN initializer
                     {
-                        if($3->val!="") $1->val=$3->val;        //get the initial value and  emit it
-                        emit("=", $1->name, $3->name);	
+                        if($3->val!="") $1->val=$3->val;        //get the initial value and  Q.emit it
+                        Q.emit("=", $1->name, $3->name);	
                     }
                     ;
 
@@ -1297,9 +1297,9 @@ iteration_statement:
                         backpatch($10->nextlist, $6);	// M1 to go back to expression again
                         backpatch($7->truelist, $9);	// M2 to go to statement if the expression is true
                         $$->nextlist = $7->falselist;   //when expression is false, move out of loop
-                        // Emit to prevent fallthrough
+                        // Q.emit to prevent fallthrough
                         string str=convertIntToString($6);		
-                        emit("goto",str);	
+                        Q.emit("goto",str);	
                         loop_name = "";
                         changeTable(ST->parent);
                     }
@@ -1311,9 +1311,9 @@ iteration_statement:
                         backpatch($11->nextlist, $6);	// M1 to go back to expression again
                         backpatch($7->truelist, $10);	// M2 to go to statement if the expression is true
                         $$->nextlist = $7->falselist;   //when expression is false, move out of loop
-                        // Emit to prevent fallthrough
+                        // Q.emit to prevent fallthrough
                         string str=convertIntToString($6);		
-                        emit("goto",str);	
+                        Q.emit("goto",str);	
                         loop_name = "";
                         changeTable(ST->parent);
                     }
@@ -1346,7 +1346,7 @@ iteration_statement:
                         backpatch($11->nextlist, $7);	//after N, go back to M1
                         backpatch($14->nextlist, $9);	//statement go back to expression
                         string str=convertIntToString($9);
-                        emit("goto", str);				//prevent fallthrough
+                        Q.emit("goto", str);				//prevent fallthrough
                         $$->nextlist = $8->falselist;	//move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
@@ -1360,7 +1360,7 @@ iteration_statement:
                         backpatch($11->nextlist, $7);	//after N, go back to M1
                         backpatch($14->nextlist, $9);	//statement go back to expression
                         string str=convertIntToString($9);
-                        emit("goto", str);				//prevent fallthrough
+                        Q.emit("goto", str);				//prevent fallthrough
                         $$->nextlist = $8->falselist;	//move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
@@ -1374,7 +1374,7 @@ iteration_statement:
                         backpatch($11->nextlist, $7);	//after N, go back to M1
                         backpatch($15->nextlist, $9);	//statement go back to expression
                         string str=convertIntToString($9);
-                        emit("goto", str);				//prevent fallthrough
+                        Q.emit("goto", str);				//prevent fallthrough
                         $$->nextlist = $8->falselist;	//move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
@@ -1387,7 +1387,7 @@ iteration_statement:
                         backpatch($11->nextlist, $7);	//after N, go back to M1
                         backpatch($15->nextlist, $9);	//statement go back to expression
                         string str=convertIntToString($9);
-                        emit("goto", str);				//prevent fallthrough
+                        Q.emit("goto", str);				//prevent fallthrough
                         $$->nextlist = $8->falselist;	//move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
@@ -1400,7 +1400,7 @@ jump_statement:
                         $$ = new Statement();
                         label *l = find_label($2->name);
                         if(l){
-                            emit("goto","");
+                            Q.emit("goto","");
                             list<int>lst = makelist(nextinstr());
                             l->nextlist = merge(l->nextlist,lst);
                             if(l->addr!=-1)
@@ -1408,7 +1408,7 @@ jump_statement:
                         } else {
                             l = new label($2->name);
                             l->nextlist = makelist(nextinstr());
-                            emit("goto","");
+                            Q.emit("goto","");
                             label_table.push_back(*l);
                         }
                     }  
@@ -1419,12 +1419,12 @@ jump_statement:
                     | RETURN expression ';'
                     {
                         $$ = new Statement();	
-                        emit("return",$2->loc->name);               //emit return with the name of the return value
+                        Q.emit("return",$2->loc->name);               //Q.emit return with the name of the return value
                     }
                     | RETURN ';'
                     {
                         $$ = new Statement();	
-                        emit("return","");                         //simply emit return
+                        Q.emit("return","");                         //simply Q.emit return
                     }
                     ;
 

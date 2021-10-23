@@ -6,8 +6,7 @@ int min(int a, int b) {
 	return b;
 }
 
-int MatrixChainMultiplication(int p[], int start, int end)
-{
+int MatrixChainMultiplication(int p[], int start, int end) {
 	if (start == end)
 		return 0;
 
@@ -18,18 +17,14 @@ int MatrixChainMultiplication(int p[], int start, int end)
 	for (k = start; k < end; k++) {
 		count = MatrixChainMultiplication(p, start, k) * MatrixChainMultiplication(p, k + 1, end);
 		// TODO: check expression (2 arrays multiplied)
-		int extra = p[start - 1];
-		extra *= p[k];
-		extra *= p[end];
+		int extra = p[start - 1] * (p[end] * (p[k])); // second term in parenthesis
 		count += extra;
 		min_val = min(min_val, count);
 	}
-
 	return min_val;
 }
 
-int main()
-{
+int main() {
 	int myInput[6];
 	myInput[0] = 1;
 	myInput[1] = 23;

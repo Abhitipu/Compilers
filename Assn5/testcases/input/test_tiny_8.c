@@ -1,35 +1,34 @@
-int f(int a, int b){
-    return a>>1 + b;
+int doSomething(int a, int b, int c){
+    return (a >> 2) + (b << 2) + (c - 1);
 }
 
-int fun(int x){
-    f(x, x);
+int tryCallingMe(int ss){
+    int check = doSomething(ss+1, ss-2, ss / 2);
+
     {
-        int y = 0;
-        y = f(x, y);
-        {
-            int yy = 1;
-            yy = f(yy, y);
-        }
+        int cc = 2 + ss;
+
+        do {
+            int moreValues = doSomething(cc, cc+1, ss + check);
+            check += moreValues;
+        } while(cc-- > 0);
     }
+    return check;
 }
 
 int main(){
-    int dp[10][10];
-    int x = 10, r;
 
-    for(int l=1;l<10;l++){
-        for(int i=0;i<10;i++){                        // NESTED FOR
-            for(int j=i+l;j<10;j++){
-                while(i<l && i>=0 || l<10){           // BOOLEAN CONJUGATED
-                    do{
-                        x = x>1?1:0;
-                        if(x<0)x++;
-                    } while(r<10);
-                }
-            }
+    int dp[12][13];
+
+    for(int i = 0; i < 12; i++) {
+        for(int j = 0; j < 13; j++) {
+            dp[i][j] = tryCallingMe(i + j);
+            if(i)
+                dp[i][j] += dp[i-1][j];
+            if(j)
+                dp[i][j] += dp[i][j-1]; 
         }
     }
-    r = 10;
-    fun(r);
+
+    return 0;
 }

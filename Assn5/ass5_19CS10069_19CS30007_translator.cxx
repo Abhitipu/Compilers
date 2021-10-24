@@ -26,7 +26,6 @@ vector<label>label_table;                                                       
 // Utility variables
 string var_type;                                                                                   // Latest type found
 long long table_count;                                                                             // Count of the no of tables
-bool debug_on;                                                                                     // For debugging
 string loop_name;                                                                                  // Name of the loop
 int line = 1;                                                                                      // Line number
 
@@ -142,62 +141,62 @@ void symtable::print() {
     // We store all the nested symbol tables in a list
     list<symtable*> tb;                                                                               
 
-    for(int i=0;i<73;i++) 
+    for(int i=0;i<74;i++) 
         cout << "__";                                                            // For better readability
     cout<<'\n';
 
     cout << "Table Name: " << name ;
-	generateSpaces(53-name.length());
+	indentWithSpaces(54-name.length());
 	cout << " Parent Name: ";                                                                    
 
     if(!parent) 
-        cout<<"NULL"<<'\n';                                          // No parent -> NULL
+        cout<<"NULL"<<'\n';                                                     // No parent -> NULL
     else 
-        cout<<parent->name<<'\n';                                    // Print parents name if available
+        cout<<parent->name<<'\n';                                               // Print parents name if available
 
-    for(int i=0; i<73; i++) 
-        cout<<"__";                                                          // Design formatting
+    for(int i=0; i<74; i++) 
+        cout<<"__";                                                             // Design formatting
     cout<<'\n';
     
     // Table headers as per requirement
     cout<<"Name";                                                                                
-    generateSpaces(36);
+    indentWithSpaces(37);
 
     cout<<"Type";                                                                               
-    generateSpaces(26);
+    indentWithSpaces(27);
 
     cout<<"Initial Value";                                                                     
-    generateSpaces(7);
+    indentWithSpaces(8);
 
     cout<<"Size";                                                                             
-    generateSpaces(11);
+    indentWithSpaces(12);
 
     cout<<"Offset";                                                                          
-    generateSpaces(9);
+    indentWithSpaces(10);
 
     cout<<"Nested"<<'\n';                                                                  
-    generateSpaces(100);
+    indentWithSpaces(101);
     cout<<'\n';
 
     // Printing the symbols inside
     for(auto &it : symbols) {                                
         cout << it.name;                                                                        
-        generateSpaces(40-it.name.length());
+        indentWithSpaces(41-it.name.length());
 
         // Use PrintType to print type of the symbol entry, and it its a function print func
         string rec_type=(it.isItFunction)?"func":printType(it.type);                            
         cout << rec_type;
-        generateSpaces(30-rec_type.length());
+        indentWithSpaces(31-rec_type.length());
 
         // Print all the required information
         cout << it.val;                                                                         
-        generateSpaces(20-it.val.length());
+        indentWithSpaces(21-it.val.length());
 
         cout<<it.size;                                                                          
-        generateSpaces(15-to_string(it.size).length());
+        indentWithSpaces(16-to_string(it.size).length());
 
         cout<<it.offset;                                                                       
-        generateSpaces(15-to_string(it.offset).length());
+        indentWithSpaces(16-to_string(it.offset).length());
 
         // Check for nested tables
         if(it.nested==NULL) {                                                                 
@@ -210,8 +209,8 @@ void symtable::print() {
         }
     }
  
-    for(int i=0;i<130;i++) 
-        cout<<"-";
+    for(int i=0;i<74;i++) 
+        cout<<"--";
     cout<<"\n\n";
 
     // Recursively print nested symbol tables
@@ -305,11 +304,11 @@ void quad::type2() {
 */
 
 void quadArray::print() {                                                                                
-    for(int i=0;i<69;i++)  cout<<"__";
+    for(int i=0;i<74;i++)  cout<<"__";
     cout<<'\n';
 
     cout<<"THREE ADDRESS CODE (TAC): "<<'\n';                                                       
-    for(int i=0;i<69;i++) cout<<"__";
+    for(int i=0;i<74;i++) cout<<"__";
     cout<<'\n';    
     
     int j=0;
@@ -321,12 +320,12 @@ void quadArray::print() {
         }
         else {                                                                                          
             cout<<j<<": ";
-            generateSpaces(4);
+            indentWithSpaces(4);
             it.print();
         }
         j++;
     }
-    for(int i=0;i<69;i++) cout<<"__";                                                  
+    for(int i=0;i<74;i++) cout<<"__";                                                  
     cout<<'\n';
 }
 
@@ -481,14 +480,14 @@ sym* convertType(sym* s, string rettype) {
         }
         return s;
     }
-    else if((*s).type->type=="char") {                                                                    // if type char
+    else if((*s).type->type=="char") {                                                                    
         // char -> int
-        if(rettype=="int") {                                                                              // converting char to int
+        if(rettype=="int") {                                                                              
             Q.emit("=",temp->name,"char2int("+(*s).name+")");
             return temp;
         }
         // char -> float
-        if(rettype=="float") {                                                                           // or converting to float
+        if(rettype=="float") {                                                                           
             Q.emit("=",temp->name,"char2float("+(*s).name+")");
             return temp;
         }
@@ -509,19 +508,19 @@ void changeTable(symtable* newtable) {
     Initially called with 2 symbols then we may call with the types for further checking
 */
 
-bool compareSymbolType(sym*& s1,sym*& s2) {                                                               // Check if the symbols have same type or not
-    symboltype* type1=s1->type;                                                                         // get the basic type of symbol 1
-    symboltype* type2=s2->type;                                                                         // get the basic type of symbol 2
+bool compareSymbolType(sym*& s1,sym*& s2) {                                                               
+    symboltype* type1=s1->type;                                                                         
+    symboltype* type2=s2->type;                                                                        
     sym* temp;
     int flag=0;
     
-    if(compareSymbolType(type1,type2)) flag=1;                                                          // check if the two types are already equal
+    if(compareSymbolType(type1,type2)) flag=1;                                                        
     else if(s1!=(temp = convertType(s1,type2->type))) {
-        flag=1;                                                     // check if one can be converted to the other then convert them
+        flag=1;                                                     
         s1 = temp;
     }
     else if(s2!=(temp =convertType(s2,type1->type))){
-        flag=1;                                                     // check if one can be converted to the other then convert them
+        flag=1;                                                                                         // check if one can be converted to the other then convert them
         s2=temp;
     }
     if(flag)return true;                                                                                // if the two types are compatible return true
@@ -537,11 +536,11 @@ bool compareSymbolType(symboltype* t1,symboltype* t2) {
     else if(!t1 || !t2 || t1->type != t2->type)     // Any one is null or tyoes dont match
         return false;
     else 
-        return compareSymbolType(t1->arrtype,t2->arrtype);                                             // Otherwise we check in a recursive manner for arrays
+        return compareSymbolType(t1->arrtype,t2->arrtype);                                                  // Otherwise we check in a recursive manner for arrays
 }
 
 // Aiding in indentation
-void generateSpaces(int n) {                                                                              // Generate required number of spaces
+void indentWithSpaces(int n) {                                                                              
     cout<<" ";
     n--;
     while(n-- > 0) 
@@ -563,13 +562,14 @@ int computeSize(symboltype* t) {                                                
     return -1;
 }
 
-string printType(symboltype* t) {                                                                         // Print type of variable(imp for multidimensional arrays)
+// Prints the type of the symbol in the symbol table
+string printType(symboltype* t) {                                                                         
     if(t == NULL)
         return "NULL";
     else if(t->type == "ptr")
         return "ptr("+ printType(t->arrtype) + ")";
     else if(t->type == "arr") {
-        string str=convertIntToString(t->width);                                                        // recursive for arrays
+        string str=convertIntToString(t->width);                                                            // recursive for arrays
         return "arr("+str+","+printType(t->arrtype)+")";
     }
     else if(basicType :: getSize.count(t->type))
@@ -594,10 +594,9 @@ int main() {
     label_table.clear();
 
     table_count = 0;                                                                                    // count of nested table
-    // debug_on= 0;                                                                                        // debugging is off
     globalST=new symtable("Global");                                                                    // Global Symbol Table
-    ST=globalST;
-    parST=nullptr;
+    ST = globalST;
+    parST = NULL;
     loop_name = "";
 
     if(yyparse()){
@@ -607,6 +606,7 @@ int main() {
         globalST->update();                                                                                 // update the global Symbol Table
         cout<<"\n";
         Q.print();                                                                                          // print the three address codes
+        cout << "\nSYMBOL TABLES:\n\n";
         globalST->print();                                                                                  // print all Symbol Tables
     }
 };

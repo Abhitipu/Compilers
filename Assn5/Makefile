@@ -1,36 +1,36 @@
 test: a.out
 	
-	@echo "TRANSLATING TEST FILE 1 \n(2D ARRAYS and LOOPS)==>\n\n"
-	./a.out < testcases/input/test_tiny_1.c > testcases/output/ass5_19CS10069_19CS30007_quads1.tac
-	@echo "Test File 1 Successfully Translated !\n"
+	@echo "TEST 1"
+	./a.out < input/test_tiny_1.c > output/ass5_19CS10069_19CS30007_quads1.tac
+	@echo "\nTest 1 Successfully Translated !\n"
 
-	@echo "TRANSLATING TEST FILE 2 \n(TYPE CASTING AND POINTERS)==>\n\n"
-	./a.out < testcases/input/test_tiny_2.c > testcases/output/ass5_19CS10069_19CS30007_quads2.tac
-	@echo "Test File 2 Successfully Translated !\n"
+	@echo "TEST 2"
+	./a.out < input/test_tiny_2.c > output/ass5_19CS10069_19CS30007_quads2.tac
+	@echo "\nTest 2 Successfully Translated !\n"
 	
-	@echo "TRANSLATING TEST FILE 3 \n(ARITHMETIC EXPRESSIONS AND NESTED BLOCKS)==>\n\n"
-	./a.out < testcases/input/test_tiny_3.c > testcases/output/ass5_19CS10069_19CS30007_quads3.tac
-	@echo "Test File 3 Successfully Translated !\n"
+	@echo "TEST 3"
+	./a.out < input/test_tiny_3.c > output/ass5_19CS10069_19CS30007_quads3.tac
+	@echo "\nTest 3 Successfully Translated !\n"
 	
-	@echo "TRANSLATING TEST FILE 4 \n(FUNCTION CALL, TERNARY, IF-ELSE)==>\n\n"
-	./a.out < testcases/input/test_tiny_4.c > testcases/output/ass5_19CS10069_19CS30007_quads4.tac
-	@echo "Test File 4 Successfully Translated !\n"
+	@echo "TEST 4"
+	./a.out < input/test_tiny_4.c > output/ass5_19CS10069_19CS30007_quads4.tac
+	@echo "\nTest 4 Successfully Translated !\n"
 	
-	@echo "TRANSLATING TEST FILE 5 \n(NESTED IF-ELSE)==>\n\n"
-	./a.out < testcases/input/test_tiny_5.c > testcases/output/ass5_19CS10069_19CS30007_quads5.tac
-	@echo "Test File 5 Successfully Translated !\n"
+	@echo "TEST 5"
+	./a.out < input/test_tiny_5.c > output/ass5_19CS10069_19CS30007_quads5.tac
+	@echo "\nTest 5 Successfully Translated !\n"
 	
-	@echo "TRANSLATING TEST FILE 6 ==>\n"
-	./a.out < testcases/input/test_tiny_6.c > testcases/output/ass5_19CS10069_19CS30007_quads6.tac
-	@echo "Test File 6 Successfully Translated !\n"
+	@echo "TEST 6"
+	./a.out < input/test_tiny_6.c > output/ass5_19CS10069_19CS30007_quads6.tac
+	@echo "\nTest 6 Successfully Translated !\n"
 	
-	@echo "TRANSLATING TEST FILE 7 \n(UNCONDITIONAL JUMP GOTO)==>\n\n"
-	./a.out < testcases/input/test_tiny_7.c > testcases/output/ass5_19CS10069_19CS30007_quads7.tac
-	@echo "Test File 7 Successfully Translated !\n"
+	@echo "TEST 7"
+	./a.out < input/test_tiny_7.c > output/ass5_19CS10069_19CS30007_quads7.tac
+	@echo "\nTest 7 Successfully Translated !\n"
 
-	@echo "TRANSLATING TEST FILE 8 \n(UNCONDITIONAL JUMP GOTO)==>\n\n"
-	./a.out < testcases/input/test_tiny_8.c > testcases/output/ass5_19CS10069_19CS30007_quads8.tac
-	@echo "Test File 8 Successfully Translated !\n"
+	@echo "TEST 8"
+	./a.out < input/test_tiny_8.c > output/ass5_19CS10069_19CS30007_quads8.tac
+	@echo "\nTest 8 Successfully Translated !\n"
 
 	@echo "\nALL TEST FILES SUCCESSFULLY TRANSLATED !!\n"
 
@@ -64,4 +64,4 @@ clean:
 	   ass5_19CS10069_19CS30007.tab.o\
 	   ass5_19CS10069_19CS30007.output\
 	   ass5_19CS10069_19CS30007_translator.o\
-	   testcases/output/*
+	   output/*

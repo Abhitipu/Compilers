@@ -41,15 +41,13 @@ extern s* currSymbolPtr;                                                        
 extern quadArray Q;                                                                        // Global Quad Array : this stores the TAC in suitable format
 extern basicType bt;                                                                       // BT is an instance of Basic Types used to find the size of inbuilt data types
 extern long long int table_count;                                                          // denotes count of nested tables
-extern bool debug_on;                                                                      // bool for printing debug output
 extern string loop_name;                                                                   // Stores the name of the loop
 extern vector<label>label_table;                                                           // table to store the labels
 
 //
 //      Definition of structure of each element of the symbol table
 //
-class sym 
-{                                                                                          // For an entry in Symbol Table
+class sym  {                                                                                          // For an entry in Symbol Table
 	public:
         string name;                                                                       // name of the symbol
         symboltype *type;                                                                  // type of the symbol, this give us more methods relevant to type
@@ -108,10 +106,9 @@ class symtable
 };
 
 //
-//      Definition of the struct of quad element
+//      Definition of the Class quad 
 //
-class quad 
-{                                                                                            // quad has four components:
+class quad {                                                                                 // quad has four components:
     public:
         string res;                                                                          // Result
         string op;                                                                           // Operator - the op code and type of TAC depends on this
@@ -119,48 +116,47 @@ class quad
         string arg2;                                                                         // Argument 2    
                                                                                              // res = op(arg1, arg2);
 
-	    //----------Print the Quad--------------
+	    // Used for printing
         void print();	
         void type1();                                                                        // for printing binary operators
         void type2();                                                                        // for printing relational operators and jumps
 
-        //----------Constructors---------------							
+        //Overloaded Constructors						
         quad (string , string , string op = "=", string arg2 = "");			
         quad (string , int , string op = "=", string arg2 = "");				
         quad (string , float , string op = "=", string arg2 = "");			
 };
 
-//----------------------------------------------------------//
-//          Definition of the quad array type               //
-//----------------------------------------------------------//
-class quadArray 
-{                                                                                            // Quad Array Class, simple vector of quads with emit function
+//
+//          Definition of the quad array type               
+//
+class quadArray {
+                                                                                             // Quad Array Class, simple vector of quads with emit function
     public:
         vector<quad> Array;                                                                  // Simply an Array (vector) of quads
         void print();                                                                        // Print the quadArray
-        //------------------------------------------------------------------//
-        //          Overloaded emit function used by the parser             //
-        //------------------------------------------------------------------//
+        //
+        //          Overloaded emit function used by the parser
+        //
         void emit(string , string , string arg1="", string arg2 = "");                       // Overloaded Emit function
         void emit(string , string , int, string arg2 = "");		  
         void emit(string , string , float , string arg2 = "");
         quadArray():Array(){}                                                                // simple constructor of QuadArray
 };
 
-//----------------------------------------------------------//
-//          Definition of the basic type                    //
-//----------------------------------------------------------//
+//
+//          Definition of the basic type
+//
 class basicType 
 {                                                                                            // To denote a basic type
     public:
         static map<string, int> getSize;                                                     // map: Type -> size of (Type)
 };
 
-//----------------------------------------------//
-//     Definition of the expression type        //
-//----------------------------------------------//
+//
+//     Definition of the expression type
+//
 
-// TODO: change to class? ok
 class Expression {
     public:
     s* loc;                                                                                  // pointer to the symbol table entry
@@ -168,7 +164,7 @@ class Expression {
     list<int> truelist;                                                                      // fruelist for boolean expressions
     list<int> falselist;                                                                     // falselist for boolean expressions
     list<int> nextlist;                                                                      // for statement expressions
-    // TODO check it , if works accept this or remove this
+
     Expression():loc(NULL),type(), truelist(), falselist(), nextlist(){}                      // Default constructor
     
 };
@@ -189,26 +185,10 @@ class Statement {
     Statement():nextlist(){}                                                                 // default constructor
 };
 
-
-
-/**
- * GENTEMP
- * -------
- * generates a temporary variable with T_{tempId}
- * and insert it to the current 
- * Symbole table 
- *
- * Parameter
- * ---------
- * symbol type * : pointer to the 
- *                 class of symbol type
- * init : initial value of the structure
- * 
- * Return
- * ------
- * Pointer to the newly created symbol 
- * table entry
- */
+/*
+    The gentemp function generates a new symbol (temporary variable) in the current symbol table
+    Then it returns the pointer to the Current entry
+*/
 s* gentemp (symboltype* , string init = "");
 
 /*
@@ -235,26 +215,26 @@ list<int> merge (list<int> &l1, list <int> &l2);                                
 
 label* find_label(string name);
 
-//------------- Type checking and Type conversion functions -------------
-string convertIntToString(int);                                                              // helper function to convert integer to string
-string convertFloatToString(float);                                                          // helper function to convert float to string
-Exps convertIntToBool(Exps);                                                                 // helper function to convert int expression to boolean
-Exps convertBoolToInt(Exps);                                                                 // helper function to convert boolean expression to int
+// Some Helper functions
+string convertIntToString(int);                                                              // Utility function to convert integer to string
+string convertFloatToString(float);                                                          // Utility function to convert float to string
+Exps convertIntToBool(Exps);                                                                 // Utility function to convert int expression to boolean
+Exps convertBoolToInt(Exps);                                                                 // Utility function to convert boolean expression to int
 
-s* convertType(sym*, string);                                                                // helper function for type conversion
-int computeSize (symboltype *);                                                              // helper function to calculate size of symbol type
-void changeTable (symtable* );                                                               // helper function to change current table
-bool compareSymbolType(sym* &s1, sym* &s2);                                                  // helper function to check for same type of two symbol table entries
-bool compareSymbolType(symboltype*, symboltype*);                                            // helper function to check for same type of two symboltype objects
+s* convertType(sym*, string);                                                                // Utility function for type conversion
+int computeSize (symboltype *);                                                              // Utility function to calculate size of symbol type
+void changeTable (symtable* );                                                               // Utility function to change current table
+bool compareSymbolType(sym* &s1, sym* &s2);                                                  // Utility function to check for same type of two symbol table entries
+bool compareSymbolType(symboltype*, symboltype*);                                            // Utility function to check for same type of two symboltype objects
 
 // Getting the address of the next instruction: Simply the size of the quad array
 int nextinstr();                                                                             // Returns the next instruction number
 
-//----------------------------------------------------------------------//
-//           Other helper function for printing                         //
-//----------------------------------------------------------------------//
+//
+//           Some Other function for printing
+//
 // Aiding in indentation
 string printType(symboltype *);                                                              // print type of symbol
-void generateSpaces(int);
+void indentWithSpaces(int);
 
 #endif

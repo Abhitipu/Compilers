@@ -1339,14 +1339,15 @@ selection_statement:
 iteration_statement:
                     WHILE W '(' X changetable M expression ')' M loop_statement
                     {	
-                        //while statement
-                        $$ = new Statement();    //create statement
-                        convertIntToBool($7);     //convert expression to bool
+                        // while statement
+                        $$ = new Statement();                                  
+                        convertIntToBool($7);                                 
                         
                         // Proper backpatching
                         backpatch($10->nextlist, $6);	            // M1 to go back to expression again
                         backpatch($7->truelist, $9);	            // M2 to go to statement if the expression is true
                         $$->nextlist = $7->falselist;               // If expression is false, Exit loop
+
                         // Q.emit to prevent fallthrough
                         string str=convertIntToString($6);		
                         Q.emit("goto",str);	
@@ -1436,6 +1437,7 @@ iteration_statement:
                         //for loop
                         $$ = new Statement();		                    // create new statement
                         convertIntToBool($8);                           // convert check expression to boolean
+
                         // Correctly backpatch lists
                         backpatch($8->truelist, $13);	                // if expression is true, then go to M2
                         backpatch($11->nextlist, $7);	                // after N, go back to M1
@@ -1491,12 +1493,12 @@ jump_statement:
                     | RETURN expression ';'
                     {
                         $$ = new Statement();	
-                        Q.emit("return",$2->loc->name);               // Q.emit return with the name of the return value
+                        Q.emit("return",$2->loc->name);             
                     }
                     | RETURN ';'
                     {
                         $$ = new Statement();	
-                        Q.emit("return","");                         // Q.emit return
+                        Q.emit("return","");                         
                     }
                     ;
 
@@ -1523,6 +1525,7 @@ function_definition:
                         // Add a function name
                         table_count = 0;
                         label_table.clear();                        
+
                         changeTable(globalST);                     // Change the table again to Global ST
                     }
                     ;
@@ -1597,8 +1600,7 @@ N: %empty
 %%
 
 /*Auxiliaries*/
-void yyerror(string s)
-{
+void yyerror(string s) {
     // print error
     cout<<s<<endl;
 }

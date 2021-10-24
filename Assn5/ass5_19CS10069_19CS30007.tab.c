@@ -115,7 +115,7 @@
 # define YY_YY_ASS5_19CS10069_19CS30007_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -629,9 +629,9 @@ static const yytype_int16 yyrline[] =
     1198,  1202,  1207,  1209,  1214,  1216,  1221,  1223,  1225,  1230,
     1232,  1234,  1239,  1240,  1245,  1246,  1247,  1250,  1264,  1266,
     1271,  1279,  1281,  1289,  1291,  1296,  1298,  1303,  1305,  1310,
-    1322,  1335,  1340,  1356,  1373,  1386,  1398,  1416,  1434,  1451,
-    1470,  1487,  1489,  1491,  1496,  1504,  1506,  1511,  1513,  1518,
-    1531,  1532,  1536,  1538,  1542,  1549,  1556,  1563,  1570,  1586
+    1322,  1335,  1340,  1357,  1374,  1387,  1399,  1417,  1435,  1453,
+    1472,  1489,  1491,  1493,  1498,  1506,  1508,  1513,  1515,  1520,
+    1534,  1535,  1539,  1541,  1545,  1552,  1559,  1566,  1573,  1589
 };
 #endif
 
@@ -3802,25 +3802,26 @@ yyreduce:
   case 212:
 #line 1341 "ass5_19CS10069_19CS30007.y"
                     {	
-                        //while statement
-                        (yyval.stat) = new Statement();    //create statement
-                        convertIntToBool((yyvsp[-3].expr));     //convert expression to bool
+                        // while statement
+                        (yyval.stat) = new Statement();                                  
+                        convertIntToBool((yyvsp[-3].expr));                                 
                         
                         // Proper backpatching
                         backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-4].instr_number));	            // M1 to go back to expression again
                         backpatch((yyvsp[-3].expr)->truelist, (yyvsp[-1].instr_number));	            // M2 to go to statement if the expression is true
                         (yyval.stat)->nextlist = (yyvsp[-3].expr)->falselist;               // If expression is false, Exit loop
+
                         // Q.emit to prevent fallthrough
                         string str=convertIntToString((yyvsp[-4].instr_number));		
                         Q.emit("goto",str);	
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3820 "ass5_19CS10069_19CS30007.tab.c"
+#line 3821 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 213:
-#line 1357 "ass5_19CS10069_19CS30007.y"
+#line 1358 "ass5_19CS10069_19CS30007.y"
                     {	
                         //while statement
                         (yyval.stat) = new Statement();                   // create statement
@@ -3837,11 +3838,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3841 "ass5_19CS10069_19CS30007.tab.c"
+#line 3842 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 214:
-#line 1374 "ass5_19CS10069_19CS30007.y"
+#line 1375 "ass5_19CS10069_19CS30007.y"
                     {
                         //do statement
                         (yyval.stat) = new Statement();                               //create statement	
@@ -3854,11 +3855,11 @@ yyreduce:
                         (yyval.stat)->nextlist = (yyvsp[-2].expr)->falselist;                       // Exit loop if statement is false
                         loop_name = "";
                     }
-#line 3858 "ass5_19CS10069_19CS30007.tab.c"
+#line 3859 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 215:
-#line 1387 "ass5_19CS10069_19CS30007.y"
+#line 1388 "ass5_19CS10069_19CS30007.y"
                         {
                         //do statement
 		                (yyval.stat) = new Statement();     //create statement	
@@ -3870,11 +3871,11 @@ yyreduce:
                         (yyval.stat)->nextlist = (yyvsp[-2].expr)->falselist;                       // Exit loop if statement is false
 		                loop_name = "";
 	                }
-#line 3874 "ass5_19CS10069_19CS30007.tab.c"
+#line 3875 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 216:
-#line 1399 "ass5_19CS10069_19CS30007.y"
+#line 1400 "ass5_19CS10069_19CS30007.y"
                     {
                         //for loop
                         (yyval.stat) = new Statement();		            // create new statement
@@ -3892,11 +3893,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3896 "ass5_19CS10069_19CS30007.tab.c"
+#line 3897 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 217:
-#line 1417 "ass5_19CS10069_19CS30007.y"
+#line 1418 "ass5_19CS10069_19CS30007.y"
                     {
                         //for loop
                         (yyval.stat) = new Statement();		 //create new statement
@@ -3914,15 +3915,16 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3918 "ass5_19CS10069_19CS30007.tab.c"
+#line 3919 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 218:
-#line 1435 "ass5_19CS10069_19CS30007.y"
+#line 1436 "ass5_19CS10069_19CS30007.y"
                     {
                         //for loop
                         (yyval.stat) = new Statement();		                    // create new statement
                         convertIntToBool((yyvsp[-8].expr));                           // convert check expression to boolean
+
                         // Correctly backpatch lists
                         backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-3].instr_number));	                // if expression is true, then go to M2
                         backpatch((yyvsp[-5].stat)->nextlist, (yyvsp[-9].instr_number));	                // after N, go back to M1
@@ -3935,11 +3937,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3939 "ass5_19CS10069_19CS30007.tab.c"
+#line 3941 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 219:
-#line 1452 "ass5_19CS10069_19CS30007.y"
+#line 1454 "ass5_19CS10069_19CS30007.y"
                     {	
                         (yyval.stat) = new Statement();		                    // create new statement
                         convertIntToBool((yyvsp[-8].expr));                           // convert expression to boolean
@@ -3955,11 +3957,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);                        
                     }
-#line 3959 "ass5_19CS10069_19CS30007.tab.c"
+#line 3961 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 220:
-#line 1471 "ass5_19CS10069_19CS30007.y"
+#line 1473 "ass5_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat) = new Statement();
                         label *l = find_label((yyvsp[-1].symp)->name);
@@ -3976,65 +3978,65 @@ yyreduce:
                             label_table.push_back(*l);
                         }
                     }
-#line 3980 "ass5_19CS10069_19CS30007.tab.c"
+#line 3982 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 221:
-#line 1488 "ass5_19CS10069_19CS30007.y"
+#line 1490 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat) = new Statement(); }
-#line 3986 "ass5_19CS10069_19CS30007.tab.c"
+#line 3988 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 222:
-#line 1490 "ass5_19CS10069_19CS30007.y"
+#line 1492 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat) = new Statement(); }
-#line 3992 "ass5_19CS10069_19CS30007.tab.c"
+#line 3994 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 223:
-#line 1492 "ass5_19CS10069_19CS30007.y"
+#line 1494 "ass5_19CS10069_19CS30007.y"
                     {
                         (yyval.stat) = new Statement();	
-                        Q.emit("return",(yyvsp[-1].expr)->loc->name);               // Q.emit return with the name of the return value
+                        Q.emit("return",(yyvsp[-1].expr)->loc->name);             
                     }
-#line 4001 "ass5_19CS10069_19CS30007.tab.c"
+#line 4003 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 224:
-#line 1497 "ass5_19CS10069_19CS30007.y"
+#line 1499 "ass5_19CS10069_19CS30007.y"
                     {
                         (yyval.stat) = new Statement();	
-                        Q.emit("return","");                         // Q.emit return
+                        Q.emit("return","");                         
                     }
-#line 4010 "ass5_19CS10069_19CS30007.tab.c"
+#line 4012 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 225:
-#line 1505 "ass5_19CS10069_19CS30007.y"
+#line 1507 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 4016 "ass5_19CS10069_19CS30007.tab.c"
+#line 4018 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 226:
-#line 1507 "ass5_19CS10069_19CS30007.y"
+#line 1509 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 4022 "ass5_19CS10069_19CS30007.tab.c"
+#line 4024 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 227:
-#line 1512 "ass5_19CS10069_19CS30007.y"
+#line 1514 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 4028 "ass5_19CS10069_19CS30007.tab.c"
+#line 4030 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 228:
-#line 1514 "ass5_19CS10069_19CS30007.y"
+#line 1516 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 4034 "ass5_19CS10069_19CS30007.tab.c"
+#line 4036 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 229:
-#line 1519 "ass5_19CS10069_19CS30007.y"
+#line 1521 "ass5_19CS10069_19CS30007.y"
                     {
                         int next_instr=0;	 	
                         ST->parent=globalST;
@@ -4042,73 +4044,74 @@ yyreduce:
                         // Add a function name
                         table_count = 0;
                         label_table.clear();                        
+
                         changeTable(globalST);                     // Change the table again to Global ST
                     }
-#line 4048 "ass5_19CS10069_19CS30007.tab.c"
+#line 4051 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 230:
-#line 1531 "ass5_19CS10069_19CS30007.y"
+#line 1534 "ass5_19CS10069_19CS30007.y"
                                      { }
-#line 4054 "ass5_19CS10069_19CS30007.tab.c"
+#line 4057 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 231:
-#line 1532 "ass5_19CS10069_19CS30007.y"
+#line 1535 "ass5_19CS10069_19CS30007.y"
                              { }
-#line 4060 "ass5_19CS10069_19CS30007.tab.c"
+#line 4063 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 232:
-#line 1537 "ass5_19CS10069_19CS30007.y"
+#line 1540 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 4066 "ass5_19CS10069_19CS30007.tab.c"
+#line 4069 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 233:
-#line 1539 "ass5_19CS10069_19CS30007.y"
+#line 1542 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 4072 "ass5_19CS10069_19CS30007.tab.c"
+#line 4075 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 234:
-#line 1543 "ass5_19CS10069_19CS30007.y"
+#line 1546 "ass5_19CS10069_19CS30007.y"
         {
         // Used in backpatching
 		(yyval.instr_number) = nextinstr();
 	}
-#line 4081 "ass5_19CS10069_19CS30007.tab.c"
+#line 4084 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 235:
-#line 1550 "ass5_19CS10069_19CS30007.y"
+#line 1553 "ass5_19CS10069_19CS30007.y"
         {
 		// Beginning of the for statement
 		loop_name = "FOR";
 	}
-#line 4090 "ass5_19CS10069_19CS30007.tab.c"
+#line 4093 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 236:
-#line 1557 "ass5_19CS10069_19CS30007.y"
+#line 1560 "ass5_19CS10069_19CS30007.y"
         {
 		// Beginning of the while statement
 		loop_name = "WHILE";
 	}
-#line 4099 "ass5_19CS10069_19CS30007.tab.c"
+#line 4102 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 237:
-#line 1564 "ass5_19CS10069_19CS30007.y"
+#line 1567 "ass5_19CS10069_19CS30007.y"
         {
 		// Beginning of the do while statement
 		loop_name = "DO_WHILE";
 	}
-#line 4108 "ass5_19CS10069_19CS30007.tab.c"
+#line 4111 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 238:
-#line 1571 "ass5_19CS10069_19CS30007.y"
+#line 1574 "ass5_19CS10069_19CS30007.y"
         {
 		string name = ST->name+"."+loop_name+"$"+to_string(table_count);
 		table_count++; 
@@ -4118,15 +4121,15 @@ yyreduce:
 		s->nested = new symtable(name);
 		s->nested->parent = ST;
 		s->name = name;
-		s->type = new symboltype("block");
+		s->update(new symboltype("block"));
 
 		currSymbolPtr = s;          // updating the current symbol
 	}
-#line 4126 "ass5_19CS10069_19CS30007.tab.c"
+#line 4129 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 239:
-#line 1587 "ass5_19CS10069_19CS30007.y"
+#line 1590 "ass5_19CS10069_19CS30007.y"
         {
         /*
             This is also useful in backpatching
@@ -4136,11 +4139,11 @@ yyreduce:
 
 		Q.emit("goto","");
 	}
-#line 4140 "ass5_19CS10069_19CS30007.tab.c"
+#line 4143 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
 
-#line 4144 "ass5_19CS10069_19CS30007.tab.c"
+#line 4147 "ass5_19CS10069_19CS30007.tab.c"
 
       default: break;
     }
@@ -4372,12 +4375,11 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1597 "ass5_19CS10069_19CS30007.y"
+#line 1600 "ass5_19CS10069_19CS30007.y"
 
 
 /*Auxiliaries*/
-void yyerror(string s)
-{
+void yyerror(string s) {
     // print error
     cout<<s<<endl;
 }

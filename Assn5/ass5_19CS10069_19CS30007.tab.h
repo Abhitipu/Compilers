@@ -38,7 +38,7 @@
 # define YY_YY_ASS5_19CS10069_19CS30007_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 #if YYDEBUG
 extern int yydebug;

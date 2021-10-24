@@ -366,31 +366,30 @@ multiplicative_expression:
                     cast_expression
                     {
                         $$ = new Expression();             
+
+                        // We handle casting by checking types and doing necessary conversions
                         if($1->atype=="arr") {
                             $$->loc = gentemp($1->loc->type);	
                             Q.emit("=[]", $$->loc->name, $1->Array->name, $1->loc->name);     
                         }
-                        else if($1->atype=="ptr")         //if it is of type ptr
-                        { 
-                            $$->loc = $1->loc;        //equate the locs
+
+                        else if($1->atype=="ptr") { 
+                            $$->loc = $1->loc;        
                         }
-                        else
-                        {
+                        else {
                             $$->loc = $1->Array;
                         }
                     }
                     | multiplicative_expression MULT cast_expression
                     { 
-                        //if we have multiplication
-                        if(!compareSymbolType($1->loc, $3->Array))         
-                        {
-                            // cout<<"Type Error in Program"<< endl;	// error
+                        if(!compareSymbolType($1->loc, $3->Array)) {
+                            // Types are not same
                             cout<<"Line: "<<line<<"\n";
-                            yyerror("Type Error in Program!");
+                            yyerror("There is a type error in our program!");
                             return 1;
                         }    
-                        else 								 //if types are compatible, generate new temporary and equate to the product
-                        {
+                        else {
+                            // Simply assign here
                             $$ = new Expression();	
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
                             Q.emit("*", $$->loc->name, $1->loc->name, $3->Array->name);
@@ -398,13 +397,12 @@ multiplicative_expression:
                     }
                     | multiplicative_expression DIVIDE cast_expression
                     {
-                        //if we have division
+                        //Types are not same
                         if(!compareSymbolType($1->loc, $3->Array)){ 
-                            cout << "Type Error in Program"<< endl;
+                            cout << "There is a type error in our Program"<< endl;
                         }
-                        else   
-                        {
-                            //if types are compatible, generate new temporary and equate to the quotient
+                        else {
+                            // Just do the operation
                             $$ = new Expression();
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
                             Q.emit("/", $$->loc->name, $1->loc->name, $3->Array->name);
@@ -412,11 +410,13 @@ multiplicative_expression:
                     }
                     | multiplicative_expression MODULO cast_expression     
                     {
-                        if(!compareSymbolType($1->loc, $3->Array)) cout << "Type Error in Program"<< endl;		
-                        else 		 
-                        {
-                            //if types are compatible, generate new temporary and equate to the quotient
+                        // Incompatible types
+                        if(!compareSymbolType($1->loc, $3->Array)) 
+                            cout << "There is a type error in our Program"<< endl;		
+                        else {
+                            // Just do the operation
                             $$ = new Expression();
+
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
                             Q.emit("%", $$->loc->name, $1->loc->name, $3->Array->name);	
                         }
@@ -426,26 +426,31 @@ multiplicative_expression:
 
 additive_expression:        
                     multiplicative_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | additive_expression PLUS multiplicative_expression
                     {
+                        // Incompatible types
                         if(!compareSymbolType($1->loc, $3->loc))
-                            cout << "Type Error in Program"<< endl;
-                        else    	//if types are compatible, generate new temporary and equate to the sum
-                        {
+                            cout << "There is a type error in our Program"<< endl;
+                        else {
+                            // Continue with the operation
                             $$ = new Expression();	
+
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
                             Q.emit("+", $$->loc->name, $1->loc->name, $3->loc->name);
                         }
                     }
                     | additive_expression MINUS multiplicative_expression
                     {
-                        
+                        // Check and do the operation
                         if(!compareSymbolType($1->loc, $3->loc))
-                            cout << "Type Error in Program"<< endl;		
-                        else        //if types are compatible, generate new temporary and equate to the difference
+                            cout << "There is a type error in our Program"<< endl;		
+                        else        
                         {	
                             $$ = new Expression();	
+
                             $$->loc = gentemp(new symboltype($1->loc->type->type));
                             Q.emit("-", $$->loc->name, $1->loc->name, $3->loc->name);
                         }
@@ -454,27 +459,29 @@ additive_expression:
 
 shift_expression:
                     additive_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | shift_expression LSHIFT additive_expression
                     { 
                         if(!($3->loc->type->type == "int"))
-                            cout << "Type Error in Program"<< endl; 		
-                        else            //if base type is int, generate new temporary and equate to the shifted value
-                        {		
+                            cout << "There is a type error in our Program"<< endl; 		
+                        else {		
                             $$ = new Expression();		
+
                             $$->loc = gentemp(new symboltype("int"));
                             Q.emit("<<", $$->loc->name, $1->loc->name, $3->loc->name);		
                         }
                     }
                     | shift_expression RSHIFT additive_expression
                     { 	
-                        if(!($3->loc->type->type == "int"))
-                        {
-                            cout << "Type Error in Program"<< endl; 		
+                        // Check and carry out operation
+                        if(!($3->loc->type->type == "int")) {
+                            cout << "There is a type Error in our Program"<< endl; 		
                         }
-                        else  		//if base type is int, generate new temporary and equate to the shifted value
-                        {			
+                        else {			
                             $$ = new Expression();	
+
                             $$->loc = gentemp(new symboltype("int"));
                             Q.emit(">>", $$->loc->name, $1->loc->name, $3->loc->name);			
                         }
@@ -483,68 +490,78 @@ shift_expression:
 
 relational_expression:
                     shift_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | relational_expression LT shift_expression
                     {
-                        if(!compareSymbolType($1->loc, $3->loc)) 
-                        {
-                            yyerror("Type Error in Program");
+                        // Check and do the operation
+                        if(!compareSymbolType($1->loc, $3->loc)) {
+                            yyerror("There is a type error in our Program");
                         }
                         else 
-                        {      //check compatible types									
+                        {      
                             $$ = new Expression();
-                            $$->type = "bool";                         //new type is boolean
-                            $$->truelist = makelist(nextinstr());     //makelist for truelist and falselist
+
+                            $$->type = "bool";                         
+                            // Need to update truelist and falselist since type is boolean
+                            $$->truelist = makelist(nextinstr());     
                             $$->falselist = makelist(nextinstr()+1);
-                            Q.emit("<", "", $1->loc->name, $3->loc->name);     //Q.emit statement if a<b goto .. 
-                            Q.emit("goto", "");	//Q.emit statement goto ..
+                            
+                            Q.emit("<", "", $1->loc->name, $3->loc->name);     
+                            Q.emit("goto", "");	
                         }
                     }
                     | relational_expression GT shift_expression
                     {
-                        // similar to above, check compatible types,make new lists and Q.emit
-                        if(!compareSymbolType($1->loc, $3->loc)) 
-                        {
-                            yyerror("Type Error in Program");
+                        // Check and carry out conversions and generate reqd attributed for bool type
+                        if(!compareSymbolType($1->loc, $3->loc)) {
+                            yyerror("There is a type error in our program");
                         }
-                        else 
-                        {	
+                        else {	
                             $$ = new Expression();		
+
                             $$->type = "bool";
+                            // Need to update truelist and falselist since type is boolean
                             $$->truelist = makelist(nextinstr());
                             $$->falselist = makelist(nextinstr()+1);
+
                             Q.emit(">", "", $1->loc->name, $3->loc->name);
                             Q.emit("goto", "");
                         }	
                     }
                     | relational_expression LEQ shift_expression
                     {
-                        if(!compareSymbolType($1->loc, $3->loc)) 
-                        {
-                            cout << "Type Error in Program"<< endl;
+                        // Compare and carry out operation
+                        if(!compareSymbolType($1->loc, $3->loc)) {
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {			
+                        else {			
                             $$ = new Expression();		
+
                             $$->type = "bool";
+                            // Need to update the attributes
                             $$->truelist = makelist(nextinstr());
                             $$->falselist = makelist(nextinstr()+1);
+
                             Q.emit("<=", "", $1->loc->name, $3->loc->name);
                             Q.emit("goto", "");
                         }		
                     }
                     | relational_expression GEQ shift_expression
                     {
-                        if(!compareSymbolType($1->loc, $3->loc))
-                        {
-                            cout << "Type Error in Program"<< endl;
+                        // Compare and carry out operation
+                        if(!compareSymbolType($1->loc, $3->loc)){
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {	
+                        else {	
                             $$ = new Expression();	
+                            
                             $$->type = "bool";
+                            // Need to update the attributes for boolean data type
                             $$->truelist = makelist(nextinstr());
                             $$->falselist = makelist(nextinstr()+1);
+
                             Q.emit(">=", "", $1->loc->name, $3->loc->name);
                             Q.emit("goto", "");
                         }
@@ -553,40 +570,46 @@ relational_expression:
 
 equality_expression:
                     relational_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | equality_expression EQ relational_expression
                     {
-                        if(!compareSymbolType($1->loc, $3->loc))                //check compatible types
-                        {
-                            cout << "Type Error in Program"<< endl;
+                        // Check and assign
+                        if(!compareSymbolType($1->loc, $3->loc)) {
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {
-                            convertBoolToInt($1);                  //convert bool to int		
+                        else {
+                            // We need to convert here
+                            convertBoolToInt($1);                  
                             convertBoolToInt($3);
+
                             $$ = new Expression();
+
                             $$->type = "bool";
-                            $$->truelist = makelist(nextinstr());            //make lists for new expression
+                            $$->truelist = makelist(nextinstr());            
                             $$->falselist = makelist(nextinstr()+1); 
-                            Q.emit("==", "", $1->loc->name, $3->loc->name);      //Q.emit if a==b goto ..
-                            Q.emit("goto", "");				//Q.emit goto ..
+
+                            Q.emit("==", "", $1->loc->name, $3->loc->name);      
+                            Q.emit("goto", "");				
                         }
                     }
                     | equality_expression NEQ relational_expression
                     {
-                        if(!compareSymbolType($1->loc, $3->loc)) 
-                        {
-                            
-                            cout << "Type Error in Program"<< endl;
+                        // Similar to last one, just that we check for inequality here
+                        if(!compareSymbolType($1->loc, $3->loc)) {
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {			
+                        else {			
                             convertBoolToInt($1);
                             convertBoolToInt($3);
-                            $$ = new Expression();                 //result is boolean
+
+                            $$ = new Expression();                 
+
                             $$->type = "bool";
                             $$->truelist = makelist(nextinstr());
                             $$->falselist = makelist(nextinstr()+1);
+
                             Q.emit("!=", "", $1->loc->name, $3->loc->name);
                             Q.emit("goto", "");
                         }
@@ -595,41 +618,50 @@ equality_expression:
 
 and_expression:
                     equality_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | and_expression BITWISE_AND equality_expression
                     {
-                        if(!compareSymbolType($1->loc, $3->loc))         //check compatible types 
-                        {		
-                            cout << "Type Error in Program"<< endl;
+                        // Check and assign similar to last one, but since it is not boolean,
+                        // we just update the loc (its only int)
+                        if(!compareSymbolType($1->loc, $3->loc)){		
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {              
-                            convertBoolToInt($1);                             //convert bool to int	
+                        else {              
+                            convertBoolToInt($1);                             
                             convertBoolToInt($3);			
+
                             $$ = new Expression();
-                            $$->type = "not-boolean";                   //result is not boolean
+
+                            $$->type = "not-boolean";                   
                             $$->loc = gentemp(new symboltype("int"));
-                            Q.emit("&", $$->loc->name, $1->loc->name, $3->loc->name);               //Q.emit the quad
+
+                            Q.emit("&", $$->loc->name, $1->loc->name, $3->loc->name);               
                         }
                     }
                     ;
 
 exclusive_or_expression:
                     and_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | exclusive_or_expression XOR and_expression
                     {
-                        if(!compareSymbolType($1->loc, $3->loc))    //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and Q.emit
-                        {
-                            cout << "Type Error in Program"<< endl;
+                        // Similar to the last one, check, assign loc if alright and emit quad
+                        if(!compareSymbolType($1->loc, $3->loc)) {
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {
+                        else {
                             convertBoolToInt($1);
                             convertBoolToInt($3);
+
                             $$ = new Expression();
+
                             $$->type = "not-boolean";
                             $$->loc = gentemp(new symboltype("int"));
+
                             Q.emit("^", $$->loc->name, $1->loc->name, $3->loc->name);
                         }
                     }
@@ -637,18 +669,24 @@ exclusive_or_expression:
 
 inclusive_or_expression:
                     exclusive_or_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | inclusive_or_expression BITWISE_OR exclusive_or_expression
                     { 
-                        if(!compareSymbolType($1->loc, $3->loc))   //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and Q.emit
-                        { yyerror("Type Error in Program"); }
-                        else 
-                        {
+                        // Again same as the last one, convert to int, asign loc and emit quad
+                        if(!compareSymbolType($1->loc, $3->loc)) { 
+                            yyerror("There is a type error in our program"); 
+                        }
+                        else {
                             convertBoolToInt($1);		
                             convertBoolToInt($3);
+
                             $$ = new Expression();
+
                             $$->type = "not-boolean";
                             $$->loc = gentemp(new symboltype("int"));
+
                             Q.emit("|", $$->loc->name, $1->loc->name, $3->loc->name);
                         } 
                     }
@@ -656,31 +694,44 @@ inclusive_or_expression:
 
 logical_and_expression:
                     inclusive_or_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | logical_and_expression LOGICAL_AND M inclusive_or_expression
                     { 
-                        convertIntToBool($4);                                  //convert inclusive_or_expression int to bool	
-                        convertIntToBool($1);                                  //convert logical_and_expression to bool
-                        $$ = new Expression();                                 //make new boolean expression 
+                        // Converto to bool before the logical operation
+                        convertIntToBool($4);                                  
+                        convertIntToBool($1);                                 
+
+                        // Generate new boolean expression
+                        $$ = new Expression();                               
                         $$->type = "bool";
-                        backpatch($1->truelist, $3);                           //if $1 is true, we move to $5
-                        $$->truelist = $4->truelist;                           //if $5 is also true, we get truelist for $$
-                        $$->falselist = merge($1->falselist, $4->falselist);   //merge their falselists
+                        
+                        // Do the backpatching and generate the attributes
+                        backpatch($1->truelist, $3);                        
+                        $$->truelist = $4->truelist;                       
+                        $$->falselist = merge($1->falselist, $4->falselist);   
                     }
                     ;
 
 logical_or_expression:
                     logical_and_expression
-                    { $$=$1;/* Simple assign */ }
+                    { 
+                        $$=$1;
+                    }
                     | logical_or_expression LOGICAL_OR M logical_and_expression
                     { 
-                        convertIntToBool($4);			 //convert logical_and_expression int to bool	
-                        convertIntToBool($1);			 //convert logical_or_expression to bool
-                        $$ = new Expression();			 //make new boolean expression
+                        // Similar to last one
+                        convertIntToBool($4);			 
+                        convertIntToBool($1);			
+
+                        $$ = new Expression();	
                         $$->type = "bool";
-                        backpatch($1->falselist, $3);		//if $1 is true, we move to $5
-                        $$->truelist = merge($1->truelist, $4->truelist);		//merge their truelists
-                        $$->falselist = $4->falselist;		 	//if $5 is also false, we get falselist for $$
+
+                        // As per requirement
+                        backpatch($1->falselist, $3);		
+                        $$->truelist = merge($1->truelist, $4->truelist);		
+                        $$->falselist = $4->falselist;		 	
                     }
                     ;
 
@@ -689,22 +740,28 @@ conditional_expression:
                     { $$=$1;/* Simple assign */ }
                     | logical_or_expression N '?' M expression N ':' M conditional_expression
                     {
-                        //normal conversion method to get conditional expressions
-                        $$->loc = gentemp($5->loc->type);       //generate temporary for expression
-                        $$->loc->update($5->loc->type);
-                        Q.emit("=", $$->loc->name, $9->loc->name);      //make it equal to sconditional_expression
-                        list<int> l = makelist(nextinstr());        //makelist next instruction
-                        Q.emit("goto", "");              //prevent fallthrough
-                        backpatch($6->nextlist, nextinstr());        //after N, go to next instruction
+                        // Convert to get conditional expressions
+                        $$->loc = gentemp($5->loc->type);               // generate temporary for expression
+                        $$->loc->update($5->loc->type);                 // update it
+
+                        Q.emit("=", $$->loc->name, $9->loc->name);      // temp equal to conditional_expression
+                        
+                        list<int> l = makelist(nextinstr());            // makelist of next instruction
+                        Q.emit("goto", "");                             // prevent fallthrough
+                        
+                        backpatch($6->nextlist, nextinstr());           // after N, go to next instruction
                         Q.emit("=", $$->loc->name, $5->loc->name);
-                        list<int> m = makelist(nextinstr());         //makelist next instruction
-                        l = merge(l, m);						//merge the two lists
-                        Q.emit("goto", "");						//prevent fallthrough
-                        backpatch($2->nextlist, nextinstr());   //backpatching
-                        convertIntToBool($1);                   //convert expression to boolean
-                        backpatch($1->truelist, $4);           //$1 true goes to expression
-                        backpatch($1->falselist, $8);          //$1 false goes to conditional_expression
-                        backpatch(l, nextinstr());
+                        
+                        list<int> m = makelist(nextinstr());            // makelist of next instruction
+                        l = merge(l, m);						        // merge the two lists
+                        Q.emit("goto", "");						        // prevent fallthrough
+                        
+                        backpatch($2->nextlist, nextinstr());           // Call backpatch backpatching
+                        convertIntToBool($1);                           // convert expression to boolean
+                        
+                        backpatch($1->truelist, $4);                    // $1 true goes to expression
+                        backpatch($1->falselist, $8);                   // $1 false goes to conditional_expression
+                        backpatch(l, nextinstr());                      // backpatch nextintruction
                     }
                     ;
 
@@ -713,16 +770,16 @@ assignment_expression:
                     { $$=$1;/* Simple assign */ }
                     | unary_expression assignment_operator assignment_expression
                     {
-                        if($1->atype=="arr")          // if type is arr, simply check if we need to convert and Q.emit
+                        if($1->atype=="arr")                                            // if type is arr, Check and convert then Q.emit as []=
                         {
                             $3->loc = convertType($3->loc, $1->type->type);
                             Q.emit("[]=", $1->Array->name, $1->loc->name, $3->loc->name);		
                         }
-                        else if($1->atype=="ptr")     // if type is ptr, simply Q.emit
+                        else if($1->atype=="ptr")                                       // if type is ptr, simply Q.emit as *=
                         {
                             Q.emit("*=", $1->Array->name, $3->loc->name);	
                         }
-                        else                              //otherwise assignment
+                        else                                                            // otherwise simple assignment
                         {
                             $3->loc = convertType($3->loc, $1->Array->type->type);
                             Q.emit("=", $1->Array->name, $3->loc->name);
@@ -805,11 +862,15 @@ init_declarator_list:
 
 init_declarator:
                     declarator
-                    { $$ = $1; }
+                    { 
+                        $$ = $1;                            // Simple Assign 
+                    }
                     | declarator ASGN initializer
                     {
-                        if($3->val!="") $1->val=$3->val;        //get the initial value and  Q.emit it
-                        Q.emit("=", $1->name, $3->name);	
+                        if($3->val != ""){
+                            $1->val=$3->val;                // get the initial value
+                        }
+                        Q.emit("=", $1->name, $3->name);	// emit that initial value with Assign operator
                     }
                     ;
 
@@ -828,15 +889,15 @@ type_specifier:
                     VOID
                     { var_type="void"; /* Store the latest var type */ }
                     | CHAR
-                    { var_type="char"; }
+                    { var_type="char"; /* Store the latest var type */ }
                     | SHORT
                     {  }
                     | INT
-                    { var_type="int"; }
+                    { var_type="int"; /* Store the latest var type */ }
                     | LONG
                     {  }
                     | FLOAT
-                    { var_type="float"; }
+                    { var_type="float"; /* Store the latest var type */ }
                     | DOUBLE
                     {  }
                     | SIGNED
@@ -944,7 +1005,7 @@ enumerator:
 
 type_qualifier:
                     CONST
-                    {  }
+                    { /* NOT to be modelled */ }
                     | RESTRICT
                     {  }
                     | VOLATILE
@@ -960,9 +1021,13 @@ declarator:
                     pointer direct_declarator 
                     {
                         symboltype *t = $1;
-                        while(t->arrtype!=NULL) t = t->arrtype;           //for multidimensional arr1s, move in depth till you get the base type
-                        t->arrtype = $2->type;                //add the base type 
-                        $$ = $2->update($1);                  //update
+                        while(t->arrtype!=NULL)
+                        {
+                            t = t->arrtype;                                         // Recursively get to the base Array
+                        }   
+                        t->arrtype = $2->type;                                      // add the base type 
+                        
+                        $$ = $2->update($1);                                        // update the symbol type
                     }
                     | direct_declarator {   }
                     ;
@@ -973,46 +1038,46 @@ direct_declarator:
                     IDENTIFIER                 
                     {
                         //if ID, simply add a new variable of var_type
-                        $$ = $1->update(new symboltype(var_type));
-                        currSymbolPtr = $$;	
+                        $$ = $1->update(new symboltype(var_type));                                      // update the symbol type to latest type specifier
+                        currSymbolPtr = $$;	                                                            // store the latest Symbol
                     }
-                    | '(' declarator ')' {$$=$2;}        //simply equate
+                    | '(' declarator ')' {$$=$2;}                                                       // simply assign
                     | direct_declarator '[' type_qualifier_list assignment_expression ']' {	}
                     | direct_declarator '[' type_qualifier_list ']' {	}
                     | direct_declarator '[' assignment_expression ']' 
                     {
                         symboltype *t = $1 -> type;
-                        symboltype *prev = NULL;
+                        symboltype *prev = NULL;                                                        // prev initialized to NULL
                         while(t->type == "arr") 
                         {
                             prev = t;	
-                            t = t->arrtype;      //keep moving recursively to get basetype
+                            t = t->arrtype;                                                             // recursively find the base type
                         }
                         if(prev==NULL) 
                         {
-                            int temp = atoi($3->loc->val.c_str());      //get initial value
-                            symboltype* s = new symboltype("arr", $1->type, temp);        //create new symbol with that initial value
-                            $$ = $1->update(s);   //update the symbol table
+                            int temp = atoi($3->loc->val.c_str());                                      // temp = string(value)
+                            symboltype* s = new symboltype("arr", $1->type, temp);                      // Create a new symbol with the initial value
+                            $$ = $1->update(s);                                                         // Update the symbol type
                         }
                         else 
                         {
-                            prev->arrtype =  new symboltype("arr", t, atoi($3->loc->val.c_str()));     //similar arguments as above		
+                            prev->arrtype =  new symboltype("arr", t, atoi($3->loc->val.c_str()));      // similar arguments as above		
                             $$ = $1->update($1->type);
                         }
                     }
                     | direct_declarator '[' ']' 
                     {
                         symboltype *t = $1 -> type;
-                        symboltype *prev = NULL;
+                        symboltype *prev = NULL;                                    // initialize prev to NULL
                         while(t->type == "arr") 
                         {
                             prev = t;	
-                            t = t->arrtype;         //keep moving recursively to base type
+                            t = t->arrtype;                                         // Recursively find the base type
                         }
                         if(prev==NULL) 
                         {
-                            symboltype* s = new symboltype("arr", $1->type, 0);    //no initial values, simply keep 0
-                            $$ = $1->update(s);
+                            symboltype* s = new symboltype("arr", $1->type, 0);     // no initial values, simply keep 0
+                            $$ = $1->update(s);                                     // Update the symboltype of $$
                         }
                         else 
                         {
@@ -1026,15 +1091,16 @@ direct_declarator:
                     | direct_declarator '[' MULT ']' {	}
                     | direct_declarator '(' changetable parameter_type_list ')' 
                     {
-                        ST->name = $1->name;	
+                        ST->name = $1->name;	                    // change the ST name to fun
                         if($1->type->type !="void") 
                         {
-                            sym *s = ST->lookup("return");         //lookup for return value	
-                            s->update($1->type);		
+                            sym *s = ST->lookup("return");          // lookup for return value	
+                            s->update($1->type);		            // update return type
                         }
-                        $1->nested=ST;       
-                        ST->parent = globalST;
-                        changeTable(globalST);				// Come back to globalsymbol table
+                        $1->nested=ST;                              // link nested Symbol Table 
+                        ST->parent = globalST;                      // link parent Symbol Table
+                        
+                        changeTable(globalST);				        // Come back to globalsymbol table
                         currSymbolPtr = $$;
                     }
                     | direct_declarator '(' identifier_list ')' {	}
@@ -1044,11 +1110,12 @@ direct_declarator:
                         if($1->type->type !="void") 
                         {
                             sym *s = ST->lookup("return");
-                            s->update($1->type);
+                            s->update($1->type);            // update return type
                         }
-                        $1->nested=ST;
-                        ST->parent = globalST;
-                        changeTable(globalST);				// Come back to globalsymbol table
+                        $1->nested=ST;                      // link nested Symbol table
+                        ST->parent = globalST;              // Set parent to Global Symbol table
+                        
+                        changeTable(globalST);				// Go back to global Symbol table
                         currSymbolPtr = $$;
                     }
                     ;
@@ -1066,7 +1133,7 @@ pointer:
                     }
                     | MULT type_qualifier_list_opt pointer
                     { 
-                        $$ = new symboltype("ptr",$3); // create the symboltype with type
+                        $$ = new symboltype("ptr",$3); // create the symboltype with $3 symbol type
                     }
                     ;
 
@@ -1242,27 +1309,31 @@ expression_statement:
 selection_statement:
                     IF '(' expression N ')' M statement N %prec "then"
                     {
-                                                                                // if statement without else
-                        backpatch($4->nextlist, nextinstr());                   // nextlist of N goes to nextinstr
-                        convertIntToBool($3);                                   // convert expression to bool
-                        $$ = new Statement();                                   // make new statement
-                        backpatch($3->truelist, $6);                            // is expression is true, go to M i.e just before statement body
-                        list<int> temp = merge($3->falselist, $7->nextlist);    // merge falselist of expression, nextlist of statement and second N
+                        // if without else
+                        backpatch($4->nextlist, nextinstr());                   // After we hit N we go to next instr
+                        convertIntToBool($3);                                   // expression in IF is converted to bool
+
+                        $$ = new Statement();                                   
+                        backpatch($3->truelist, $6);                            // We do the backpatch here
+
+                        list<int> temp = merge($3->falselist, $7->nextlist);    // If it is false, we just escape the inner statement
                         $$->nextlist = merge($8->nextlist, temp);
                     }
                     | IF '(' expression N ')' M statement N ELSE M statement
                     {
-                                                                                // if  else
-                        backpatch($4->nextlist, nextinstr());		            // nextlist of N goes to nextinstr
-                        convertIntToBool($3);                                   // convert expression to bool
-                        $$ = new Statement();                                   // create new statement
-                        backpatch($3->truelist, $6);                            // If expr true then go to M1 else go to M2
-                        backpatch($3->falselist, $10);
-                        list<int> temp = merge($7->nextlist, $8->nextlist);       //merge the nextlists of the statements and second N
+                        // if with else
+                        backpatch($4->nextlist, nextinstr());		            // After we hit N we go to next instr
+                        convertIntToBool($3);                                   // convert expression to bool 
+
+                        $$ = new Statement();                                   
+                        backpatch($3->truelist, $6);                            // If true, we access the first part
+                        backpatch($3->falselist, $10);                          // Else the second prt
+
+                        list<int> temp = merge($7->nextlist, $8->nextlist);       // Then we merge with the nextlists of both statements
                         $$->nextlist = merge($11->nextlist,temp);	
                     }
                     | SWITCH '(' expression ')' statement
-                    { /* Not to be modelled */ }
+                    { /* Not asked in question */ }
                     ;
 
 iteration_statement:
@@ -1271,9 +1342,11 @@ iteration_statement:
                         //while statement
                         $$ = new Statement();    //create statement
                         convertIntToBool($7);     //convert expression to bool
-                        backpatch($10->nextlist, $6);	// M1 to go back to expression again
-                        backpatch($7->truelist, $9);	// M2 to go to statement if the expression is true
-                        $$->nextlist = $7->falselist;   //when expression is false, move out of loop
+                        
+                        // Proper backpatching
+                        backpatch($10->nextlist, $6);	            // M1 to go back to expression again
+                        backpatch($7->truelist, $9);	            // M2 to go to statement if the expression is true
+                        $$->nextlist = $7->falselist;               // If expression is false, Exit loop
                         // Q.emit to prevent fallthrough
                         string str=convertIntToString($6);		
                         Q.emit("goto",str);	
@@ -1283,11 +1356,14 @@ iteration_statement:
                     | WHILE W '(' X changetable M expression ')' '{' M block_item_list_opt '}'     
                     {	
                         //while statement
-                        $$ = new Statement();    //create statement
-                        convertIntToBool($7);     //convert expression to bool
-                        backpatch($11->nextlist, $6);	// M1 to go back to expression again
-                        backpatch($7->truelist, $10);	// M2 to go to statement if the expression is true
-                        $$->nextlist = $7->falselist;   //when expression is false, move out of loop
+                        $$ = new Statement();                   // create statement
+                        convertIntToBool($7);                   // convert expression to bool
+                        
+                        // Proper Backpatching
+                        backpatch($11->nextlist, $6);	        // M1 to go back to expression again
+                        backpatch($7->truelist, $10);	        // M2 to go to statement if the expression is true
+                        $$->nextlist = $7->falselist;           // If expression is false, then exit loop
+                        
                         // Q.emit to prevent fallthrough
                         string str=convertIntToString($6);		
                         Q.emit("goto",str);	
@@ -1297,11 +1373,14 @@ iteration_statement:
                     | DO D M loop_statement M WHILE '(' expression ')' ';'
                     {
                         //do statement
-                        $$ = new Statement();     //create statement	
-                        convertIntToBool($8);      //convert to bool
+                        $$ = new Statement();                               //create statement	
+                        convertIntToBool($8);                               //convert to bool
+                        
+                        // proper Backpatching
                         backpatch($8->truelist, $3);						// M1 to go back to statement if expression is true
                         backpatch($4->nextlist, $5);						// M2 to go to check expression if statement is complete
-                        $$->nextlist = $8->falselist;                       //move out if statement is false
+                        
+                        $$->nextlist = $8->falselist;                       // Exit loop if statement is false
                         loop_name = "";
                     }
                     | DO D '{' M block_item_list_opt '}' M WHILE '(' expression ')' ';'      
@@ -1309,22 +1388,28 @@ iteration_statement:
                         //do statement
 		                $$ = new Statement();     //create statement	
 		                convertIntToBool($10);      //convert to bool
-		                backpatch($10->truelist, $4);						// M1 to go back to statement if expression is true
+		                
+                        backpatch($10->truelist, $4);						// M1 to go back to statement if expression is true
 		                backpatch($5->nextlist, $7);						// M2 to go to check expression if statement is complete
-		                $$->nextlist = $10->falselist;                       //move out if statement is false
+		                
+                        $$->nextlist = $10->falselist;                       // Exit loop if statement is false
 		                loop_name = "";
 	                }
                     | FOR F '(' X changetable declaration M expression_statement M expression N ')' M loop_statement     
                     {
                         //for loop
-                        $$ = new Statement();		 //create new statement
-                        convertIntToBool($8);  //convert check expression to boolean
-                        backpatch($8->truelist, $13);	//if expression is true, go to M2
-                        backpatch($11->nextlist, $7);	//after N, go back to M1
-                        backpatch($14->nextlist, $9);	//statement go back to expression
+                        $$ = new Statement();		            // create new statement
+                        convertIntToBool($8);                   // convert check expression to boolean
+                        
+                        // Proper Backpatching
+                        backpatch($8->truelist, $13);	        // if expression is true, go to M2
+                        backpatch($11->nextlist, $7);	        // after N, go back to M1
+                        backpatch($14->nextlist, $9);	        // statement go back to expression
+                        
+                        
                         string str=convertIntToString($9);
-                        Q.emit("goto", str);				//prevent fallthrough
-                        $$->nextlist = $8->falselist;	//move out if statement is false
+                        Q.emit("goto", str);				    // Emit goto
+                        $$->nextlist = $8->falselist;	        // Exit loop if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
                     }
@@ -1333,26 +1418,33 @@ iteration_statement:
                         //for loop
                         $$ = new Statement();		 //create new statement
                         convertIntToBool($8);  //convert check expression to boolean
-                        backpatch($8->truelist, $13);	//if expression is true, go to M2
-                        backpatch($11->nextlist, $7);	//after N, go back to M1
-                        backpatch($14->nextlist, $9);	//statement go back to expression
+                        
+                        // Proper Backpatching
+                        backpatch($8->truelist, $13);	                // if expression is true, go to M2
+                        backpatch($11->nextlist, $7);	                // after N, go back to M1
+                        backpatch($14->nextlist, $9);	                // statement go back to expression
+                        
+                        
                         string str=convertIntToString($9);
-                        Q.emit("goto", str);				//prevent fallthrough
-                        $$->nextlist = $8->falselist;	//move out if statement is false
+                        Q.emit("goto", str);				            //  emit goto str
+                        $$->nextlist = $8->falselist;	                // Exit loop if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
                     }
                     | FOR F '(' X changetable declaration M expression_statement M expression N ')' M '{' block_item_list_opt '}'      
                     {
                         //for loop
-                        $$ = new Statement();		 //create new statement
-                        convertIntToBool($8);  //convert check expression to boolean
-                        backpatch($8->truelist, $13);	//if expression is true, go to M2
-                        backpatch($11->nextlist, $7);	//after N, go back to M1
-                        backpatch($15->nextlist, $9);	//statement go back to expression
+                        $$ = new Statement();		                    // create new statement
+                        convertIntToBool($8);                           // convert check expression to boolean
+                        // Correctly backpatch lists
+                        backpatch($8->truelist, $13);	                // if expression is true, then go to M2
+                        backpatch($11->nextlist, $7);	                // after N, go back to M1
+                        backpatch($15->nextlist, $9);	                //statement go back to expression
+                        
+                        
                         string str=convertIntToString($9);
-                        Q.emit("goto", str);				//prevent fallthrough
-                        $$->nextlist = $8->falselist;	//move out if statement is false
+                        Q.emit("goto", str);				            //prevent fallthrough
+                        $$->nextlist = $8->falselist;	                // Exit loop if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
                     }
@@ -1360,14 +1452,17 @@ iteration_statement:
                     {	
                         $$ = new Statement();		                    // create new statement
                         convertIntToBool($8);                           // convert expression to boolean
-                        backpatch($8->truelist, $13);	                // if expression is true, go to M2
-                        backpatch($11->nextlist, $7);	                //after N, go back to M1
-                        backpatch($15->nextlist, $9);	                //statement go back to expression
+                        
+                        // proper backpatching
+                        backpatch($8->truelist, $13);	                // backpatch &13
+                        backpatch($11->nextlist, $7);	                // after N, go back to M1
+                        backpatch($15->nextlist, $9);	                // statement go back to expression
+                        
                         string str=convertIntToString($9);
-                        Q.emit("goto", str);				            //prevent fallthrough
-                        $$->nextlist = $8->falselist;	                //move out if statement is false
+                        Q.emit("goto", str);				            // Emit goto Str
+                        $$->nextlist = $8->falselist;	                // Exit if statement is false
                         loop_name = "";
-                        changeTable(ST->parent);
+                        changeTable(ST->parent);                        
                     }
                     ;
 

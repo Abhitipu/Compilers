@@ -611,27 +611,27 @@ static const yytype_int16 yyrline[] =
        0,   106,   106,   125,   132,   139,   148,   154,   158,   166,
      174,   197,   206,   210,   214,   222,   231,   233,   238,   243,
      251,   255,   262,   266,   271,   276,   315,   319,   327,   331,
-     335,   339,   343,   347,   354,   358,   366,   382,   399,   413,
-     428,   430,   441,   456,   458,   469,   485,   487,   503,   520,
-     536,   555,   557,   575,   597,   599,   618,   620,   639,   641,
-     658,   660,   673,   675,   688,   690,   712,   714,   737,   739,
-     741,   743,   745,   747,   749,   751,   753,   755,   757,   762,
-     764,   769,   774,   779,   780,   784,   786,   788,   790,   795,
-     796,   800,   802,   807,   809,   817,   819,   821,   823,   828,
-     830,   832,   834,   836,   838,   840,   842,   844,   846,   848,
-     850,   852,   854,   859,   861,   866,   867,   871,   873,   875,
-     880,   882,   887,   889,   894,   896,   901,   903,   907,   909,
-     911,   916,   918,   920,   925,   926,   930,   932,   938,   940,
-     946,   948,   950,   955,   960,   967,   973,   979,   980,   981,
-     982,  1003,  1023,  1024,  1025,  1026,  1027,  1040,  1041,  1057,
-    1058,  1063,  1067,  1074,  1076,  1081,  1083,  1088,  1090,  1095,
-    1097,  1102,  1104,  1109,  1114,  1116,  1118,  1123,  1125,  1130,
-    1131,  1135,  1140,  1142,  1147,  1149,  1154,  1156,  1158,  1163,
-    1165,  1167,  1172,  1173,  1178,  1179,  1180,  1183,  1197,  1199,
-    1204,  1212,  1214,  1222,  1224,  1229,  1231,  1236,  1238,  1243,
-    1253,  1264,  1269,  1283,  1297,  1307,  1317,  1331,  1345,  1359,
-    1375,  1392,  1394,  1396,  1401,  1409,  1411,  1416,  1418,  1423,
-    1436,  1437,  1441,  1443,  1447,  1454,  1461,  1468,  1475,  1491
+     335,   339,   343,   347,   354,   358,   366,   383,   398,   411,
+     428,   432,   445,   461,   465,   476,   492,   496,   515,   533,
+     551,   572,   576,   597,   620,   624,   646,   650,   671,   675,
+     696,   700,   718,   722,   739,   741,   769,   771,   794,   796,
+     798,   800,   802,   804,   806,   808,   810,   812,   814,   819,
+     821,   826,   831,   836,   837,   841,   843,   845,   847,   852,
+     853,   857,   859,   864,   868,   878,   880,   882,   884,   889,
+     891,   893,   895,   897,   899,   901,   903,   905,   907,   909,
+     911,   913,   915,   920,   922,   927,   928,   932,   934,   936,
+     941,   943,   948,   950,   955,   957,   962,   964,   968,   970,
+     972,   977,   979,   981,   986,   987,   991,   993,   999,  1001,
+    1007,  1009,  1011,  1016,  1021,  1032,  1038,  1044,  1045,  1046,
+    1047,  1068,  1088,  1089,  1090,  1091,  1092,  1106,  1107,  1124,
+    1125,  1130,  1134,  1141,  1143,  1148,  1150,  1155,  1157,  1162,
+    1164,  1169,  1171,  1176,  1181,  1183,  1185,  1190,  1192,  1197,
+    1198,  1202,  1207,  1209,  1214,  1216,  1221,  1223,  1225,  1230,
+    1232,  1234,  1239,  1240,  1245,  1246,  1247,  1250,  1264,  1266,
+    1271,  1279,  1281,  1289,  1291,  1296,  1298,  1303,  1305,  1310,
+    1322,  1335,  1340,  1356,  1373,  1386,  1398,  1416,  1434,  1451,
+    1470,  1487,  1489,  1491,  1496,  1504,  1506,  1511,  1513,  1518,
+    1531,  1532,  1536,  1538,  1542,  1549,  1556,  1563,  1570,  1586
 };
 #endif
 
@@ -2291,69 +2291,69 @@ yyreduce:
 #line 367 "ass5_19CS10069_19CS30007.y"
                     {
                         (yyval.expr) = new Expression();             
+
+                        // We handle casting by checking types and doing necessary conversions
                         if((yyvsp[0].A)->atype=="arr") {
                             (yyval.expr)->loc = gentemp((yyvsp[0].A)->loc->type);	
                             Q.emit("=[]", (yyval.expr)->loc->name, (yyvsp[0].A)->Array->name, (yyvsp[0].A)->loc->name);     
                         }
-                        else if((yyvsp[0].A)->atype=="ptr")         //if it is of type ptr
-                        { 
-                            (yyval.expr)->loc = (yyvsp[0].A)->loc;        //equate the locs
+
+                        else if((yyvsp[0].A)->atype=="ptr") { 
+                            (yyval.expr)->loc = (yyvsp[0].A)->loc;        
                         }
-                        else
-                        {
+                        else {
                             (yyval.expr)->loc = (yyvsp[0].A)->Array;
                         }
                     }
-#line 2308 "ass5_19CS10069_19CS30007.tab.c"
+#line 2309 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 37:
-#line 383 "ass5_19CS10069_19CS30007.y"
+#line 384 "ass5_19CS10069_19CS30007.y"
                     { 
-                        //if we have multiplication
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].A)->Array))         
-                        {
-                            // cout<<"Type Error in Program"<< endl;	// error
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].A)->Array)) {
+                            // Types are not same
                             cout<<"Line: "<<line<<"\n";
-                            yyerror("Type Error in Program!");
+                            yyerror("There is a type error in our program!");
                             return 1;
                         }    
-                        else 								 //if types are compatible, generate new temporary and equate to the product
-                        {
+                        else {
+                            // Simply assign here
                             (yyval.expr) = new Expression();	
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
                             Q.emit("*", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);
                         }
                     }
-#line 2329 "ass5_19CS10069_19CS30007.tab.c"
+#line 2328 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 38:
-#line 400 "ass5_19CS10069_19CS30007.y"
+#line 399 "ass5_19CS10069_19CS30007.y"
                     {
-                        //if we have division
+                        //Types are not same
                         if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].A)->Array)){ 
-                            cout << "Type Error in Program"<< endl;
+                            cout << "There is a type error in our Program"<< endl;
                         }
-                        else   
-                        {
-                            //if types are compatible, generate new temporary and equate to the quotient
+                        else {
+                            // Just do the operation
                             (yyval.expr) = new Expression();
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
                             Q.emit("/", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);
                         }
                     }
-#line 2347 "ass5_19CS10069_19CS30007.tab.c"
+#line 2345 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 39:
-#line 414 "ass5_19CS10069_19CS30007.y"
+#line 412 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].A)->Array)) cout << "Type Error in Program"<< endl;		
-                        else 		 
-                        {
-                            //if types are compatible, generate new temporary and equate to the quotient
+                        // Incompatible types
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].A)->Array)) 
+                            cout << "There is a type error in our Program"<< endl;		
+                        else {
+                            // Just do the operation
                             (yyval.expr) = new Expression();
+
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
                             Q.emit("%", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);	
                         }
@@ -2363,381 +2363,438 @@ yyreduce:
 
   case 40:
 #line 429 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2368 "ass5_19CS10069_19CS30007.tab.c"
+                    { 
+                        (yyval.expr)=(yyvsp[0].expr);
+                    }
+#line 2370 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 41:
-#line 431 "ass5_19CS10069_19CS30007.y"
+#line 433 "ass5_19CS10069_19CS30007.y"
                     {
+                        // Incompatible types
                         if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))
-                            cout << "Type Error in Program"<< endl;
-                        else    	//if types are compatible, generate new temporary and equate to the sum
-                        {
+                            cout << "There is a type error in our Program"<< endl;
+                        else {
+                            // Continue with the operation
                             (yyval.expr) = new Expression();	
+
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
                             Q.emit("+", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                         }
                     }
-#line 2383 "ass5_19CS10069_19CS30007.tab.c"
+#line 2387 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 42:
-#line 442 "ass5_19CS10069_19CS30007.y"
+#line 446 "ass5_19CS10069_19CS30007.y"
                     {
-                        
+                        // Check and do the operation
                         if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))
-                            cout << "Type Error in Program"<< endl;		
-                        else        //if types are compatible, generate new temporary and equate to the difference
+                            cout << "There is a type error in our Program"<< endl;		
+                        else        
                         {	
                             (yyval.expr) = new Expression();	
+
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
                             Q.emit("-", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                         }
                     }
-#line 2399 "ass5_19CS10069_19CS30007.tab.c"
+#line 2404 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 43:
-#line 457 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2405 "ass5_19CS10069_19CS30007.tab.c"
+#line 462 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        (yyval.expr)=(yyvsp[0].expr);
+                    }
+#line 2412 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 44:
-#line 459 "ass5_19CS10069_19CS30007.y"
+#line 466 "ass5_19CS10069_19CS30007.y"
                     { 
                         if(!((yyvsp[0].expr)->loc->type->type == "int"))
-                            cout << "Type Error in Program"<< endl; 		
-                        else            //if base type is int, generate new temporary and equate to the shifted value
-                        {		
+                            cout << "There is a type error in our Program"<< endl; 		
+                        else {		
                             (yyval.expr) = new Expression();		
+
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
                             Q.emit("<<", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);		
                         }
                     }
-#line 2420 "ass5_19CS10069_19CS30007.tab.c"
+#line 2427 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 45:
-#line 470 "ass5_19CS10069_19CS30007.y"
+#line 477 "ass5_19CS10069_19CS30007.y"
                     { 	
-                        if(!((yyvsp[0].expr)->loc->type->type == "int"))
-                        {
-                            cout << "Type Error in Program"<< endl; 		
+                        // Check and carry out operation
+                        if(!((yyvsp[0].expr)->loc->type->type == "int")) {
+                            cout << "There is a type Error in our Program"<< endl; 		
                         }
-                        else  		//if base type is int, generate new temporary and equate to the shifted value
-                        {			
+                        else {			
                             (yyval.expr) = new Expression();	
+
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
                             Q.emit(">>", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);			
                         }
                     }
-#line 2437 "ass5_19CS10069_19CS30007.tab.c"
+#line 2444 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 46:
-#line 486 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2443 "ass5_19CS10069_19CS30007.tab.c"
+#line 493 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        (yyval.expr)=(yyvsp[0].expr);
+                    }
+#line 2452 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 47:
-#line 488 "ass5_19CS10069_19CS30007.y"
+#line 497 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) 
-                        {
-                            yyerror("Type Error in Program");
+                        // Check and do the operation
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) {
+                            yyerror("There is a type error in our Program");
                         }
                         else 
-                        {      //check compatible types									
+                        {      
                             (yyval.expr) = new Expression();
-                            (yyval.expr)->type = "bool";                         //new type is boolean
-                            (yyval.expr)->truelist = makelist(nextinstr());     //makelist for truelist and falselist
+
+                            (yyval.expr)->type = "bool";                         
+                            // Need to update truelist and falselist since type is boolean
+                            (yyval.expr)->truelist = makelist(nextinstr());     
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
-                            Q.emit("<", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);     //Q.emit statement if a<b goto .. 
-                            Q.emit("goto", "");	//Q.emit statement goto ..
+                            
+                            Q.emit("<", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);     
+                            Q.emit("goto", "");	
                         }
                     }
-#line 2463 "ass5_19CS10069_19CS30007.tab.c"
+#line 2475 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 48:
-#line 504 "ass5_19CS10069_19CS30007.y"
+#line 516 "ass5_19CS10069_19CS30007.y"
                     {
-                        // similar to above, check compatible types,make new lists and Q.emit
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) 
-                        {
-                            yyerror("Type Error in Program");
+                        // Check and carry out conversions and generate reqd attributed for bool type
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) {
+                            yyerror("There is a type error in our program");
                         }
-                        else 
-                        {	
+                        else {	
                             (yyval.expr) = new Expression();		
+
                             (yyval.expr)->type = "bool";
+                            // Need to update truelist and falselist since type is boolean
                             (yyval.expr)->truelist = makelist(nextinstr());
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
+
                             Q.emit(">", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                             Q.emit("goto", "");
                         }	
                     }
-#line 2484 "ass5_19CS10069_19CS30007.tab.c"
+#line 2497 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 49:
-#line 521 "ass5_19CS10069_19CS30007.y"
+#line 534 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) 
-                        {
-                            cout << "Type Error in Program"<< endl;
+                        // Compare and carry out operation
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) {
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {			
+                        else {			
                             (yyval.expr) = new Expression();		
+
                             (yyval.expr)->type = "bool";
+                            // Need to update the attributes
                             (yyval.expr)->truelist = makelist(nextinstr());
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
+
                             Q.emit("<=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                             Q.emit("goto", "");
                         }		
                     }
-#line 2504 "ass5_19CS10069_19CS30007.tab.c"
+#line 2519 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 50:
-#line 537 "ass5_19CS10069_19CS30007.y"
+#line 552 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))
-                        {
-                            cout << "Type Error in Program"<< endl;
+                        // Compare and carry out operation
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)){
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {	
+                        else {	
                             (yyval.expr) = new Expression();	
+                            
                             (yyval.expr)->type = "bool";
+                            // Need to update the attributes for boolean data type
                             (yyval.expr)->truelist = makelist(nextinstr());
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
+
                             Q.emit(">=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                             Q.emit("goto", "");
                         }
                     }
-#line 2524 "ass5_19CS10069_19CS30007.tab.c"
+#line 2541 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 51:
-#line 556 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2530 "ass5_19CS10069_19CS30007.tab.c"
+#line 573 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        (yyval.expr)=(yyvsp[0].expr);
+                    }
+#line 2549 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 52:
-#line 558 "ass5_19CS10069_19CS30007.y"
+#line 577 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))                //check compatible types
-                        {
-                            cout << "Type Error in Program"<< endl;
+                        // Check and assign
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) {
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {
-                            convertBoolToInt((yyvsp[-2].expr));                  //convert bool to int		
+                        else {
+                            // We need to convert here
+                            convertBoolToInt((yyvsp[-2].expr));                  
                             convertBoolToInt((yyvsp[0].expr));
+
                             (yyval.expr) = new Expression();
+
                             (yyval.expr)->type = "bool";
-                            (yyval.expr)->truelist = makelist(nextinstr());            //make lists for new expression
+                            (yyval.expr)->truelist = makelist(nextinstr());            
                             (yyval.expr)->falselist = makelist(nextinstr()+1); 
-                            Q.emit("==", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);      //Q.emit if a==b goto ..
-                            Q.emit("goto", "");				//Q.emit goto ..
+
+                            Q.emit("==", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);      
+                            Q.emit("goto", "");				
                         }
                     }
-#line 2552 "ass5_19CS10069_19CS30007.tab.c"
+#line 2574 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 53:
-#line 576 "ass5_19CS10069_19CS30007.y"
+#line 598 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) 
-                        {
-                            
-                            cout << "Type Error in Program"<< endl;
+                        // Similar to last one, just that we check for inequality here
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) {
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {			
+                        else {			
                             convertBoolToInt((yyvsp[-2].expr));
                             convertBoolToInt((yyvsp[0].expr));
-                            (yyval.expr) = new Expression();                 //result is boolean
+
+                            (yyval.expr) = new Expression();                 
+
                             (yyval.expr)->type = "bool";
                             (yyval.expr)->truelist = makelist(nextinstr());
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
+
                             Q.emit("!=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                             Q.emit("goto", "");
                         }
                     }
-#line 2575 "ass5_19CS10069_19CS30007.tab.c"
+#line 2598 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 54:
-#line 598 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2581 "ass5_19CS10069_19CS30007.tab.c"
+#line 621 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        (yyval.expr)=(yyvsp[0].expr);
+                    }
+#line 2606 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 55:
-#line 600 "ass5_19CS10069_19CS30007.y"
+#line 625 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))         //check compatible types 
-                        {		
-                            cout << "Type Error in Program"<< endl;
+                        // Check and assign similar to last one, but since it is not boolean,
+                        // we just update the loc (its only int)
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)){		
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {              
-                            convertBoolToInt((yyvsp[-2].expr));                             //convert bool to int	
+                        else {              
+                            convertBoolToInt((yyvsp[-2].expr));                             
                             convertBoolToInt((yyvsp[0].expr));			
+
                             (yyval.expr) = new Expression();
-                            (yyval.expr)->type = "not-boolean";                   //result is not boolean
+
+                            (yyval.expr)->type = "not-boolean";                   
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
-                            Q.emit("&", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);               //Q.emit the quad
+
+                            Q.emit("&", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);               
                         }
                     }
-#line 2601 "ass5_19CS10069_19CS30007.tab.c"
+#line 2629 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 56:
-#line 619 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2607 "ass5_19CS10069_19CS30007.tab.c"
+#line 647 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        (yyval.expr)=(yyvsp[0].expr);
+                    }
+#line 2637 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 57:
-#line 621 "ass5_19CS10069_19CS30007.y"
+#line 651 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))    //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and Q.emit
-                        {
-                            cout << "Type Error in Program"<< endl;
+                        // Similar to the last one, check, assign loc if alright and emit quad
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) {
+                            cout << "There is a type error in our program"<< endl;
                         }
-                        else 
-                        {
+                        else {
                             convertBoolToInt((yyvsp[-2].expr));
                             convertBoolToInt((yyvsp[0].expr));
+
                             (yyval.expr) = new Expression();
+
                             (yyval.expr)->type = "not-boolean";
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
+
                             Q.emit("^", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                         }
                     }
-#line 2627 "ass5_19CS10069_19CS30007.tab.c"
+#line 2659 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 58:
-#line 640 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2633 "ass5_19CS10069_19CS30007.tab.c"
+#line 672 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        (yyval.expr)=(yyvsp[0].expr);
+                    }
+#line 2667 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 59:
-#line 642 "ass5_19CS10069_19CS30007.y"
+#line 676 "ass5_19CS10069_19CS30007.y"
                     { 
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))   //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and Q.emit
-                        { yyerror("Type Error in Program"); }
-                        else 
-                        {
+                        // Again same as the last one, convert to int, asign loc and emit quad
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) { 
+                            yyerror("There is a type error in our program"); 
+                        }
+                        else {
                             convertBoolToInt((yyvsp[-2].expr));		
                             convertBoolToInt((yyvsp[0].expr));
+
                             (yyval.expr) = new Expression();
+
                             (yyval.expr)->type = "not-boolean";
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
+
                             Q.emit("|", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                         } 
                     }
-#line 2651 "ass5_19CS10069_19CS30007.tab.c"
+#line 2689 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 60:
-#line 659 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2657 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 61:
-#line 661 "ass5_19CS10069_19CS30007.y"
+#line 697 "ass5_19CS10069_19CS30007.y"
                     { 
-                        convertIntToBool((yyvsp[0].expr));                                  //convert inclusive_or_expression int to bool	
-                        convertIntToBool((yyvsp[-3].expr));                                  //convert logical_and_expression to bool
-                        (yyval.expr) = new Expression();                                 //make new boolean expression 
-                        (yyval.expr)->type = "bool";
-                        backpatch((yyvsp[-3].expr)->truelist, (yyvsp[-1].instr_number));                           //if $1 is true, we move to $5
-                        (yyval.expr)->truelist = (yyvsp[0].expr)->truelist;                           //if $5 is also true, we get truelist for $$
-                        (yyval.expr)->falselist = merge((yyvsp[-3].expr)->falselist, (yyvsp[0].expr)->falselist);   //merge their falselists
+                        (yyval.expr)=(yyvsp[0].expr);
                     }
-#line 2671 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 62:
-#line 674 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2677 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 63:
-#line 676 "ass5_19CS10069_19CS30007.y"
-                    { 
-                        convertIntToBool((yyvsp[0].expr));			 //convert logical_and_expression int to bool	
-                        convertIntToBool((yyvsp[-3].expr));			 //convert logical_or_expression to bool
-                        (yyval.expr) = new Expression();			 //make new boolean expression
-                        (yyval.expr)->type = "bool";
-                        backpatch((yyvsp[-3].expr)->falselist, (yyvsp[-1].instr_number));		//if $1 is true, we move to $5
-                        (yyval.expr)->truelist = merge((yyvsp[-3].expr)->truelist, (yyvsp[0].expr)->truelist);		//merge their truelists
-                        (yyval.expr)->falselist = (yyvsp[0].expr)->falselist;		 	//if $5 is also false, we get falselist for $$
-                    }
-#line 2691 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 64:
-#line 689 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
 #line 2697 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
-  case 65:
-#line 691 "ass5_19CS10069_19CS30007.y"
-                    {
-                        //normal conversion method to get conditional expressions
-                        (yyval.expr)->loc = gentemp((yyvsp[-4].expr)->loc->type);       //generate temporary for expression
-                        (yyval.expr)->loc->update((yyvsp[-4].expr)->loc->type);
-                        Q.emit("=", (yyval.expr)->loc->name, (yyvsp[0].expr)->loc->name);      //make it equal to sconditional_expression
-                        list<int> l = makelist(nextinstr());        //makelist next instruction
-                        Q.emit("goto", "");              //prevent fallthrough
-                        backpatch((yyvsp[-3].stat)->nextlist, nextinstr());        //after N, go to next instruction
-                        Q.emit("=", (yyval.expr)->loc->name, (yyvsp[-4].expr)->loc->name);
-                        list<int> m = makelist(nextinstr());         //makelist next instruction
-                        l = merge(l, m);						//merge the two lists
-                        Q.emit("goto", "");						//prevent fallthrough
-                        backpatch((yyvsp[-7].stat)->nextlist, nextinstr());   //backpatching
-                        convertIntToBool((yyvsp[-8].expr));                   //convert expression to boolean
-                        backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-5].instr_number));           //$1 true goes to expression
-                        backpatch((yyvsp[-8].expr)->falselist, (yyvsp[-1].instr_number));          //$1 false goes to conditional_expression
-                        backpatch(l, nextinstr());
+  case 61:
+#line 701 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        // Converto to bool before the logical operation
+                        convertIntToBool((yyvsp[0].expr));                                  
+                        convertIntToBool((yyvsp[-3].expr));                                 
+
+                        // Generate new boolean expression
+                        (yyval.expr) = new Expression();                               
+                        (yyval.expr)->type = "bool";
+                        
+                        // Do the backpatching and generate the attributes
+                        backpatch((yyvsp[-3].expr)->truelist, (yyvsp[-1].instr_number));                        
+                        (yyval.expr)->truelist = (yyvsp[0].expr)->truelist;                       
+                        (yyval.expr)->falselist = merge((yyvsp[-3].expr)->falselist, (yyvsp[0].expr)->falselist);   
                     }
-#line 2720 "ass5_19CS10069_19CS30007.tab.c"
+#line 2716 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 62:
+#line 719 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        (yyval.expr)=(yyvsp[0].expr);
+                    }
+#line 2724 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 63:
+#line 723 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        // Similar to last one
+                        convertIntToBool((yyvsp[0].expr));			 
+                        convertIntToBool((yyvsp[-3].expr));			
+
+                        (yyval.expr) = new Expression();	
+                        (yyval.expr)->type = "bool";
+
+                        // As per requirement
+                        backpatch((yyvsp[-3].expr)->falselist, (yyvsp[-1].instr_number));		
+                        (yyval.expr)->truelist = merge((yyvsp[-3].expr)->truelist, (yyvsp[0].expr)->truelist);		
+                        (yyval.expr)->falselist = (yyvsp[0].expr)->falselist;		 	
+                    }
+#line 2742 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 64:
+#line 740 "ass5_19CS10069_19CS30007.y"
+                    { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
+#line 2748 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 65:
+#line 742 "ass5_19CS10069_19CS30007.y"
+                    {
+                        // Convert to get conditional expressions
+                        (yyval.expr)->loc = gentemp((yyvsp[-4].expr)->loc->type);               // generate temporary for expression
+                        (yyval.expr)->loc->update((yyvsp[-4].expr)->loc->type);                 // update it
+
+                        Q.emit("=", (yyval.expr)->loc->name, (yyvsp[0].expr)->loc->name);      // temp equal to conditional_expression
+                        
+                        list<int> l = makelist(nextinstr());            // makelist of next instruction
+                        Q.emit("goto", "");                             // prevent fallthrough
+                        
+                        backpatch((yyvsp[-3].stat)->nextlist, nextinstr());           // after N, go to next instruction
+                        Q.emit("=", (yyval.expr)->loc->name, (yyvsp[-4].expr)->loc->name);
+                        
+                        list<int> m = makelist(nextinstr());            // makelist of next instruction
+                        l = merge(l, m);						        // merge the two lists
+                        Q.emit("goto", "");						        // prevent fallthrough
+                        
+                        backpatch((yyvsp[-7].stat)->nextlist, nextinstr());           // Call backpatch backpatching
+                        convertIntToBool((yyvsp[-8].expr));                           // convert expression to boolean
+                        
+                        backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-5].instr_number));                    // $1 true goes to expression
+                        backpatch((yyvsp[-8].expr)->falselist, (yyvsp[-1].instr_number));                   // $1 false goes to conditional_expression
+                        backpatch(l, nextinstr());                      // backpatch nextintruction
+                    }
+#line 2777 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 66:
-#line 713 "ass5_19CS10069_19CS30007.y"
+#line 770 "ass5_19CS10069_19CS30007.y"
                     { (yyval.expr)=(yyvsp[0].expr);/* Simple assign */ }
-#line 2726 "ass5_19CS10069_19CS30007.tab.c"
+#line 2783 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 67:
-#line 715 "ass5_19CS10069_19CS30007.y"
+#line 772 "ass5_19CS10069_19CS30007.y"
                     {
-                        if((yyvsp[-2].A)->atype=="arr")          // if type is arr, simply check if we need to convert and Q.emit
+                        if((yyvsp[-2].A)->atype=="arr")                                            // if type is arr, Check and convert then Q.emit as []=
                         {
                             (yyvsp[0].expr)->loc = convertType((yyvsp[0].expr)->loc, (yyvsp[-2].A)->type->type);
                             Q.emit("[]=", (yyvsp[-2].A)->Array->name, (yyvsp[-2].A)->loc->name, (yyvsp[0].expr)->loc->name);		
                         }
-                        else if((yyvsp[-2].A)->atype=="ptr")     // if type is ptr, simply Q.emit
+                        else if((yyvsp[-2].A)->atype=="ptr")                                       // if type is ptr, simply Q.emit as *=
                         {
                             Q.emit("*=", (yyvsp[-2].A)->Array->name, (yyvsp[0].expr)->loc->name);	
                         }
-                        else                              //otherwise assignment
+                        else                                                            // otherwise simple assignment
                         {
                             (yyvsp[0].expr)->loc = convertType((yyvsp[0].expr)->loc, (yyvsp[-2].A)->Array->type->type);
                             Q.emit("=", (yyvsp[-2].A)->Array->name, (yyvsp[0].expr)->loc->name);
@@ -2745,552 +2802,560 @@ yyreduce:
                         
                         (yyval.expr) = (yyvsp[0].expr);
                     }
-#line 2749 "ass5_19CS10069_19CS30007.tab.c"
+#line 2806 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 68:
-#line 738 "ass5_19CS10069_19CS30007.y"
+#line 795 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2755 "ass5_19CS10069_19CS30007.tab.c"
+#line 2812 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 69:
-#line 740 "ass5_19CS10069_19CS30007.y"
+#line 797 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2761 "ass5_19CS10069_19CS30007.tab.c"
+#line 2818 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 70:
-#line 742 "ass5_19CS10069_19CS30007.y"
+#line 799 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2767 "ass5_19CS10069_19CS30007.tab.c"
+#line 2824 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 71:
-#line 744 "ass5_19CS10069_19CS30007.y"
+#line 801 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2773 "ass5_19CS10069_19CS30007.tab.c"
+#line 2830 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 72:
-#line 746 "ass5_19CS10069_19CS30007.y"
+#line 803 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2779 "ass5_19CS10069_19CS30007.tab.c"
+#line 2836 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 73:
-#line 748 "ass5_19CS10069_19CS30007.y"
+#line 805 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2785 "ass5_19CS10069_19CS30007.tab.c"
+#line 2842 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 74:
-#line 750 "ass5_19CS10069_19CS30007.y"
+#line 807 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2791 "ass5_19CS10069_19CS30007.tab.c"
+#line 2848 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 75:
-#line 752 "ass5_19CS10069_19CS30007.y"
+#line 809 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2797 "ass5_19CS10069_19CS30007.tab.c"
+#line 2854 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 76:
-#line 754 "ass5_19CS10069_19CS30007.y"
+#line 811 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2803 "ass5_19CS10069_19CS30007.tab.c"
+#line 2860 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 77:
-#line 756 "ass5_19CS10069_19CS30007.y"
+#line 813 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2809 "ass5_19CS10069_19CS30007.tab.c"
+#line 2866 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 78:
-#line 758 "ass5_19CS10069_19CS30007.y"
+#line 815 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2815 "ass5_19CS10069_19CS30007.tab.c"
+#line 2872 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 79:
-#line 763 "ass5_19CS10069_19CS30007.y"
+#line 820 "ass5_19CS10069_19CS30007.y"
                     { (yyval.expr) = (yyvsp[0].expr); }
-#line 2821 "ass5_19CS10069_19CS30007.tab.c"
+#line 2878 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 80:
-#line 765 "ass5_19CS10069_19CS30007.y"
+#line 822 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2827 "ass5_19CS10069_19CS30007.tab.c"
+#line 2884 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 81:
-#line 770 "ass5_19CS10069_19CS30007.y"
+#line 827 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2833 "ass5_19CS10069_19CS30007.tab.c"
+#line 2890 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 82:
-#line 775 "ass5_19CS10069_19CS30007.y"
+#line 832 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2839 "ass5_19CS10069_19CS30007.tab.c"
+#line 2896 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 83:
-#line 779 "ass5_19CS10069_19CS30007.y"
+#line 836 "ass5_19CS10069_19CS30007.y"
                                          {  }
-#line 2845 "ass5_19CS10069_19CS30007.tab.c"
+#line 2902 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 84:
-#line 780 "ass5_19CS10069_19CS30007.y"
+#line 837 "ass5_19CS10069_19CS30007.y"
                             {  }
-#line 2851 "ass5_19CS10069_19CS30007.tab.c"
+#line 2908 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 85:
-#line 785 "ass5_19CS10069_19CS30007.y"
+#line 842 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2857 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 86:
-#line 787 "ass5_19CS10069_19CS30007.y"
-                    {  }
-#line 2863 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 87:
-#line 789 "ass5_19CS10069_19CS30007.y"
-                    {  }
-#line 2869 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 88:
-#line 791 "ass5_19CS10069_19CS30007.y"
-                    {  }
-#line 2875 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 89:
-#line 795 "ass5_19CS10069_19CS30007.y"
-                                           { }
-#line 2881 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 90:
-#line 796 "ass5_19CS10069_19CS30007.y"
-                             {  }
-#line 2887 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 91:
-#line 801 "ass5_19CS10069_19CS30007.y"
-                    {  }
-#line 2893 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 92:
-#line 803 "ass5_19CS10069_19CS30007.y"
-                    {  }
-#line 2899 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 93:
-#line 808 "ass5_19CS10069_19CS30007.y"
-                    { (yyval.symp) = (yyvsp[0].symp); }
-#line 2905 "ass5_19CS10069_19CS30007.tab.c"
-    break;
-
-  case 94:
-#line 810 "ass5_19CS10069_19CS30007.y"
-                    {
-                        if((yyvsp[0].symp)->val!="") (yyvsp[-2].symp)->val=(yyvsp[0].symp)->val;        //get the initial value and  Q.emit it
-                        Q.emit("=", (yyvsp[-2].symp)->name, (yyvsp[0].symp)->name);	
-                    }
 #line 2914 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
-  case 95:
-#line 818 "ass5_19CS10069_19CS30007.y"
+  case 86:
+#line 844 "ass5_19CS10069_19CS30007.y"
                     {  }
 #line 2920 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
-  case 96:
-#line 820 "ass5_19CS10069_19CS30007.y"
+  case 87:
+#line 846 "ass5_19CS10069_19CS30007.y"
                     {  }
 #line 2926 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
-  case 97:
-#line 822 "ass5_19CS10069_19CS30007.y"
+  case 88:
+#line 848 "ass5_19CS10069_19CS30007.y"
                     {  }
 #line 2932 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
-  case 98:
-#line 824 "ass5_19CS10069_19CS30007.y"
-                    {  }
+  case 89:
+#line 852 "ass5_19CS10069_19CS30007.y"
+                                           { }
 #line 2938 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
-  case 99:
-#line 829 "ass5_19CS10069_19CS30007.y"
-                    { var_type="void"; /* Store the latest var type */ }
+  case 90:
+#line 853 "ass5_19CS10069_19CS30007.y"
+                             {  }
 #line 2944 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
-  case 100:
-#line 831 "ass5_19CS10069_19CS30007.y"
-                    { var_type="char"; }
+  case 91:
+#line 858 "ass5_19CS10069_19CS30007.y"
+                    {  }
 #line 2950 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
-  case 101:
-#line 833 "ass5_19CS10069_19CS30007.y"
+  case 92:
+#line 860 "ass5_19CS10069_19CS30007.y"
                     {  }
 #line 2956 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
+  case 93:
+#line 865 "ass5_19CS10069_19CS30007.y"
+                    { 
+                        (yyval.symp) = (yyvsp[0].symp);                            // Simple Assign 
+                    }
+#line 2964 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 94:
+#line 869 "ass5_19CS10069_19CS30007.y"
+                    {
+                        if((yyvsp[0].symp)->val != ""){
+                            (yyvsp[-2].symp)->val=(yyvsp[0].symp)->val;                // get the initial value
+                        }
+                        Q.emit("=", (yyvsp[-2].symp)->name, (yyvsp[0].symp)->name);	// emit that initial value with Assign operator
+                    }
+#line 2975 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 95:
+#line 879 "ass5_19CS10069_19CS30007.y"
+                    {  }
+#line 2981 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 96:
+#line 881 "ass5_19CS10069_19CS30007.y"
+                    {  }
+#line 2987 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 97:
+#line 883 "ass5_19CS10069_19CS30007.y"
+                    {  }
+#line 2993 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 98:
+#line 885 "ass5_19CS10069_19CS30007.y"
+                    {  }
+#line 2999 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 99:
+#line 890 "ass5_19CS10069_19CS30007.y"
+                    { var_type="void"; /* Store the latest var type */ }
+#line 3005 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 100:
+#line 892 "ass5_19CS10069_19CS30007.y"
+                    { var_type="char"; /* Store the latest var type */ }
+#line 3011 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
+  case 101:
+#line 894 "ass5_19CS10069_19CS30007.y"
+                    {  }
+#line 3017 "ass5_19CS10069_19CS30007.tab.c"
+    break;
+
   case 102:
-#line 835 "ass5_19CS10069_19CS30007.y"
-                    { var_type="int"; }
-#line 2962 "ass5_19CS10069_19CS30007.tab.c"
+#line 896 "ass5_19CS10069_19CS30007.y"
+                    { var_type="int"; /* Store the latest var type */ }
+#line 3023 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 103:
-#line 837 "ass5_19CS10069_19CS30007.y"
+#line 898 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2968 "ass5_19CS10069_19CS30007.tab.c"
+#line 3029 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 104:
-#line 839 "ass5_19CS10069_19CS30007.y"
-                    { var_type="float"; }
-#line 2974 "ass5_19CS10069_19CS30007.tab.c"
+#line 900 "ass5_19CS10069_19CS30007.y"
+                    { var_type="float"; /* Store the latest var type */ }
+#line 3035 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 105:
-#line 841 "ass5_19CS10069_19CS30007.y"
+#line 902 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2980 "ass5_19CS10069_19CS30007.tab.c"
+#line 3041 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 106:
-#line 843 "ass5_19CS10069_19CS30007.y"
+#line 904 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2986 "ass5_19CS10069_19CS30007.tab.c"
+#line 3047 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 107:
-#line 845 "ass5_19CS10069_19CS30007.y"
+#line 906 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2992 "ass5_19CS10069_19CS30007.tab.c"
+#line 3053 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 108:
-#line 847 "ass5_19CS10069_19CS30007.y"
+#line 908 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 2998 "ass5_19CS10069_19CS30007.tab.c"
+#line 3059 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 109:
-#line 849 "ass5_19CS10069_19CS30007.y"
+#line 910 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3004 "ass5_19CS10069_19CS30007.tab.c"
+#line 3065 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 110:
-#line 851 "ass5_19CS10069_19CS30007.y"
+#line 912 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3010 "ass5_19CS10069_19CS30007.tab.c"
+#line 3071 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 111:
-#line 853 "ass5_19CS10069_19CS30007.y"
+#line 914 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3016 "ass5_19CS10069_19CS30007.tab.c"
+#line 3077 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 112:
-#line 855 "ass5_19CS10069_19CS30007.y"
+#line 916 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3022 "ass5_19CS10069_19CS30007.tab.c"
+#line 3083 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 113:
-#line 860 "ass5_19CS10069_19CS30007.y"
+#line 921 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3028 "ass5_19CS10069_19CS30007.tab.c"
+#line 3089 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 114:
-#line 862 "ass5_19CS10069_19CS30007.y"
+#line 923 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3034 "ass5_19CS10069_19CS30007.tab.c"
+#line 3095 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 115:
-#line 866 "ass5_19CS10069_19CS30007.y"
+#line 927 "ass5_19CS10069_19CS30007.y"
                                              {  }
-#line 3040 "ass5_19CS10069_19CS30007.tab.c"
+#line 3101 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 116:
-#line 867 "ass5_19CS10069_19CS30007.y"
+#line 928 "ass5_19CS10069_19CS30007.y"
                              {  }
-#line 3046 "ass5_19CS10069_19CS30007.tab.c"
+#line 3107 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 117:
-#line 872 "ass5_19CS10069_19CS30007.y"
+#line 933 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3052 "ass5_19CS10069_19CS30007.tab.c"
+#line 3113 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 118:
-#line 874 "ass5_19CS10069_19CS30007.y"
+#line 935 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3058 "ass5_19CS10069_19CS30007.tab.c"
+#line 3119 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 119:
-#line 876 "ass5_19CS10069_19CS30007.y"
+#line 937 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3064 "ass5_19CS10069_19CS30007.tab.c"
+#line 3125 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 120:
-#line 881 "ass5_19CS10069_19CS30007.y"
+#line 942 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3070 "ass5_19CS10069_19CS30007.tab.c"
+#line 3131 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 121:
-#line 883 "ass5_19CS10069_19CS30007.y"
+#line 944 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3076 "ass5_19CS10069_19CS30007.tab.c"
+#line 3137 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 122:
-#line 888 "ass5_19CS10069_19CS30007.y"
+#line 949 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3082 "ass5_19CS10069_19CS30007.tab.c"
+#line 3143 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 123:
-#line 890 "ass5_19CS10069_19CS30007.y"
+#line 951 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3088 "ass5_19CS10069_19CS30007.tab.c"
+#line 3149 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 124:
-#line 895 "ass5_19CS10069_19CS30007.y"
+#line 956 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3094 "ass5_19CS10069_19CS30007.tab.c"
+#line 3155 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 125:
-#line 897 "ass5_19CS10069_19CS30007.y"
+#line 958 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3100 "ass5_19CS10069_19CS30007.tab.c"
+#line 3161 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 126:
-#line 902 "ass5_19CS10069_19CS30007.y"
+#line 963 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3106 "ass5_19CS10069_19CS30007.tab.c"
+#line 3167 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 127:
-#line 904 "ass5_19CS10069_19CS30007.y"
+#line 965 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3112 "ass5_19CS10069_19CS30007.tab.c"
+#line 3173 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 128:
-#line 908 "ass5_19CS10069_19CS30007.y"
+#line 969 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3118 "ass5_19CS10069_19CS30007.tab.c"
+#line 3179 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 129:
-#line 910 "ass5_19CS10069_19CS30007.y"
+#line 971 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3124 "ass5_19CS10069_19CS30007.tab.c"
+#line 3185 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 130:
-#line 912 "ass5_19CS10069_19CS30007.y"
+#line 973 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3130 "ass5_19CS10069_19CS30007.tab.c"
+#line 3191 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 131:
-#line 917 "ass5_19CS10069_19CS30007.y"
+#line 978 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3136 "ass5_19CS10069_19CS30007.tab.c"
+#line 3197 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 132:
-#line 919 "ass5_19CS10069_19CS30007.y"
+#line 980 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3142 "ass5_19CS10069_19CS30007.tab.c"
+#line 3203 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 133:
-#line 921 "ass5_19CS10069_19CS30007.y"
+#line 982 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3148 "ass5_19CS10069_19CS30007.tab.c"
+#line 3209 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 134:
-#line 925 "ass5_19CS10069_19CS30007.y"
+#line 986 "ass5_19CS10069_19CS30007.y"
                                {  }
-#line 3154 "ass5_19CS10069_19CS30007.tab.c"
+#line 3215 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 135:
-#line 926 "ass5_19CS10069_19CS30007.y"
+#line 987 "ass5_19CS10069_19CS30007.y"
                              {  }
-#line 3160 "ass5_19CS10069_19CS30007.tab.c"
+#line 3221 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 136:
-#line 931 "ass5_19CS10069_19CS30007.y"
+#line 992 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3166 "ass5_19CS10069_19CS30007.tab.c"
+#line 3227 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 137:
-#line 933 "ass5_19CS10069_19CS30007.y"
+#line 994 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3172 "ass5_19CS10069_19CS30007.tab.c"
+#line 3233 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 138:
-#line 939 "ass5_19CS10069_19CS30007.y"
+#line 1000 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3178 "ass5_19CS10069_19CS30007.tab.c"
+#line 3239 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 139:
-#line 941 "ass5_19CS10069_19CS30007.y"
+#line 1002 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3184 "ass5_19CS10069_19CS30007.tab.c"
+#line 3245 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 140:
-#line 947 "ass5_19CS10069_19CS30007.y"
-                    {  }
-#line 3190 "ass5_19CS10069_19CS30007.tab.c"
+#line 1008 "ass5_19CS10069_19CS30007.y"
+                    { /* NOT to be modelled */ }
+#line 3251 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 141:
-#line 949 "ass5_19CS10069_19CS30007.y"
+#line 1010 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3196 "ass5_19CS10069_19CS30007.tab.c"
+#line 3257 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 142:
-#line 951 "ass5_19CS10069_19CS30007.y"
+#line 1012 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3202 "ass5_19CS10069_19CS30007.tab.c"
+#line 3263 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 143:
-#line 956 "ass5_19CS10069_19CS30007.y"
+#line 1017 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3208 "ass5_19CS10069_19CS30007.tab.c"
+#line 3269 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 144:
-#line 961 "ass5_19CS10069_19CS30007.y"
+#line 1022 "ass5_19CS10069_19CS30007.y"
                     {
                         symboltype *t = (yyvsp[-1].sym_type);
-                        while(t->arrtype!=NULL) t = t->arrtype;           //for multidimensional arr1s, move in depth till you get the base type
-                        t->arrtype = (yyvsp[0].symp)->type;                //add the base type 
-                        (yyval.symp) = (yyvsp[0].symp)->update((yyvsp[-1].sym_type));                  //update
+                        while(t->arrtype!=NULL)
+                        {
+                            t = t->arrtype;                                         // Recursively get to the base Array
+                        }   
+                        t->arrtype = (yyvsp[0].symp)->type;                                      // add the base type 
+                        
+                        (yyval.symp) = (yyvsp[0].symp)->update((yyvsp[-1].sym_type));                                        // update the symbol type
                     }
-#line 3219 "ass5_19CS10069_19CS30007.tab.c"
+#line 3284 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 145:
-#line 967 "ass5_19CS10069_19CS30007.y"
+#line 1032 "ass5_19CS10069_19CS30007.y"
                                         {   }
-#line 3225 "ass5_19CS10069_19CS30007.tab.c"
+#line 3290 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 146:
-#line 974 "ass5_19CS10069_19CS30007.y"
+#line 1039 "ass5_19CS10069_19CS30007.y"
                     {
                         //if ID, simply add a new variable of var_type
-                        (yyval.symp) = (yyvsp[0].symp)->update(new symboltype(var_type));
-                        currSymbolPtr = (yyval.symp);	
+                        (yyval.symp) = (yyvsp[0].symp)->update(new symboltype(var_type));                                      // update the symbol type to latest type specifier
+                        currSymbolPtr = (yyval.symp);	                                                            // store the latest Symbol
                     }
-#line 3235 "ass5_19CS10069_19CS30007.tab.c"
+#line 3300 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 147:
-#line 979 "ass5_19CS10069_19CS30007.y"
+#line 1044 "ass5_19CS10069_19CS30007.y"
                                          {(yyval.symp)=(yyvsp[-1].symp);}
-#line 3241 "ass5_19CS10069_19CS30007.tab.c"
+#line 3306 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 148:
-#line 980 "ass5_19CS10069_19CS30007.y"
+#line 1045 "ass5_19CS10069_19CS30007.y"
                                                                                           {	}
-#line 3247 "ass5_19CS10069_19CS30007.tab.c"
+#line 3312 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 149:
-#line 981 "ass5_19CS10069_19CS30007.y"
+#line 1046 "ass5_19CS10069_19CS30007.y"
                                                                     {	}
-#line 3253 "ass5_19CS10069_19CS30007.tab.c"
+#line 3318 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 150:
-#line 983 "ass5_19CS10069_19CS30007.y"
+#line 1048 "ass5_19CS10069_19CS30007.y"
                     {
                         symboltype *t = (yyvsp[-3].symp) -> type;
-                        symboltype *prev = NULL;
+                        symboltype *prev = NULL;                                                        // prev initialized to NULL
                         while(t->type == "arr") 
                         {
                             prev = t;	
-                            t = t->arrtype;      //keep moving recursively to get basetype
+                            t = t->arrtype;                                                             // recursively find the base type
                         }
                         if(prev==NULL) 
                         {
-                            int temp = atoi((yyvsp[-1].expr)->loc->val.c_str());      //get initial value
-                            symboltype* s = new symboltype("arr", (yyvsp[-3].symp)->type, temp);        //create new symbol with that initial value
-                            (yyval.symp) = (yyvsp[-3].symp)->update(s);   //update the symbol table
+                            int temp = atoi((yyvsp[-1].expr)->loc->val.c_str());                                      // temp = string(value)
+                            symboltype* s = new symboltype("arr", (yyvsp[-3].symp)->type, temp);                      // Create a new symbol with the initial value
+                            (yyval.symp) = (yyvsp[-3].symp)->update(s);                                                         // Update the symbol type
                         }
                         else 
                         {
-                            prev->arrtype =  new symboltype("arr", t, atoi((yyvsp[-1].expr)->loc->val.c_str()));     //similar arguments as above		
+                            prev->arrtype =  new symboltype("arr", t, atoi((yyvsp[-1].expr)->loc->val.c_str()));      // similar arguments as above		
                             (yyval.symp) = (yyvsp[-3].symp)->update((yyvsp[-3].symp)->type);
                         }
                     }
-#line 3278 "ass5_19CS10069_19CS30007.tab.c"
+#line 3343 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 151:
-#line 1004 "ass5_19CS10069_19CS30007.y"
+#line 1069 "ass5_19CS10069_19CS30007.y"
                     {
                         symboltype *t = (yyvsp[-2].symp) -> type;
-                        symboltype *prev = NULL;
+                        symboltype *prev = NULL;                                    // initialize prev to NULL
                         while(t->type == "arr") 
                         {
                             prev = t;	
-                            t = t->arrtype;         //keep moving recursively to base type
+                            t = t->arrtype;                                         // Recursively find the base type
                         }
                         if(prev==NULL) 
                         {
-                            symboltype* s = new symboltype("arr", (yyvsp[-2].symp)->type, 0);    //no initial values, simply keep 0
-                            (yyval.symp) = (yyvsp[-2].symp)->update(s);
+                            symboltype* s = new symboltype("arr", (yyvsp[-2].symp)->type, 0);     // no initial values, simply keep 0
+                            (yyval.symp) = (yyvsp[-2].symp)->update(s);                                     // Update the symboltype of $$
                         }
                         else 
                         {
@@ -3298,313 +3363,315 @@ yyreduce:
                             (yyval.symp) = (yyvsp[-2].symp)->update((yyvsp[-2].symp)->type);
                         }
                     }
-#line 3302 "ass5_19CS10069_19CS30007.tab.c"
+#line 3367 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 152:
-#line 1023 "ass5_19CS10069_19CS30007.y"
+#line 1088 "ass5_19CS10069_19CS30007.y"
                                                                                                  {	}
-#line 3308 "ass5_19CS10069_19CS30007.tab.c"
+#line 3373 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 153:
-#line 1024 "ass5_19CS10069_19CS30007.y"
+#line 1089 "ass5_19CS10069_19CS30007.y"
                                                                              {	}
-#line 3314 "ass5_19CS10069_19CS30007.tab.c"
+#line 3379 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 154:
-#line 1025 "ass5_19CS10069_19CS30007.y"
+#line 1090 "ass5_19CS10069_19CS30007.y"
                                                                          {	}
-#line 3320 "ass5_19CS10069_19CS30007.tab.c"
+#line 3385 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 155:
-#line 1026 "ass5_19CS10069_19CS30007.y"
+#line 1091 "ass5_19CS10069_19CS30007.y"
                                                      {	}
-#line 3326 "ass5_19CS10069_19CS30007.tab.c"
+#line 3391 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 156:
-#line 1028 "ass5_19CS10069_19CS30007.y"
+#line 1093 "ass5_19CS10069_19CS30007.y"
                     {
-                        ST->name = (yyvsp[-4].symp)->name;	
+                        ST->name = (yyvsp[-4].symp)->name;	                    // change the ST name to fun
                         if((yyvsp[-4].symp)->type->type !="void") 
                         {
-                            sym *s = ST->lookup("return");         //lookup for return value	
-                            s->update((yyvsp[-4].symp)->type);		
+                            sym *s = ST->lookup("return");          // lookup for return value	
+                            s->update((yyvsp[-4].symp)->type);		            // update return type
                         }
-                        (yyvsp[-4].symp)->nested=ST;       
-                        ST->parent = globalST;
-                        changeTable(globalST);				// Come back to globalsymbol table
+                        (yyvsp[-4].symp)->nested=ST;                              // link nested Symbol Table 
+                        ST->parent = globalST;                      // link parent Symbol Table
+                        
+                        changeTable(globalST);				        // Come back to globalsymbol table
                         currSymbolPtr = (yyval.symp);
                     }
-#line 3343 "ass5_19CS10069_19CS30007.tab.c"
+#line 3409 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 157:
-#line 1040 "ass5_19CS10069_19CS30007.y"
+#line 1106 "ass5_19CS10069_19CS30007.y"
                                                                 {	}
-#line 3349 "ass5_19CS10069_19CS30007.tab.c"
+#line 3415 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 158:
-#line 1042 "ass5_19CS10069_19CS30007.y"
+#line 1108 "ass5_19CS10069_19CS30007.y"
                     {        //similar as above
                         ST->name = (yyvsp[-3].symp)->name;
                         if((yyvsp[-3].symp)->type->type !="void") 
                         {
                             sym *s = ST->lookup("return");
-                            s->update((yyvsp[-3].symp)->type);
+                            s->update((yyvsp[-3].symp)->type);            // update return type
                         }
-                        (yyvsp[-3].symp)->nested=ST;
-                        ST->parent = globalST;
-                        changeTable(globalST);				// Come back to globalsymbol table
+                        (yyvsp[-3].symp)->nested=ST;                      // link nested Symbol table
+                        ST->parent = globalST;              // Set parent to Global Symbol table
+                        
+                        changeTable(globalST);				// Go back to global Symbol table
                         currSymbolPtr = (yyval.symp);
                     }
-#line 3366 "ass5_19CS10069_19CS30007.tab.c"
+#line 3433 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 159:
-#line 1057 "ass5_19CS10069_19CS30007.y"
+#line 1124 "ass5_19CS10069_19CS30007.y"
                                         { }
-#line 3372 "ass5_19CS10069_19CS30007.tab.c"
+#line 3439 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 160:
-#line 1058 "ass5_19CS10069_19CS30007.y"
+#line 1125 "ass5_19CS10069_19CS30007.y"
                              {  }
-#line 3378 "ass5_19CS10069_19CS30007.tab.c"
+#line 3445 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 161:
-#line 1064 "ass5_19CS10069_19CS30007.y"
+#line 1131 "ass5_19CS10069_19CS30007.y"
                     { 
                         (yyval.sym_type) = new symboltype("ptr");   //create a new pointer symbol
                     }
-#line 3386 "ass5_19CS10069_19CS30007.tab.c"
+#line 3453 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 162:
-#line 1068 "ass5_19CS10069_19CS30007.y"
+#line 1135 "ass5_19CS10069_19CS30007.y"
                     { 
-                        (yyval.sym_type) = new symboltype("ptr",(yyvsp[0].sym_type)); // create the symboltype with type
+                        (yyval.sym_type) = new symboltype("ptr",(yyvsp[0].sym_type)); // create the symboltype with $3 symbol type
                     }
-#line 3394 "ass5_19CS10069_19CS30007.tab.c"
+#line 3461 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 163:
-#line 1075 "ass5_19CS10069_19CS30007.y"
+#line 1142 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3400 "ass5_19CS10069_19CS30007.tab.c"
+#line 3467 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 164:
-#line 1077 "ass5_19CS10069_19CS30007.y"
+#line 1144 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3406 "ass5_19CS10069_19CS30007.tab.c"
+#line 3473 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 165:
-#line 1082 "ass5_19CS10069_19CS30007.y"
+#line 1149 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3412 "ass5_19CS10069_19CS30007.tab.c"
+#line 3479 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 166:
-#line 1084 "ass5_19CS10069_19CS30007.y"
+#line 1151 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3418 "ass5_19CS10069_19CS30007.tab.c"
+#line 3485 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 167:
-#line 1089 "ass5_19CS10069_19CS30007.y"
+#line 1156 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3424 "ass5_19CS10069_19CS30007.tab.c"
+#line 3491 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 168:
-#line 1091 "ass5_19CS10069_19CS30007.y"
+#line 1158 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3430 "ass5_19CS10069_19CS30007.tab.c"
+#line 3497 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 169:
-#line 1096 "ass5_19CS10069_19CS30007.y"
+#line 1163 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3436 "ass5_19CS10069_19CS30007.tab.c"
+#line 3503 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 170:
-#line 1098 "ass5_19CS10069_19CS30007.y"
+#line 1165 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3442 "ass5_19CS10069_19CS30007.tab.c"
+#line 3509 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 171:
-#line 1103 "ass5_19CS10069_19CS30007.y"
+#line 1170 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3448 "ass5_19CS10069_19CS30007.tab.c"
+#line 3515 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 172:
-#line 1105 "ass5_19CS10069_19CS30007.y"
+#line 1172 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3454 "ass5_19CS10069_19CS30007.tab.c"
+#line 3521 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 173:
-#line 1110 "ass5_19CS10069_19CS30007.y"
+#line 1177 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3460 "ass5_19CS10069_19CS30007.tab.c"
+#line 3527 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 174:
-#line 1115 "ass5_19CS10069_19CS30007.y"
+#line 1182 "ass5_19CS10069_19CS30007.y"
                     { (yyval.symp)=(yyvsp[0].expr)->loc; /* assignment */  }
-#line 3466 "ass5_19CS10069_19CS30007.tab.c"
+#line 3533 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 175:
-#line 1117 "ass5_19CS10069_19CS30007.y"
+#line 1184 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3472 "ass5_19CS10069_19CS30007.tab.c"
+#line 3539 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 176:
-#line 1119 "ass5_19CS10069_19CS30007.y"
+#line 1186 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3478 "ass5_19CS10069_19CS30007.tab.c"
+#line 3545 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 177:
-#line 1124 "ass5_19CS10069_19CS30007.y"
+#line 1191 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3484 "ass5_19CS10069_19CS30007.tab.c"
+#line 3551 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 178:
-#line 1126 "ass5_19CS10069_19CS30007.y"
+#line 1193 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3490 "ass5_19CS10069_19CS30007.tab.c"
+#line 3557 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 179:
-#line 1130 "ass5_19CS10069_19CS30007.y"
+#line 1197 "ass5_19CS10069_19CS30007.y"
                                 { }
-#line 3496 "ass5_19CS10069_19CS30007.tab.c"
+#line 3563 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 180:
-#line 1131 "ass5_19CS10069_19CS30007.y"
+#line 1198 "ass5_19CS10069_19CS30007.y"
                              { }
-#line 3502 "ass5_19CS10069_19CS30007.tab.c"
+#line 3569 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 181:
-#line 1136 "ass5_19CS10069_19CS30007.y"
+#line 1203 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3508 "ass5_19CS10069_19CS30007.tab.c"
+#line 3575 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 182:
-#line 1141 "ass5_19CS10069_19CS30007.y"
+#line 1208 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3514 "ass5_19CS10069_19CS30007.tab.c"
+#line 3581 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 183:
-#line 1143 "ass5_19CS10069_19CS30007.y"
+#line 1210 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3520 "ass5_19CS10069_19CS30007.tab.c"
+#line 3587 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 184:
-#line 1148 "ass5_19CS10069_19CS30007.y"
+#line 1215 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3526 "ass5_19CS10069_19CS30007.tab.c"
+#line 3593 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 185:
-#line 1150 "ass5_19CS10069_19CS30007.y"
+#line 1217 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3532 "ass5_19CS10069_19CS30007.tab.c"
+#line 3599 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 186:
-#line 1155 "ass5_19CS10069_19CS30007.y"
+#line 1222 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3538 "ass5_19CS10069_19CS30007.tab.c"
+#line 3605 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 187:
-#line 1157 "ass5_19CS10069_19CS30007.y"
+#line 1224 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); }
-#line 3544 "ass5_19CS10069_19CS30007.tab.c"
+#line 3611 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 188:
-#line 1159 "ass5_19CS10069_19CS30007.y"
+#line 1226 "ass5_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat)=new Statement();              //create new statement with same nextlist
                         (yyval.stat)->nextlist=(yyvsp[0].expr)->nextlist; 
                     }
-#line 3553 "ass5_19CS10069_19CS30007.tab.c"
+#line 3620 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 189:
-#line 1164 "ass5_19CS10069_19CS30007.y"
+#line 1231 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); }
-#line 3559 "ass5_19CS10069_19CS30007.tab.c"
+#line 3626 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 190:
-#line 1166 "ass5_19CS10069_19CS30007.y"
+#line 1233 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); }
-#line 3565 "ass5_19CS10069_19CS30007.tab.c"
+#line 3632 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 191:
-#line 1168 "ass5_19CS10069_19CS30007.y"
+#line 1235 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); }
-#line 3571 "ass5_19CS10069_19CS30007.tab.c"
+#line 3638 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 192:
-#line 1172 "ass5_19CS10069_19CS30007.y"
+#line 1239 "ass5_19CS10069_19CS30007.y"
                                         {  }
-#line 3577 "ass5_19CS10069_19CS30007.tab.c"
+#line 3644 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 193:
-#line 1174 "ass5_19CS10069_19CS30007.y"
+#line 1241 "ass5_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat)=new Statement();                         // create new statement with same nextlist
                         (yyval.stat)->nextlist=(yyvsp[0].expr)->nextlist;                  // assign the nextlist
                     }
-#line 3586 "ass5_19CS10069_19CS30007.tab.c"
+#line 3653 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 194:
-#line 1178 "ass5_19CS10069_19CS30007.y"
+#line 1245 "ass5_19CS10069_19CS30007.y"
                                             { (yyval.stat)=(yyvsp[0].stat); }
-#line 3592 "ass5_19CS10069_19CS30007.tab.c"
+#line 3659 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 195:
-#line 1179 "ass5_19CS10069_19CS30007.y"
+#line 1246 "ass5_19CS10069_19CS30007.y"
                                             { (yyval.stat)=(yyvsp[0].stat); }
-#line 3598 "ass5_19CS10069_19CS30007.tab.c"
+#line 3665 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 196:
-#line 1180 "ass5_19CS10069_19CS30007.y"
+#line 1247 "ass5_19CS10069_19CS30007.y"
                                        { (yyval.stat)=(yyvsp[0].stat); }
-#line 3604 "ass5_19CS10069_19CS30007.tab.c"
+#line 3671 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 197:
-#line 1184 "ass5_19CS10069_19CS30007.y"
+#line 1251 "ass5_19CS10069_19CS30007.y"
                     {  
                         (yyval.stat) = (yyvsp[0].stat);
                         label *s = find_label((yyvsp[-3].symp)->name);
@@ -3618,253 +3685,281 @@ yyreduce:
                             label_table.push_back(*s);
                         }
                     }
-#line 3622 "ass5_19CS10069_19CS30007.tab.c"
+#line 3689 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 198:
-#line 1198 "ass5_19CS10069_19CS30007.y"
+#line 1265 "ass5_19CS10069_19CS30007.y"
                     { /* Not to be modelled */ }
-#line 3628 "ass5_19CS10069_19CS30007.tab.c"
+#line 3695 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 199:
-#line 1200 "ass5_19CS10069_19CS30007.y"
+#line 1267 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3634 "ass5_19CS10069_19CS30007.tab.c"
+#line 3701 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 200:
-#line 1205 "ass5_19CS10069_19CS30007.y"
+#line 1272 "ass5_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat)=(yyvsp[-1].stat);                           // Compound Statement = blockItemList
                         changeTable(ST->parent);         // Change Symbol Table
                     }
-#line 3643 "ass5_19CS10069_19CS30007.tab.c"
+#line 3710 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 201:
-#line 1213 "ass5_19CS10069_19CS30007.y"
+#line 1280 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); /* Simple assign */}
-#line 3649 "ass5_19CS10069_19CS30007.tab.c"
+#line 3716 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 202:
-#line 1215 "ass5_19CS10069_19CS30007.y"
+#line 1282 "ass5_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat)=(yyvsp[0].stat);
                         backpatch((yyvsp[-2].stat)->nextlist,(yyvsp[-1].instr_number));     //after $1, move to block_item via $2
                     }
-#line 3658 "ass5_19CS10069_19CS30007.tab.c"
+#line 3725 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 203:
-#line 1223 "ass5_19CS10069_19CS30007.y"
+#line 1290 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat) ;/* simple assign */}
-#line 3664 "ass5_19CS10069_19CS30007.tab.c"
+#line 3731 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 204:
-#line 1225 "ass5_19CS10069_19CS30007.y"
+#line 1292 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=new Statement(); /* Create new statement */}
-#line 3670 "ass5_19CS10069_19CS30007.tab.c"
+#line 3737 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 205:
-#line 1230 "ass5_19CS10069_19CS30007.y"
+#line 1297 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=new Statement(); /* Create new statement */}
-#line 3676 "ass5_19CS10069_19CS30007.tab.c"
+#line 3743 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 206:
-#line 1232 "ass5_19CS10069_19CS30007.y"
+#line 1299 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); /* Simple assign */}
-#line 3682 "ass5_19CS10069_19CS30007.tab.c"
+#line 3749 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 207:
-#line 1237 "ass5_19CS10069_19CS30007.y"
+#line 1304 "ass5_19CS10069_19CS30007.y"
                     { (yyval.expr) = new Expression(); /* new Expression */ }
-#line 3688 "ass5_19CS10069_19CS30007.tab.c"
+#line 3755 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 208:
-#line 1239 "ass5_19CS10069_19CS30007.y"
+#line 1306 "ass5_19CS10069_19CS30007.y"
                     { (yyval.expr)=(yyvsp[-1].expr); /* Simple assign */}
-#line 3694 "ass5_19CS10069_19CS30007.tab.c"
+#line 3761 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 209:
-#line 1244 "ass5_19CS10069_19CS30007.y"
+#line 1311 "ass5_19CS10069_19CS30007.y"
                     {
-                                                                                // if statement without else
-                        backpatch((yyvsp[-4].stat)->nextlist, nextinstr());                   // nextlist of N goes to nextinstr
-                        convertIntToBool((yyvsp[-5].expr));                                   // convert expression to bool
-                        (yyval.stat) = new Statement();                                   // make new statement
-                        backpatch((yyvsp[-5].expr)->truelist, (yyvsp[-2].instr_number));                            // is expression is true, go to M i.e just before statement body
-                        list<int> temp = merge((yyvsp[-5].expr)->falselist, (yyvsp[-1].stat)->nextlist);    // merge falselist of expression, nextlist of statement and second N
+                        // if without else
+                        backpatch((yyvsp[-4].stat)->nextlist, nextinstr());                   // After we hit N we go to next instr
+                        convertIntToBool((yyvsp[-5].expr));                                   // expression in IF is converted to bool
+
+                        (yyval.stat) = new Statement();                                   
+                        backpatch((yyvsp[-5].expr)->truelist, (yyvsp[-2].instr_number));                            // We do the backpatch here
+
+                        list<int> temp = merge((yyvsp[-5].expr)->falselist, (yyvsp[-1].stat)->nextlist);    // If it is false, we just escape the inner statement
                         (yyval.stat)->nextlist = merge((yyvsp[0].stat)->nextlist, temp);
                     }
-#line 3708 "ass5_19CS10069_19CS30007.tab.c"
+#line 3777 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 210:
-#line 1254 "ass5_19CS10069_19CS30007.y"
+#line 1323 "ass5_19CS10069_19CS30007.y"
                     {
-                                                                                // if  else
-                        backpatch((yyvsp[-7].stat)->nextlist, nextinstr());		            // nextlist of N goes to nextinstr
-                        convertIntToBool((yyvsp[-8].expr));                                   // convert expression to bool
-                        (yyval.stat) = new Statement();                                   // create new statement
-                        backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-5].instr_number));                            // If expr true then go to M1 else go to M2
-                        backpatch((yyvsp[-8].expr)->falselist, (yyvsp[-1].instr_number));
-                        list<int> temp = merge((yyvsp[-4].stat)->nextlist, (yyvsp[-3].stat)->nextlist);       //merge the nextlists of the statements and second N
+                        // if with else
+                        backpatch((yyvsp[-7].stat)->nextlist, nextinstr());		            // After we hit N we go to next instr
+                        convertIntToBool((yyvsp[-8].expr));                                   // convert expression to bool 
+
+                        (yyval.stat) = new Statement();                                   
+                        backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-5].instr_number));                            // If true, we access the first part
+                        backpatch((yyvsp[-8].expr)->falselist, (yyvsp[-1].instr_number));                          // Else the second prt
+
+                        list<int> temp = merge((yyvsp[-4].stat)->nextlist, (yyvsp[-3].stat)->nextlist);       // Then we merge with the nextlists of both statements
                         (yyval.stat)->nextlist = merge((yyvsp[0].stat)->nextlist,temp);	
                     }
-#line 3723 "ass5_19CS10069_19CS30007.tab.c"
+#line 3794 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 211:
-#line 1265 "ass5_19CS10069_19CS30007.y"
-                    { /* Not to be modelled */ }
-#line 3729 "ass5_19CS10069_19CS30007.tab.c"
+#line 1336 "ass5_19CS10069_19CS30007.y"
+                    { /* Not asked in question */ }
+#line 3800 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 212:
-#line 1270 "ass5_19CS10069_19CS30007.y"
+#line 1341 "ass5_19CS10069_19CS30007.y"
                     {	
                         //while statement
                         (yyval.stat) = new Statement();    //create statement
                         convertIntToBool((yyvsp[-3].expr));     //convert expression to bool
-                        backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-4].instr_number));	// M1 to go back to expression again
-                        backpatch((yyvsp[-3].expr)->truelist, (yyvsp[-1].instr_number));	// M2 to go to statement if the expression is true
-                        (yyval.stat)->nextlist = (yyvsp[-3].expr)->falselist;   //when expression is false, move out of loop
+                        
+                        // Proper backpatching
+                        backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-4].instr_number));	            // M1 to go back to expression again
+                        backpatch((yyvsp[-3].expr)->truelist, (yyvsp[-1].instr_number));	            // M2 to go to statement if the expression is true
+                        (yyval.stat)->nextlist = (yyvsp[-3].expr)->falselist;               // If expression is false, Exit loop
                         // Q.emit to prevent fallthrough
                         string str=convertIntToString((yyvsp[-4].instr_number));		
                         Q.emit("goto",str);	
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3747 "ass5_19CS10069_19CS30007.tab.c"
+#line 3820 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 213:
-#line 1284 "ass5_19CS10069_19CS30007.y"
+#line 1357 "ass5_19CS10069_19CS30007.y"
                     {	
                         //while statement
-                        (yyval.stat) = new Statement();    //create statement
-                        convertIntToBool((yyvsp[-5].expr));     //convert expression to bool
-                        backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-6].instr_number));	// M1 to go back to expression again
-                        backpatch((yyvsp[-5].expr)->truelist, (yyvsp[-2].instr_number));	// M2 to go to statement if the expression is true
-                        (yyval.stat)->nextlist = (yyvsp[-5].expr)->falselist;   //when expression is false, move out of loop
+                        (yyval.stat) = new Statement();                   // create statement
+                        convertIntToBool((yyvsp[-5].expr));                   // convert expression to bool
+                        
+                        // Proper Backpatching
+                        backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-6].instr_number));	        // M1 to go back to expression again
+                        backpatch((yyvsp[-5].expr)->truelist, (yyvsp[-2].instr_number));	        // M2 to go to statement if the expression is true
+                        (yyval.stat)->nextlist = (yyvsp[-5].expr)->falselist;           // If expression is false, then exit loop
+                        
                         // Q.emit to prevent fallthrough
                         string str=convertIntToString((yyvsp[-6].instr_number));		
                         Q.emit("goto",str);	
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3765 "ass5_19CS10069_19CS30007.tab.c"
+#line 3841 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 214:
-#line 1298 "ass5_19CS10069_19CS30007.y"
+#line 1374 "ass5_19CS10069_19CS30007.y"
                     {
                         //do statement
-                        (yyval.stat) = new Statement();     //create statement	
-                        convertIntToBool((yyvsp[-2].expr));      //convert to bool
+                        (yyval.stat) = new Statement();                               //create statement	
+                        convertIntToBool((yyvsp[-2].expr));                               //convert to bool
+                        
+                        // proper Backpatching
                         backpatch((yyvsp[-2].expr)->truelist, (yyvsp[-7].instr_number));						// M1 to go back to statement if expression is true
                         backpatch((yyvsp[-6].stat)->nextlist, (yyvsp[-5].instr_number));						// M2 to go to check expression if statement is complete
-                        (yyval.stat)->nextlist = (yyvsp[-2].expr)->falselist;                       //move out if statement is false
+                        
+                        (yyval.stat)->nextlist = (yyvsp[-2].expr)->falselist;                       // Exit loop if statement is false
                         loop_name = "";
                     }
-#line 3779 "ass5_19CS10069_19CS30007.tab.c"
+#line 3858 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 215:
-#line 1308 "ass5_19CS10069_19CS30007.y"
+#line 1387 "ass5_19CS10069_19CS30007.y"
                         {
                         //do statement
 		                (yyval.stat) = new Statement();     //create statement	
 		                convertIntToBool((yyvsp[-2].expr));      //convert to bool
-		                backpatch((yyvsp[-2].expr)->truelist, (yyvsp[-8].instr_number));						// M1 to go back to statement if expression is true
+		                
+                        backpatch((yyvsp[-2].expr)->truelist, (yyvsp[-8].instr_number));						// M1 to go back to statement if expression is true
 		                backpatch((yyvsp[-7].stat)->nextlist, (yyvsp[-5].instr_number));						// M2 to go to check expression if statement is complete
-		                (yyval.stat)->nextlist = (yyvsp[-2].expr)->falselist;                       //move out if statement is false
+		                
+                        (yyval.stat)->nextlist = (yyvsp[-2].expr)->falselist;                       // Exit loop if statement is false
 		                loop_name = "";
 	                }
-#line 3793 "ass5_19CS10069_19CS30007.tab.c"
+#line 3874 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 216:
-#line 1318 "ass5_19CS10069_19CS30007.y"
+#line 1399 "ass5_19CS10069_19CS30007.y"
                     {
                         //for loop
-                        (yyval.stat) = new Statement();		 //create new statement
-                        convertIntToBool((yyvsp[-6].expr));  //convert check expression to boolean
-                        backpatch((yyvsp[-6].expr)->truelist, (yyvsp[-1].instr_number));	//if expression is true, go to M2
-                        backpatch((yyvsp[-3].stat)->nextlist, (yyvsp[-7].instr_number));	//after N, go back to M1
-                        backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-5].instr_number));	//statement go back to expression
+                        (yyval.stat) = new Statement();		            // create new statement
+                        convertIntToBool((yyvsp[-6].expr));                   // convert check expression to boolean
+                        
+                        // Proper Backpatching
+                        backpatch((yyvsp[-6].expr)->truelist, (yyvsp[-1].instr_number));	        // if expression is true, go to M2
+                        backpatch((yyvsp[-3].stat)->nextlist, (yyvsp[-7].instr_number));	        // after N, go back to M1
+                        backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-5].instr_number));	        // statement go back to expression
+                        
+                        
                         string str=convertIntToString((yyvsp[-5].instr_number));
-                        Q.emit("goto", str);				//prevent fallthrough
-                        (yyval.stat)->nextlist = (yyvsp[-6].expr)->falselist;	//move out if statement is false
+                        Q.emit("goto", str);				    // Emit goto
+                        (yyval.stat)->nextlist = (yyvsp[-6].expr)->falselist;	        // Exit loop if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3811 "ass5_19CS10069_19CS30007.tab.c"
+#line 3896 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 217:
-#line 1332 "ass5_19CS10069_19CS30007.y"
+#line 1417 "ass5_19CS10069_19CS30007.y"
                     {
                         //for loop
                         (yyval.stat) = new Statement();		 //create new statement
                         convertIntToBool((yyvsp[-6].expr));  //convert check expression to boolean
-                        backpatch((yyvsp[-6].expr)->truelist, (yyvsp[-1].instr_number));	//if expression is true, go to M2
-                        backpatch((yyvsp[-3].stat)->nextlist, (yyvsp[-7].instr_number));	//after N, go back to M1
-                        backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-5].instr_number));	//statement go back to expression
+                        
+                        // Proper Backpatching
+                        backpatch((yyvsp[-6].expr)->truelist, (yyvsp[-1].instr_number));	                // if expression is true, go to M2
+                        backpatch((yyvsp[-3].stat)->nextlist, (yyvsp[-7].instr_number));	                // after N, go back to M1
+                        backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-5].instr_number));	                // statement go back to expression
+                        
+                        
                         string str=convertIntToString((yyvsp[-5].instr_number));
-                        Q.emit("goto", str);				//prevent fallthrough
-                        (yyval.stat)->nextlist = (yyvsp[-6].expr)->falselist;	//move out if statement is false
+                        Q.emit("goto", str);				            //  emit goto str
+                        (yyval.stat)->nextlist = (yyvsp[-6].expr)->falselist;	                // Exit loop if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3829 "ass5_19CS10069_19CS30007.tab.c"
+#line 3918 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 218:
-#line 1346 "ass5_19CS10069_19CS30007.y"
+#line 1435 "ass5_19CS10069_19CS30007.y"
                     {
                         //for loop
-                        (yyval.stat) = new Statement();		 //create new statement
-                        convertIntToBool((yyvsp[-8].expr));  //convert check expression to boolean
-                        backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-3].instr_number));	//if expression is true, go to M2
-                        backpatch((yyvsp[-5].stat)->nextlist, (yyvsp[-9].instr_number));	//after N, go back to M1
-                        backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-7].instr_number));	//statement go back to expression
+                        (yyval.stat) = new Statement();		                    // create new statement
+                        convertIntToBool((yyvsp[-8].expr));                           // convert check expression to boolean
+                        // Correctly backpatch lists
+                        backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-3].instr_number));	                // if expression is true, then go to M2
+                        backpatch((yyvsp[-5].stat)->nextlist, (yyvsp[-9].instr_number));	                // after N, go back to M1
+                        backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-7].instr_number));	                //statement go back to expression
+                        
+                        
                         string str=convertIntToString((yyvsp[-7].instr_number));
-                        Q.emit("goto", str);				//prevent fallthrough
-                        (yyval.stat)->nextlist = (yyvsp[-8].expr)->falselist;	//move out if statement is false
+                        Q.emit("goto", str);				            //prevent fallthrough
+                        (yyval.stat)->nextlist = (yyvsp[-8].expr)->falselist;	                // Exit loop if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3847 "ass5_19CS10069_19CS30007.tab.c"
+#line 3939 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 219:
-#line 1360 "ass5_19CS10069_19CS30007.y"
+#line 1452 "ass5_19CS10069_19CS30007.y"
                     {	
                         (yyval.stat) = new Statement();		                    // create new statement
                         convertIntToBool((yyvsp[-8].expr));                           // convert expression to boolean
-                        backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-3].instr_number));	                // if expression is true, go to M2
-                        backpatch((yyvsp[-5].stat)->nextlist, (yyvsp[-9].instr_number));	                //after N, go back to M1
-                        backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-7].instr_number));	                //statement go back to expression
+                        
+                        // proper backpatching
+                        backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-3].instr_number));	                // backpatch &13
+                        backpatch((yyvsp[-5].stat)->nextlist, (yyvsp[-9].instr_number));	                // after N, go back to M1
+                        backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-7].instr_number));	                // statement go back to expression
+                        
                         string str=convertIntToString((yyvsp[-7].instr_number));
-                        Q.emit("goto", str);				            //prevent fallthrough
-                        (yyval.stat)->nextlist = (yyvsp[-8].expr)->falselist;	                //move out if statement is false
+                        Q.emit("goto", str);				            // Emit goto Str
+                        (yyval.stat)->nextlist = (yyvsp[-8].expr)->falselist;	                // Exit if statement is false
                         loop_name = "";
-                        changeTable(ST->parent);
+                        changeTable(ST->parent);                        
                     }
-#line 3864 "ass5_19CS10069_19CS30007.tab.c"
+#line 3959 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 220:
-#line 1376 "ass5_19CS10069_19CS30007.y"
+#line 1471 "ass5_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat) = new Statement();
                         label *l = find_label((yyvsp[-1].symp)->name);
@@ -3881,65 +3976,65 @@ yyreduce:
                             label_table.push_back(*l);
                         }
                     }
-#line 3885 "ass5_19CS10069_19CS30007.tab.c"
+#line 3980 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 221:
-#line 1393 "ass5_19CS10069_19CS30007.y"
+#line 1488 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat) = new Statement(); }
-#line 3891 "ass5_19CS10069_19CS30007.tab.c"
+#line 3986 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 222:
-#line 1395 "ass5_19CS10069_19CS30007.y"
+#line 1490 "ass5_19CS10069_19CS30007.y"
                     { (yyval.stat) = new Statement(); }
-#line 3897 "ass5_19CS10069_19CS30007.tab.c"
+#line 3992 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 223:
-#line 1397 "ass5_19CS10069_19CS30007.y"
+#line 1492 "ass5_19CS10069_19CS30007.y"
                     {
                         (yyval.stat) = new Statement();	
                         Q.emit("return",(yyvsp[-1].expr)->loc->name);               // Q.emit return with the name of the return value
                     }
-#line 3906 "ass5_19CS10069_19CS30007.tab.c"
+#line 4001 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 224:
-#line 1402 "ass5_19CS10069_19CS30007.y"
+#line 1497 "ass5_19CS10069_19CS30007.y"
                     {
                         (yyval.stat) = new Statement();	
                         Q.emit("return","");                         // Q.emit return
                     }
-#line 3915 "ass5_19CS10069_19CS30007.tab.c"
+#line 4010 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 225:
-#line 1410 "ass5_19CS10069_19CS30007.y"
+#line 1505 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3921 "ass5_19CS10069_19CS30007.tab.c"
+#line 4016 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 226:
-#line 1412 "ass5_19CS10069_19CS30007.y"
+#line 1507 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3927 "ass5_19CS10069_19CS30007.tab.c"
+#line 4022 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 227:
-#line 1417 "ass5_19CS10069_19CS30007.y"
+#line 1512 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3933 "ass5_19CS10069_19CS30007.tab.c"
+#line 4028 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 228:
-#line 1419 "ass5_19CS10069_19CS30007.y"
+#line 1514 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3939 "ass5_19CS10069_19CS30007.tab.c"
+#line 4034 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 229:
-#line 1424 "ass5_19CS10069_19CS30007.y"
+#line 1519 "ass5_19CS10069_19CS30007.y"
                     {
                         int next_instr=0;	 	
                         ST->parent=globalST;
@@ -3949,71 +4044,71 @@ yyreduce:
                         label_table.clear();                        
                         changeTable(globalST);                     // Change the table again to Global ST
                     }
-#line 3953 "ass5_19CS10069_19CS30007.tab.c"
+#line 4048 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 230:
-#line 1436 "ass5_19CS10069_19CS30007.y"
+#line 1531 "ass5_19CS10069_19CS30007.y"
                                      { }
-#line 3959 "ass5_19CS10069_19CS30007.tab.c"
+#line 4054 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 231:
-#line 1437 "ass5_19CS10069_19CS30007.y"
+#line 1532 "ass5_19CS10069_19CS30007.y"
                              { }
-#line 3965 "ass5_19CS10069_19CS30007.tab.c"
+#line 4060 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 232:
-#line 1442 "ass5_19CS10069_19CS30007.y"
+#line 1537 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3971 "ass5_19CS10069_19CS30007.tab.c"
+#line 4066 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 233:
-#line 1444 "ass5_19CS10069_19CS30007.y"
+#line 1539 "ass5_19CS10069_19CS30007.y"
                     {  }
-#line 3977 "ass5_19CS10069_19CS30007.tab.c"
+#line 4072 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 234:
-#line 1448 "ass5_19CS10069_19CS30007.y"
+#line 1543 "ass5_19CS10069_19CS30007.y"
         {
         // Used in backpatching
 		(yyval.instr_number) = nextinstr();
 	}
-#line 3986 "ass5_19CS10069_19CS30007.tab.c"
+#line 4081 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 235:
-#line 1455 "ass5_19CS10069_19CS30007.y"
+#line 1550 "ass5_19CS10069_19CS30007.y"
         {
 		// Beginning of the for statement
 		loop_name = "FOR";
 	}
-#line 3995 "ass5_19CS10069_19CS30007.tab.c"
+#line 4090 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 236:
-#line 1462 "ass5_19CS10069_19CS30007.y"
+#line 1557 "ass5_19CS10069_19CS30007.y"
         {
 		// Beginning of the while statement
 		loop_name = "WHILE";
 	}
-#line 4004 "ass5_19CS10069_19CS30007.tab.c"
+#line 4099 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 237:
-#line 1469 "ass5_19CS10069_19CS30007.y"
+#line 1564 "ass5_19CS10069_19CS30007.y"
         {
 		// Beginning of the do while statement
 		loop_name = "DO_WHILE";
 	}
-#line 4013 "ass5_19CS10069_19CS30007.tab.c"
+#line 4108 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 238:
-#line 1476 "ass5_19CS10069_19CS30007.y"
+#line 1571 "ass5_19CS10069_19CS30007.y"
         {
 		string name = ST->name+"."+loop_name+"$"+to_string(table_count);
 		table_count++; 
@@ -4027,11 +4122,11 @@ yyreduce:
 
 		currSymbolPtr = s;          // updating the current symbol
 	}
-#line 4031 "ass5_19CS10069_19CS30007.tab.c"
+#line 4126 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
   case 239:
-#line 1492 "ass5_19CS10069_19CS30007.y"
+#line 1587 "ass5_19CS10069_19CS30007.y"
         {
         /*
             This is also useful in backpatching
@@ -4041,11 +4136,11 @@ yyreduce:
 
 		Q.emit("goto","");
 	}
-#line 4045 "ass5_19CS10069_19CS30007.tab.c"
+#line 4140 "ass5_19CS10069_19CS30007.tab.c"
     break;
 
 
-#line 4049 "ass5_19CS10069_19CS30007.tab.c"
+#line 4144 "ass5_19CS10069_19CS30007.tab.c"
 
       default: break;
     }
@@ -4277,7 +4372,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1502 "ass5_19CS10069_19CS30007.y"
+#line 1597 "ass5_19CS10069_19CS30007.y"
 
 
 /*Auxiliaries*/

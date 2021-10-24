@@ -1989,7 +1989,7 @@ yyreduce:
 		  */
 		(yyval.stat) = new Statement();
 		(yyval.stat)->nextlist=makelist(nextinstr());
-		emit("goto","");
+		Q.emit("goto","");
 	}
 #line 1995 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2005,7 +2005,7 @@ yyreduce:
 		else 
 		{
 			changeTable(currSymbolPtr ->nested);						               // Function symbol table already exists	
-			emit("label", ST->name);
+			Q.emit("label", ST->name);
 		}
 	}
 #line 2012 "ass5_19CS10069_19CS30007.tab.c"
@@ -2017,7 +2017,7 @@ yyreduce:
                         (yyval.expr)=new Expression();	
                         string p=convertIntToString((yyvsp[0].int_val));
                         (yyval.expr)->loc=gentemp(new symboltype("int"),p);
-                        emit("=",(yyval.expr)->loc->name,p);
+                        Q.emit("=",(yyval.expr)->loc->name,p);
                     }
 #line 2023 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2028,7 +2028,7 @@ yyreduce:
                         (yyval.expr)=new Expression();
                         string p=convertFloatToString((yyvsp[0].float_val));
                         (yyval.expr)->loc=gentemp(new symboltype("float"),p);
-                        emit("=",(yyval.expr)->loc->name,p);
+                        Q.emit("=",(yyval.expr)->loc->name,p);
                     }
 #line 2034 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2038,7 +2038,7 @@ yyreduce:
                     {                                                                         // create new expression and store the value of the constant in a temporary
                         (yyval.expr)=new Expression();
                         (yyval.expr)->loc=gentemp(new symboltype("char"),(yyvsp[0].char_val));
-                        emit("=",(yyval.expr)->loc->name,string((yyvsp[0].char_val)));
+                        Q.emit("=",(yyval.expr)->loc->name,string((yyvsp[0].char_val)));
                     }
 #line 2044 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2094,14 +2094,14 @@ yyreduce:
                             sym* t=gentemp(new symboltype("int"));
                             int p=computeSize((yyval.A)->type);
                             string str=convertIntToString(p);
-                            emit("*",t->name,(yyvsp[-1].expr)->loc->name,str);
-                            emit("+",(yyval.A)->loc->name,(yyvsp[-3].A)->loc->name,t->name);
+                            Q.emit("*",t->name,(yyvsp[-1].expr)->loc->name,str);
+                            Q.emit("+",(yyval.A)->loc->name,(yyvsp[-3].A)->loc->name,t->name);
                         }
                         else 
                         {                        //if a 1D Array, simply calculate size
                             int p=computeSize((yyval.A)->type);	
                             string str=convertIntToString(p);
-                            emit("*",(yyval.A)->loc->name,(yyvsp[-1].expr)->loc->name,str);
+                            Q.emit("*",(yyval.A)->loc->name,(yyvsp[-1].expr)->loc->name,str);
                         }
                     }
 #line 2108 "ass5_19CS10069_19CS30007.tab.c"
@@ -2114,7 +2114,7 @@ yyreduce:
                         (yyval.A)=new Array();	
                         (yyval.A)->Array=gentemp((yyvsp[-3].A)->type);
                         string str=convertIntToString((yyvsp[-1].num_params));
-                        emit("call",(yyval.A)->Array->name,(yyvsp[-3].A)->Array->name,str);
+                        Q.emit("call",(yyval.A)->Array->name,(yyvsp[-3].A)->Array->name,str);
                     }
 #line 2120 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2137,8 +2137,8 @@ yyreduce:
                         //generate new temporary, equate it to old one and then add 1
                         (yyval.A)=new Array();	
                         (yyval.A)->Array=gentemp((yyvsp[-1].A)->Array->type);
-                        emit("=",(yyval.A)->Array->name,(yyvsp[-1].A)->Array->name);
-                        emit("+",(yyvsp[-1].A)->Array->name,(yyvsp[-1].A)->Array->name,"1");
+                        Q.emit("=",(yyval.A)->Array->name,(yyvsp[-1].A)->Array->name);
+                        Q.emit("+",(yyvsp[-1].A)->Array->name,(yyvsp[-1].A)->Array->name,"1");
                     }
 #line 2144 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2149,8 +2149,8 @@ yyreduce:
                         //generate new temporary, equate it to old one and then subtract 1
                         (yyval.A)=new Array();	
                         (yyval.A)->Array=gentemp((yyvsp[-1].A)->Array->type);
-                        emit("=",(yyval.A)->Array->name,(yyvsp[-1].A)->Array->name);
-                        emit("-",(yyvsp[-1].A)->Array->name,(yyvsp[-1].A)->Array->name,"1");	
+                        Q.emit("=",(yyval.A)->Array->name,(yyvsp[-1].A)->Array->name);
+                        Q.emit("-",(yyvsp[-1].A)->Array->name,(yyvsp[-1].A)->Array->name,"1");	
                     }
 #line 2156 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2170,8 +2170,8 @@ yyreduce:
   case 24:
 #line 291 "ass5_19CS10069_19CS30007.y"
                     {
-                        (yyval.num_params)=1;                                      //one argument and emit param
-                        emit("param",(yyvsp[0].expr)->loc->name);	
+                        (yyval.num_params)=1;                                      //one argument and Q.emit param
+                        Q.emit("param",(yyvsp[0].expr)->loc->name);	
                     }
 #line 2177 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2179,8 +2179,8 @@ yyreduce:
   case 25:
 #line 296 "ass5_19CS10069_19CS30007.y"
                     {
-                        (yyval.num_params)=(yyvsp[-2].num_params)+1;                                  //one more argument and emit param		 
-                        emit("param",(yyvsp[0].expr)->loc->name);
+                        (yyval.num_params)=(yyvsp[-2].num_params)+1;                                  //one more argument and Q.emit param		 
+                        Q.emit("param",(yyvsp[0].expr)->loc->name);
                     }
 #line 2186 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -2211,7 +2211,7 @@ yyreduce:
 #line 317 "ass5_19CS10069_19CS30007.y"
                     {  	
                         //simply add 1
-                        emit("+",(yyvsp[0].A)->Array->name,(yyvsp[0].A)->Array->name,"1");		
+                        Q.emit("+",(yyvsp[0].A)->Array->name,(yyvsp[0].A)->Array->name,"1");		
                         (yyval.A)=(yyvsp[0].A);
                     }
 #line 2218 "ass5_19CS10069_19CS30007.tab.c"
@@ -2221,7 +2221,7 @@ yyreduce:
 #line 323 "ass5_19CS10069_19CS30007.y"
                     {
                         //simply subtract 1
-                        emit("-",(yyvsp[0].A)->Array->name,(yyvsp[0].A)->Array->name,"1");
+                        Q.emit("-",(yyvsp[0].A)->Array->name,(yyvsp[0].A)->Array->name,"1");
                         (yyval.A)=(yyvsp[0].A);
                     }
 #line 2228 "ass5_19CS10069_19CS30007.tab.c"
@@ -2233,31 +2233,31 @@ yyreduce:
                         (yyval.A)=new Array();
                         switch((yyvsp[-1].unaryOp))
                         {	  
-                            case '&':                                                  //address of something, then generate a pointer temporary and emit the quad
+                            case '&':                                                  //address of something, then generate a pointer temporary and Q.emit the quad
                                 (yyval.A)->Array=gentemp(new symboltype("ptr"));
                                 (yyval.A)->Array->type->arrtype=(yyvsp[0].A)->Array->type; 
-                                emit("=&",(yyval.A)->Array->name,(yyvsp[0].A)->Array->name);
+                                Q.emit("=&",(yyval.A)->Array->name,(yyvsp[0].A)->Array->name);
                                 break;
-                            case '*':                                                   // value of something, then generate a temporary of the corresponding type and emit the quad	
+                            case '*':                                                   // value of something, then generate a temporary of the corresponding type and Q.emit the quad	
                                 (yyval.A)->atype="ptr";
                                 (yyval.A)->loc=gentemp((yyvsp[0].A)->Array->type->arrtype);
                                 (yyval.A)->Array=(yyvsp[0].A)->Array;
-                                emit("=*",(yyval.A)->loc->name,(yyvsp[0].A)->Array->name);
+                                Q.emit("=*",(yyval.A)->loc->name,(yyvsp[0].A)->Array->name);
                                 break;
                             case '+':  
                                 (yyval.A)=(yyvsp[0].A);
                                 break;                 //unary plus, do nothing
                             case '-':				   //unary minus, generate new temporary of the same base type and make it negative of current one
                                 (yyval.A)->Array=gentemp(new symboltype((yyvsp[0].A)->Array->type->type));
-                                emit("uminus",(yyval.A)->Array->name,(yyvsp[0].A)->Array->name);
+                                Q.emit("uminus",(yyval.A)->Array->name,(yyvsp[0].A)->Array->name);
                                 break;
                             case '~':                   //bitwise not, generate new temporary of the same base type and make it negative of current one
                                 (yyval.A)->Array=gentemp(new symboltype((yyvsp[0].A)->Array->type->type));
-                                emit("~",(yyval.A)->Array->name,(yyvsp[0].A)->Array->name);
+                                Q.emit("~",(yyval.A)->Array->name,(yyvsp[0].A)->Array->name);
                                 break;
                             case '!':				//logical not, generate new temporary of the same base type and make it negative of current one
                                 (yyval.A)->Array=gentemp(new symboltype((yyvsp[0].A)->Array->type->type));
-                                emit("!",(yyval.A)->Array->name,(yyvsp[0].A)->Array->name);
+                                Q.emit("!",(yyval.A)->Array->name,(yyvsp[0].A)->Array->name);
                                 break;
                         }
                     }
@@ -2334,7 +2334,7 @@ yyreduce:
                         if((yyvsp[0].A)->atype=="arr") 			   //if it is of type arr
                         {
                             (yyval.expr)->loc = gentemp((yyvsp[0].A)->loc->type);	
-                            emit("=[]", (yyval.expr)->loc->name, (yyvsp[0].A)->Array->name, (yyvsp[0].A)->loc->name);     //emit with Array right
+                            Q.emit("=[]", (yyval.expr)->loc->name, (yyvsp[0].A)->Array->name, (yyvsp[0].A)->loc->name);     //Q.emit with Array right
                         }
                         else if((yyvsp[0].A)->atype=="ptr")         //if it is of type ptr
                         { 
@@ -2358,7 +2358,7 @@ yyreduce:
                         {
                             (yyval.expr) = new Expression();	
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
-                            emit("*", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);
+                            Q.emit("*", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);
                         }
                     }
 #line 2365 "ass5_19CS10069_19CS30007.tab.c"
@@ -2376,7 +2376,7 @@ yyreduce:
                             //if types are compatible, generate new temporary and equate to the quotient
                             (yyval.expr) = new Expression();
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
-                            emit("/", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);
+                            Q.emit("/", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);
                         }
                     }
 #line 2383 "ass5_19CS10069_19CS30007.tab.c"
@@ -2391,7 +2391,7 @@ yyreduce:
                             //if types are compatible, generate new temporary and equate to the quotient
                             (yyval.expr) = new Expression();
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
-                            emit("%", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);	
+                            Q.emit("%", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].A)->Array->name);	
                         }
                     }
 #line 2398 "ass5_19CS10069_19CS30007.tab.c"
@@ -2412,7 +2412,7 @@ yyreduce:
                         {
                             (yyval.expr) = new Expression();	
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
-                            emit("+", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("+", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                         }
                     }
 #line 2419 "ass5_19CS10069_19CS30007.tab.c"
@@ -2428,7 +2428,7 @@ yyreduce:
                         {	
                             (yyval.expr) = new Expression();	
                             (yyval.expr)->loc = gentemp(new symboltype((yyvsp[-2].expr)->loc->type->type));
-                            emit("-", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("-", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                         }
                     }
 #line 2435 "ass5_19CS10069_19CS30007.tab.c"
@@ -2449,7 +2449,7 @@ yyreduce:
                         {		
                             (yyval.expr) = new Expression();		
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
-                            emit("<<", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);		
+                            Q.emit("<<", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);		
                         }
                     }
 #line 2456 "ass5_19CS10069_19CS30007.tab.c"
@@ -2466,7 +2466,7 @@ yyreduce:
                         {			
                             (yyval.expr) = new Expression();	
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
-                            emit(">>", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);			
+                            Q.emit(">>", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);			
                         }
                     }
 #line 2473 "ass5_19CS10069_19CS30007.tab.c"
@@ -2491,8 +2491,8 @@ yyreduce:
                             (yyval.expr)->type = "bool";                         //new type is boolean
                             (yyval.expr)->truelist = makelist(nextinstr());     //makelist for truelist and falselist
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
-                            emit("<", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);     //emit statement if a<b goto .. 
-                            emit("goto", "");	//emit statement goto ..
+                            Q.emit("<", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);     //Q.emit statement if a<b goto .. 
+                            Q.emit("goto", "");	//Q.emit statement goto ..
                         }
                     }
 #line 2499 "ass5_19CS10069_19CS30007.tab.c"
@@ -2501,7 +2501,7 @@ yyreduce:
   case 54:
 #line 528 "ass5_19CS10069_19CS30007.y"
                     {
-                        // similar to above, check compatible types,make new lists and emit
+                        // similar to above, check compatible types,make new lists and Q.emit
                         if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc)) 
                         {
                             yyerror("Type Error in Program");
@@ -2512,8 +2512,8 @@ yyreduce:
                             (yyval.expr)->type = "bool";
                             (yyval.expr)->truelist = makelist(nextinstr());
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
-                            emit(">", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
-                            emit("goto", "");
+                            Q.emit(">", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("goto", "");
                         }	
                     }
 #line 2520 "ass5_19CS10069_19CS30007.tab.c"
@@ -2532,8 +2532,8 @@ yyreduce:
                             (yyval.expr)->type = "bool";
                             (yyval.expr)->truelist = makelist(nextinstr());
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
-                            emit("<=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
-                            emit("goto", "");
+                            Q.emit("<=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("goto", "");
                         }		
                     }
 #line 2540 "ass5_19CS10069_19CS30007.tab.c"
@@ -2552,8 +2552,8 @@ yyreduce:
                             (yyval.expr)->type = "bool";
                             (yyval.expr)->truelist = makelist(nextinstr());
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
-                            emit(">=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
-                            emit("goto", "");
+                            Q.emit(">=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("goto", "");
                         }
                     }
 #line 2560 "ass5_19CS10069_19CS30007.tab.c"
@@ -2580,8 +2580,8 @@ yyreduce:
                             (yyval.expr)->type = "bool";
                             (yyval.expr)->truelist = makelist(nextinstr());            //make lists for new expression
                             (yyval.expr)->falselist = makelist(nextinstr()+1); 
-                            emit("==", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);      //emit if a==b goto ..
-                            emit("goto", "");				//emit goto ..
+                            Q.emit("==", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);      //Q.emit if a==b goto ..
+                            Q.emit("goto", "");				//Q.emit goto ..
                         }
                     }
 #line 2588 "ass5_19CS10069_19CS30007.tab.c"
@@ -2603,8 +2603,8 @@ yyreduce:
                             (yyval.expr)->type = "bool";
                             (yyval.expr)->truelist = makelist(nextinstr());
                             (yyval.expr)->falselist = makelist(nextinstr()+1);
-                            emit("!=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
-                            emit("goto", "");
+                            Q.emit("!=", "", (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("goto", "");
                         }
                     }
 #line 2611 "ass5_19CS10069_19CS30007.tab.c"
@@ -2630,7 +2630,7 @@ yyreduce:
                             (yyval.expr) = new Expression();
                             (yyval.expr)->type = "not-boolean";                   //result is not boolean
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
-                            emit("&", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);               //emit the quad
+                            Q.emit("&", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);               //Q.emit the quad
                         }
                     }
 #line 2637 "ass5_19CS10069_19CS30007.tab.c"
@@ -2645,7 +2645,7 @@ yyreduce:
   case 63:
 #line 645 "ass5_19CS10069_19CS30007.y"
                     {
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))    //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and emit
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))    //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and Q.emit
                         {
                             cout << "Type Error in Program"<< endl;
                         }
@@ -2656,7 +2656,7 @@ yyreduce:
                             (yyval.expr) = new Expression();
                             (yyval.expr)->type = "not-boolean";
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
-                            emit("^", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("^", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                         }
                     }
 #line 2663 "ass5_19CS10069_19CS30007.tab.c"
@@ -2671,7 +2671,7 @@ yyreduce:
   case 65:
 #line 666 "ass5_19CS10069_19CS30007.y"
                     { 
-                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))   //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and emit
+                        if(!compareSymbolType((yyvsp[-2].expr)->loc, (yyvsp[0].expr)->loc))   //same as and_expression: check compatible types, make non-boolean expression and convert bool to int and Q.emit
                         { yyerror("Type Error in Program"); }
                         else 
                         {
@@ -2680,7 +2680,7 @@ yyreduce:
                             (yyval.expr) = new Expression();
                             (yyval.expr)->type = "not-boolean";
                             (yyval.expr)->loc = gentemp(new symboltype("int"));
-                            emit("|", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("|", (yyval.expr)->loc->name, (yyvsp[-2].expr)->loc->name, (yyvsp[0].expr)->loc->name);
                         } 
                     }
 #line 2687 "ass5_19CS10069_19CS30007.tab.c"
@@ -2738,14 +2738,14 @@ yyreduce:
                         //normal conversion method to get conditional expressions
                         (yyval.expr)->loc = gentemp((yyvsp[-4].expr)->loc->type);       //generate temporary for expression
                         (yyval.expr)->loc->update((yyvsp[-4].expr)->loc->type);
-                        emit("=", (yyval.expr)->loc->name, (yyvsp[0].expr)->loc->name);      //make it equal to sconditional_expression
+                        Q.emit("=", (yyval.expr)->loc->name, (yyvsp[0].expr)->loc->name);      //make it equal to sconditional_expression
                         list<int> l = makelist(nextinstr());        //makelist next instruction
-                        emit("goto", "");              //prevent fallthrough
+                        Q.emit("goto", "");              //prevent fallthrough
                         backpatch((yyvsp[-3].stat)->nextlist, nextinstr());        //after N, go to next instruction
-                        emit("=", (yyval.expr)->loc->name, (yyvsp[-4].expr)->loc->name);
+                        Q.emit("=", (yyval.expr)->loc->name, (yyvsp[-4].expr)->loc->name);
                         list<int> m = makelist(nextinstr());         //makelist next instruction
                         l = merge(l, m);						//merge the two lists
-                        emit("goto", "");						//prevent fallthrough
+                        Q.emit("goto", "");						//prevent fallthrough
                         backpatch((yyvsp[-7].stat)->nextlist, nextinstr());   //backpatching
                         convertIntToBool((yyvsp[-8].expr));                   //convert expression to boolean
                         backpatch((yyvsp[-8].expr)->truelist, (yyvsp[-5].instr_number));           //$1 true goes to expression
@@ -2764,19 +2764,19 @@ yyreduce:
   case 73:
 #line 739 "ass5_19CS10069_19CS30007.y"
                     {
-                        if((yyvsp[-2].A)->atype=="arr")          // if type is arr, simply check if we need to convert and emit
+                        if((yyvsp[-2].A)->atype=="arr")          // if type is arr, simply check if we need to convert and Q.emit
                         {
                             (yyvsp[0].expr)->loc = convertType((yyvsp[0].expr)->loc, (yyvsp[-2].A)->type->type);
-                            emit("[]=", (yyvsp[-2].A)->Array->name, (yyvsp[-2].A)->loc->name, (yyvsp[0].expr)->loc->name);		
+                            Q.emit("[]=", (yyvsp[-2].A)->Array->name, (yyvsp[-2].A)->loc->name, (yyvsp[0].expr)->loc->name);		
                         }
-                        else if((yyvsp[-2].A)->atype=="ptr")     // if type is ptr, simply emit
+                        else if((yyvsp[-2].A)->atype=="ptr")     // if type is ptr, simply Q.emit
                         {
-                            emit("*=", (yyvsp[-2].A)->Array->name, (yyvsp[0].expr)->loc->name);	
+                            Q.emit("*=", (yyvsp[-2].A)->Array->name, (yyvsp[0].expr)->loc->name);	
                         }
                         else                              //otherwise assignment
                         {
                             (yyvsp[0].expr)->loc = convertType((yyvsp[0].expr)->loc, (yyvsp[-2].A)->Array->type->type);
-                            emit("=", (yyvsp[-2].A)->Array->name, (yyvsp[0].expr)->loc->name);
+                            Q.emit("=", (yyvsp[-2].A)->Array->name, (yyvsp[0].expr)->loc->name);
                         }
                         
                         (yyval.expr) = (yyvsp[0].expr);
@@ -2943,8 +2943,8 @@ yyreduce:
   case 100:
 #line 834 "ass5_19CS10069_19CS30007.y"
                     {
-                        if((yyvsp[0].symp)->val!="") (yyvsp[-2].symp)->val=(yyvsp[0].symp)->val;        //get the initial value and  emit it
-                        emit("=", (yyvsp[-2].symp)->name, (yyvsp[0].symp)->name);	
+                        if((yyvsp[0].symp)->val!="") (yyvsp[-2].symp)->val=(yyvsp[0].symp)->val;        //get the initial value and  Q.emit it
+                        Q.emit("=", (yyvsp[-2].symp)->name, (yyvsp[0].symp)->name);	
                     }
 #line 2950 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -3773,9 +3773,9 @@ yyreduce:
                         backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-4].instr_number));	// M1 to go back to expression again
                         backpatch((yyvsp[-3].expr)->truelist, (yyvsp[-1].instr_number));	// M2 to go to statement if the expression is true
                         (yyval.stat)->nextlist = (yyvsp[-3].expr)->falselist;   //when expression is false, move out of loop
-                        // Emit to prevent fallthrough
+                        // Q.emit to prevent fallthrough
                         string str=convertIntToString((yyvsp[-4].instr_number));		
-                        emit("goto",str);	
+                        Q.emit("goto",str);	
                         loop_name = "";
                         changeTable(ST->parent);
                     }
@@ -3791,9 +3791,9 @@ yyreduce:
                         backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-6].instr_number));	// M1 to go back to expression again
                         backpatch((yyvsp[-5].expr)->truelist, (yyvsp[-2].instr_number));	// M2 to go to statement if the expression is true
                         (yyval.stat)->nextlist = (yyvsp[-5].expr)->falselist;   //when expression is false, move out of loop
-                        // Emit to prevent fallthrough
+                        // Q.emit to prevent fallthrough
                         string str=convertIntToString((yyvsp[-6].instr_number));		
-                        emit("goto",str);	
+                        Q.emit("goto",str);	
                         loop_name = "";
                         changeTable(ST->parent);
                     }
@@ -3838,7 +3838,7 @@ yyreduce:
                         backpatch((yyvsp[-3].stat)->nextlist, (yyvsp[-7].instr_number));	//after N, go back to M1
                         backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-5].instr_number));	//statement go back to expression
                         string str=convertIntToString((yyvsp[-5].instr_number));
-                        emit("goto", str);				//prevent fallthrough
+                        Q.emit("goto", str);				//prevent fallthrough
                         (yyval.stat)->nextlist = (yyvsp[-6].expr)->falselist;	//move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
@@ -3856,7 +3856,7 @@ yyreduce:
                         backpatch((yyvsp[-3].stat)->nextlist, (yyvsp[-7].instr_number));	//after N, go back to M1
                         backpatch((yyvsp[0].stat)->nextlist, (yyvsp[-5].instr_number));	//statement go back to expression
                         string str=convertIntToString((yyvsp[-5].instr_number));
-                        emit("goto", str);				//prevent fallthrough
+                        Q.emit("goto", str);				//prevent fallthrough
                         (yyval.stat)->nextlist = (yyvsp[-6].expr)->falselist;	//move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
@@ -3874,7 +3874,7 @@ yyreduce:
                         backpatch((yyvsp[-5].stat)->nextlist, (yyvsp[-9].instr_number));	//after N, go back to M1
                         backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-7].instr_number));	//statement go back to expression
                         string str=convertIntToString((yyvsp[-7].instr_number));
-                        emit("goto", str);				//prevent fallthrough
+                        Q.emit("goto", str);				//prevent fallthrough
                         (yyval.stat)->nextlist = (yyvsp[-8].expr)->falselist;	//move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
@@ -3891,7 +3891,7 @@ yyreduce:
                         backpatch((yyvsp[-5].stat)->nextlist, (yyvsp[-9].instr_number));	//after N, go back to M1
                         backpatch((yyvsp[-1].stat)->nextlist, (yyvsp[-7].instr_number));	//statement go back to expression
                         string str=convertIntToString((yyvsp[-7].instr_number));
-                        emit("goto", str);				//prevent fallthrough
+                        Q.emit("goto", str);				//prevent fallthrough
                         (yyval.stat)->nextlist = (yyvsp[-8].expr)->falselist;	//move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
@@ -3905,7 +3905,7 @@ yyreduce:
                         (yyval.stat) = new Statement();
                         label *l = find_label((yyvsp[-1].symp)->name);
                         if(l){
-                            emit("goto","");
+                            Q.emit("goto","");
                             list<int>lst = makelist(nextinstr());
                             l->nextlist = merge(l->nextlist,lst);
                             if(l->addr!=-1)
@@ -3913,7 +3913,7 @@ yyreduce:
                         } else {
                             l = new label((yyvsp[-1].symp)->name);
                             l->nextlist = makelist(nextinstr());
-                            emit("goto","");
+                            Q.emit("goto","");
                             label_table.push_back(*l);
                         }
                     }
@@ -3936,7 +3936,7 @@ yyreduce:
 #line 1420 "ass5_19CS10069_19CS30007.y"
                     {
                         (yyval.stat) = new Statement();	
-                        emit("return",(yyvsp[-1].expr)->loc->name);               //emit return with the name of the return value
+                        Q.emit("return",(yyvsp[-1].expr)->loc->name);               //Q.emit return with the name of the return value
                     }
 #line 3942 "ass5_19CS10069_19CS30007.tab.c"
     break;
@@ -3945,7 +3945,7 @@ yyreduce:
 #line 1425 "ass5_19CS10069_19CS30007.y"
                     {
                         (yyval.stat) = new Statement();	
-                        emit("return","");                         //simply emit return
+                        Q.emit("return","");                         //simply Q.emit return
                     }
 #line 3951 "ass5_19CS10069_19CS30007.tab.c"
     break;

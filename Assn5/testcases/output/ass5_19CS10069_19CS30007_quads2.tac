@@ -18,32 +18,31 @@ ________________________________________________________________________________
 11:     pi = t_0
 12:     t_1 = r * r
 13:     rSquare = t_1
-14:     t_2 = float2int(pi)
-15:     t_3 = t_2 * rSquare
-16:     t_4 = int2float(t_3)
-17:     area = t_4
-18:     return area
+14:     t_2 = int2float(rSquare)
+15:     t_3 = t_2 * pi
+16:     area = t_3
+17:     return area
 
-19: main: 
-20:     t_0 = 8
-21:     q = t_0
-22:     t_1 = 2
-23:     r = t_1
-24:     t_2 = 2.5
-25:     x = t_2
-26:     param r
-27:     t_3 = call areaOfCircle, 1
-28:     area = t_3
-29:     t_5 = &q
-30:     param t_5
-31:     t_6 = &r
-32:     param t_6
-33:     t_7 = call swapTwoNumbers, 2
-34:     param r
-35:     t_8 = call areaOfCircle, 1
-36:     area = t_8
-37:     t_10 = 0
-38:     return t_10
+18: main: 
+19:     t_0 = 8
+20:     q = t_0
+21:     t_1 = 2
+22:     r = t_1
+23:     t_2 = 2.5
+24:     x = t_2
+25:     param r
+26:     t_3 = call areaOfCircle, 1
+27:     area = t_3
+28:     t_5 = &q
+29:     param t_5
+30:     t_6 = &r
+31:     param t_6
+32:     t_7 = call swapTwoNumbers, 2
+33:     param r
+34:     t_8 = call areaOfCircle, 1
+35:     area = t_8
+36:     t_10 = 0
+37:     return t_10
 __________________________________________________________________________________________________________________________________
 __________________________________________________________________________________________________________________________________________________
 Table Name: Global                                                Parent Name: NULL
@@ -81,8 +80,8 @@ t_0                                     float                         3.14      
 area                                    float                         -                   4              16             NULL
 rSquare                                 int                           -                   4              20             NULL
 t_1                                     int                                               4              24             NULL
-t_2                                     int                                               4              28             NULL
-t_3                                     int                                               4              32             NULL
+t_2                                     float                                             4              28             NULL
+t_3                                     float                                             4              32             NULL
 t_4                                     float                                             4              36             NULL
 ----------------------------------------------------------------------------------------------------------------------------------
 

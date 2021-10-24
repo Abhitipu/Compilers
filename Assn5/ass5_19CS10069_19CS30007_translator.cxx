@@ -69,10 +69,14 @@ label::label(string _name, int _addr):name(_name),addr(_addr){}
 //      Implementation of the Symbol Table functions            //
 //**************************************************************//
 
-symtable::symtable(string name)                                                                    // constructor for a symbol table
+symtable::symtable(string _name):
+    name(_name),
+    count(0),
+    symbols(),
+    parent(NULL)                                                                    // constructor for a symbol table
 {
-    (*this).name=name;                                                                             // Initialize the name of the symbol table
-    count=0;                                                                                       // Put count of number of temporary variables as 0
+                                                                              // Initialize the name of the symbol table
+                                                                                          // Put count of number of temporary variables as 0
 }
 
 sym* symtable::lookup(string name)                                                 // Lookup an symbol in the symbol table, whether it exists or not
@@ -84,7 +88,7 @@ sym* symtable::lookup(string name)                                              
         if(it.name==name) 
             return &it;                                                                         // if the name of the symbol is found in the table then return the address of the element
     }
-
+    
     sym *ptr = NULL;
 
     if(this->parent) 

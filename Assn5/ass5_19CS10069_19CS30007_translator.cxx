@@ -27,17 +27,18 @@ string var_type;                                                                
 long long table_count;                                                                             // count of table
 bool debug_on;                                                                                     // bool for printing debug output
 string loop_name;                                                                                  // get the name of the loop
-
+int line = 1;
 
 //***********************************************************//
 //      Implementation of the Symbol Type Class functions    //
 //***********************************************************//
 
-symboltype::symboltype(string type,symboltype* arrtype,int width)                                  // Constructor for a symbol type
+symboltype::symboltype(string _type,symboltype* _arrtype,int _width)                                  // Constructor for a symbol type
+:type(_type),
+arrtype(_arrtype),
+width(_width)
 {
-    this->type   = type;
-    this->width  = width;
-    this->arrtype= arrtype;
+
 }
 
 //**************************************************************//
@@ -88,7 +89,7 @@ sym* symtable::lookup(string name)                                              
         if(it.name==name) 
             return &it;                                                                         // if the name of the symbol is found in the table then return the address of the element
     }
-    
+
     sym *ptr = NULL;
 
     if(this->parent) 
@@ -538,12 +539,18 @@ bool compareSymbolType(sym*& s1,sym*& s2)                                       
 {
     symboltype* type1=s1->type;                                                                         // get the basic type of symbol 1
     symboltype* type2=s2->type;                                                                         // get the basic type of symbol 2
+    sym* temp;
     int flag=0;
     
     if(compareSymbolType(type1,type2)) flag=1;                                                          // check if the two types are already equal
-    else if(s1=convertType(s1,type2->type)) flag=1;                                                     // check if one can be converted to the other then convert them
-    else if(s2=convertType(s2,type1->type)) flag=1;                                                     // check if one can be converted to the other then convert them
-    
+    else if(s1!=(temp = convertType(s1,type2->type))) {
+        flag=1;                                                     // check if one can be converted to the other then convert them
+        s1 = temp;
+    }
+    else if(s2!=(temp =convertType(s2,type1->type))){
+        flag=1;                                                     // check if one can be converted to the other then convert them
+        s2=temp;
+    }
     if(flag)return true;                                                                                // if the two types are compatible return true
     else return false;                                                                                  // else return false
 }
@@ -577,8 +584,10 @@ int nextinstr()
 
 int computeSize(symboltype* t)                                                                          // calculate size function
 {
-    if(t->type == "arr")
+    if((t->arrtype!=NULL) && (t->type == "arr"))
+    {
         return (t->width)*computeSize(t->arrtype);
+    }
     else if(basicType :: getSize.count(t->type))
         return basicType :: getSize[t->type];
         
@@ -622,11 +631,15 @@ int main() {
     ST=globalST;
     parST=nullptr;
     loop_name = "";
-
-    yyparse();                                                                                          // initialize parse
-    globalST->update();                                                                                 // update the global Symbol Table
-    cout<<"\n";
-
-    Q.print();                                                                                          // print the three address codes
-    globalST->print();                                                                                  // print all Symbol Tables
+    int InvalidParse = yyparse();                                                                                          // initialize parse
+    if(InvalidParse)
+    {
+        cout<<"Error while parsing\n";
+    }
+    else{
+        globalST->update();                                                                                 // update the global Symbol Table
+        cout<<"\n";
+        Q.print();                                                                                          // print the three address codes
+        globalST->print();                                                                                  // print all Symbol Tables
+    }
 };

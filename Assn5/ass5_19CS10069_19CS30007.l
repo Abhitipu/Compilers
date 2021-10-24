@@ -7,7 +7,6 @@
 
     extern YYSTYPE yylval;
     extern int line;
-    int line = 1;
 %}
 
 
@@ -99,7 +98,7 @@ ENUMERATION_CONST   {IDENTIFIER}
                                 yylval.char_val = yytext;
                                 return CHAR_CONST;
                             }
-"\n"                        {  }
+"\n"                        { line++;  }
 {STRING_LITERAL}            {
                                 yylval.char_val = yytext;
                                 return STRING_LITERAL;
@@ -155,12 +154,12 @@ ENUMERATION_CONST   {IDENTIFIER}
 
 
 "//"                        {BEGIN(SINGLE_COMMENT_STATE);}
-<SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL);}
+<SINGLE_COMMENT_STATE>"\n"  {BEGIN(INITIAL);line++;}
 <SINGLE_COMMENT_STATE>.     {;}
 "/*"                        {BEGIN(MULTI_COMMENT_STATE);}
 <MULTI_COMMENT_STATE>"*/"   {BEGIN(INITIAL);}
 <MULTI_COMMENT_STATE>.      {;}
-<MULTI_COMMENT_STATE>"\n"   {;}
+<MULTI_COMMENT_STATE>"\n"   {line++;}
 [ \t]                       {;}
 %%
 

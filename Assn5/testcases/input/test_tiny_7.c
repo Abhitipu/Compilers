@@ -6,7 +6,7 @@ int min(int a, int b) {
 	return b;
 }
 
-int MatrixChainMultiplication(int p[], int start, int end) {
+int MatrixChainMultiplication(int p[6], int start, int end) {
 	if (start == end)
 		return 0;
 

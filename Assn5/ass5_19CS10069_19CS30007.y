@@ -7,6 +7,7 @@
     void yyerror(string s);
     extern string var_type;
     extern vector<label> label_table;
+    extern int line;
     using namespace std;
 %}
 
@@ -412,7 +413,12 @@ multiplicative_expression:
                     { 
                         //if we have multiplication
                         if(!compareSymbolType($1->loc, $3->Array))         
-                            cout<<"Type Error in Program"<< endl;	// error
+                        {
+                            // cout<<"Type Error in Program"<< endl;	// error
+                            cout<<"Line: "<<line<<"\n";
+                            yyerror("Type Error in Program, in line ");
+                            return 1;
+                        }    
                         else 								 //if types are compatible, generate new temporary and equate to the product
                         {
                             $$ = new Expression();	

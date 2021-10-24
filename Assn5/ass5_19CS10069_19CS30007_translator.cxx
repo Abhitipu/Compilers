@@ -52,6 +52,7 @@ sym::sym(string name, string t, symboltype* arrtype, int width)
     offset = 0;                                                                                    // put initial offset as 0
     val = "-";                                                                                     // no initial value
     nested = NULL;                                                                                 // no nested table
+    isItFunction = false;                                                                          // by default its not a function
 }
 
 sym* sym::update(symboltype* t) 
@@ -123,6 +124,10 @@ void symtable::update()                                                         
 
     for(auto &it: symbols) {
         it.offset = off;
+        if(it.isItFunction)
+        {
+            it.size = 0;    // function size made 0, previously it was size of return type
+        }
         off += it.size;
         if(it.nested!=NULL)                                                                        // if there is something nested, store it for future updates
             tb.push_back(it.nested);
@@ -182,7 +187,7 @@ void symtable::print()                                                          
         cout << it.name;                                                                        // Print name of the symbol entry	
         generateSpaces(40-it.name.length());
 
-        string rec_type=printType(it.type);                                                          // Use PrintType to print type of the symbol entry
+        string rec_type=(it.isItFunction)?"func":printType(it.type);                            // Use PrintType to print type of the symbol entry, and it its a function print func
         cout << rec_type;
         generateSpaces(30-rec_type.length());
 

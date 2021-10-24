@@ -57,7 +57,9 @@ class sym
         int offset;                                                                        // denotes the offset of symbol in ST
         symtable* nested;                                                                  // points to the nested symbol table
         string val;                                                                        // initial value of the symbol if specified
-          
+        bool isItFunction;                                                                 // True if the symbol represent a function
+
+        inline void updateFuntionStatus(bool b){ isItFunction = b; }                       // inline function to update isItFunction
         sym (string , string t="int", symboltype* ptr = NULL, int width = 0);              // constructor
         sym* update(symboltype*);                                                          // Method to update different fields of an existing entry.
 };

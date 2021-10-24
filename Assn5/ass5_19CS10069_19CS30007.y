@@ -1453,7 +1453,9 @@ function_definition:
                     {
                         int next_instr=0;	 	
                         ST->parent=globalST;
-                        $2->update(new symboltype("func"));
+                        // $2->update(new symboltype("func"));
+                        $2->updateFuntionStatus(true);
+                        // Add a function name
                         table_count = 0;
                         label_table.clear();
                         changeTable(globalST);                     //once we come back to this at the end, change the table to global Symbol table

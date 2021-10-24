@@ -101,79 +101,19 @@
 /*Rules*/
 %%
 
-M: %empty 
-	{
-		/**
-		  * backpatching,stores the index of the next quad to be generated
-		  * Used in various control statements
-		  */
-		$$ = nextinstr();
-	}   
-	;
-
-F: %empty 
-	{
-		// rule for identifying the start of the for statement
-		loop_name = "FOR";
-	}   
-	;
-
-W: %empty 
-	{
-		// rule for identifying the start of a while loop
-		loop_name = "WHILE";
-	}   
-	;
-
-D: %empty 
-	{
-		// rule for identifyiong the start of the do while statement
-		loop_name = "DO_WHILE";
-	}   
-	;
-
-X: %empty 
-	{
-		/**
-		  * change the current symbol pointer
-		  * This will be used for nested block statements
-		  */
-		string name = ST->name+"."+loop_name+"$"+to_string(table_count); // give name for nested table
-		table_count++; // increment the table count
-		sym* s = ST->lookup(name); // lookup the table for new entry
-		s->nested = new symtable(name);
-		s->nested->parent = ST;
-		s->name = name;
-		s->type = new symboltype("block");
-		currSymbolPtr = s;
-	}   
-	;
-
-N: %empty
-	{
-		/** 
-		  * For backpatching, which inserts a goto 
-		  * and stores the index of the next goto 
-		  * statement to guard against fallthrough
-		  * N->nextlist = makelist(nextinstr) we have defined nextlist for Statements
-		  */
-		$$ = new Statement();
-		$$->nextlist=makelist(nextinstr());
-		Q.emit("goto","");
-	}
-	;
 
 
 changetable: %empty 
 	{    
-		parST = ST;                                                               // Used for changing to symbol table for a function
-		if(currSymbolPtr->nested==NULL) 
-		{
-			changeTable(new symtable(""));	                                           // Function symbol table doesn't already exist	
+        // Utility to change the table
+		parST = ST;                                                               
+
+        // If nested call recursively on the nested table
+		if(currSymbolPtr->nested==NULL) {
+			changeTable(new symtable(""));	                                           
 		}
-		else 
-		{
-			changeTable(currSymbolPtr ->nested);						               // Function symbol table already exists	
+		else {
+			changeTable(currSymbolPtr ->nested);						               
 			Q.emit("label", ST->name);
 		}
 	}
@@ -182,22 +122,22 @@ changetable: %empty
 
 
 constant:
-                    INTEGER_CONST
-                    { 
+                    INTEGER_CONST { 
+                        // Here we are creating a new instance and storing it
                         $$=new Expression();	
                         string p=convertIntToString($1);
                         $$->loc=gentemp(new symboltype("int"),p);
                         Q.emit("=",$$->loc->name,p);
                     }
                     | FLOAT_CONST
-                    {                                                                         // create new expression and store the value of the constant in a temporary
+                    {                                                                         
                         $$=new Expression();
                         string p=convertFloatToString($1);
                         $$->loc=gentemp(new symboltype("float"),p);
                         Q.emit("=",$$->loc->name,p);
                     }
                     | CHAR_CONST
-                    {                                                                         // create new expression and store the value of the constant in a temporary
+                    {                                                                        
                         $$=new Expression();
                         $$->loc=gentemp(new symboltype("char"),$1);
                         Q.emit("=",$$->loc->name,string($1));
@@ -207,7 +147,7 @@ constant:
 primary_expression:
                     IDENTIFIER
                     {
-                        $$=new Expression();                                                  // create new expression and store pointer to ST entry in the location			
+                        $$=new Expression();                                                  
                         $$->loc=$1;
                         $$->type="not-boolean";
                     }
@@ -216,7 +156,7 @@ primary_expression:
                         $$ = $1; 
                     }
                     | '(' expression ')'
-                    {                                                                          // simply equal to expression
+                    {                                                                        
                         $$=$2;
                     }
                     ;
@@ -227,6 +167,7 @@ postfix_expression:
                     {
                         $$=new Array();	
                         $$->Array=$1->loc;	
+
                         $$->type=$1->loc->type;	
                         $$->loc=$$->Array;
                     }
@@ -234,20 +175,20 @@ postfix_expression:
                     { 	
 		
                         $$=new Array();
-                        $$->type=$1->type->arrtype;                 // type=type of element	
-                        $$->Array=$1->Array;                        // copy the base
-                        $$->loc=gentemp(new symboltype("int"));     // store computed address
-                        $$->atype="arr";                            //atype is arr.
-                        if($1->atype=="arr") 
-                        {			                               // if already arr, multiply the size of the sub-type of Array with the expression value and add
+                        $$->type=$1->type->arrtype;                 
+                        $$->Array=$1->Array;                       
+                        $$->loc=gentemp(new symboltype("int"));     
+                        $$->atype="arr";                           
+
+                        // Recursive definition is crucial here
+                        if($1->atype=="arr") {			                               
                             sym* t=gentemp(new symboltype("int"));
                             int p=computeSize($$->type);
                             string str=convertIntToString(p);
                             Q.emit("*",t->name,$3->loc->name,str);
                             Q.emit("+",$$->loc->name,$1->loc->name,t->name);
                         }
-                        else 
-                        {                        //if a 1D Array, simply calculate size
+                        else {                        
                             int p=computeSize($$->type);	
                             string str=convertIntToString(p);
                             Q.emit("*",$$->loc->name,$3->loc->name,str);
@@ -255,19 +196,24 @@ postfix_expression:
                     }
                     | postfix_expression '(' argument_expression_list_opt ')'
                     {
-                        //call the function with number of parameters from argument_expression_list_opt
+                        // Calling the function with a variable number of arguments
                         $$=new Array();	
                         $$->Array=gentemp($1->type);
+
                         string str=convertIntToString($3);
                         Q.emit("call",$$->Array->name,$1->Array->name,str);
                     }
                     | postfix_expression '.' IDENTIFIER
-                    { }
+                    { 
+
+                    }
                     | postfix_expression ARROW IDENTIFIER
-                    { }
+                    { 
+
+                    }
                     | postfix_expression INCREMENT
                     { 
-                        //generate new temporary, equate it to old one and then add 1
+                        // We generate a temporary instance and add 1 to it
                         $$=new Array();	
                         $$->Array=gentemp($1->Array->type);
                         Q.emit("=",$$->Array->name,$1->Array->name);
@@ -275,9 +221,10 @@ postfix_expression:
                     }
                     | postfix_expression DECREMENT
                     {
-                        //generate new temporary, equate it to old one and then subtract 1
+                        // We generate a temporary instance and subtract 1 from it
                         $$=new Array();	
                         $$->Array=gentemp($1->Array->type);
+
                         Q.emit("=",$$->Array->name,$1->Array->name);
                         Q.emit("-",$1->Array->name,$1->Array->name,"1");	
                     }
@@ -290,12 +237,12 @@ postfix_expression:
 argument_expression_list:
                     assignment_expression
                     {
-                        $$=1;                                      //one argument and Q.emit param
+                        $$=1;                                      //Simple assignment
                         Q.emit("param",$1->loc->name);	
                     }
                     | argument_expression_list ',' assignment_expression   
                     {
-                        $$=$1+1;                                  //one more argument and Q.emit param		 
+                        $$=$1+1;                                  //Add 1 here
                         Q.emit("param",$3->loc->name);
                     }
                     ;
@@ -303,102 +250,125 @@ argument_expression_list:
 argument_expression_list_opt:
                     argument_expression_list
                     {
-                        $$=$1; // assign $$ =  $1
+                        $$=$1; // Simple assignment here
                     }
                     | %empty
                     { 
-                        $$ = 0; // no arguements
+                        $$ = 0; // defaults to 0
                     }
                     ;
 
 unary_expression:
                     postfix_expression
-                    { $$=$1; /* assign $$ =  $1*/} 
+                    { 
+                        $$=$1; /* assign $$ =  $1*/
+                    } 
                     | INCREMENT unary_expression
                     {  	
-                        //simply add 1
-                        Q.emit("+",$2->Array->name,$2->Array->name,"1");		
+                        Q.emit("+",$2->Array->name,$2->Array->name,"1");		// we just add 1 here
                         $$=$2;
                     }
                     | DECREMENT unary_expression
                     {
-                        //simply subtract 1
-                        Q.emit("-",$2->Array->name,$2->Array->name,"1");
+                        Q.emit("-",$2->Array->name,$2->Array->name,"1");        // we just subtract 1 here
                         $$=$2;
                     }
                     | unary_operator cast_expression
-                    {   //if it is of this type, where unary operator is involved
+                    {   
                         $$=new Array();
-                        switch($1)
-                        {	  
-                            case '&':                                                  //address of something, then generate a pointer temporary and Q.emit the quad
+                        // We need to do case work here
+                        switch($1) {	  
+
+                            case '&':                                                  // This is ampersand, indicating address value
                                 $$->Array=gentemp(new symboltype("ptr"));
                                 $$->Array->type->arrtype=$2->Array->type; 
                                 Q.emit("=&",$$->Array->name,$2->Array->name);
                                 break;
-                            case '*':                                                   // value of something, then generate a temporary of the corresponding type and Q.emit the quad	
+
+                            case '*':                                                   // Dereferencing operator here
                                 $$->atype="ptr";
                                 $$->loc=gentemp($2->Array->type->arrtype);
                                 $$->Array=$2->Array;
                                 Q.emit("=*",$$->loc->name,$2->Array->name);
                                 break;
+
                             case '+':  
                                 $$=$2;
-                                break;                 //unary plus, do nothing
-                            case '-':				   //unary minus, generate new temporary of the same base type and make it negative of current one
+                                break;                 // Stays same as +a = a
+
+                            case '-':				   // Just make a temporary vaiable with negative value
                                 $$->Array=gentemp(new symboltype($2->Array->type->type));
                                 Q.emit("uminus",$$->Array->name,$2->Array->name);
                                 break;
-                            case '~':                   //bitwise not, generate new temporary of the same base type and make it negative of current one
+                                
+                            case '~':                   // The bitwise not
                                 $$->Array=gentemp(new symboltype($2->Array->type->type));
                                 Q.emit("~",$$->Array->name,$2->Array->name);
                                 break;
-                            case '!':				//logical not, generate new temporary of the same base type and make it negative of current one
+
+                            case '!':				// The logical not, again we create a temporary and do our work
                                 $$->Array=gentemp(new symboltype($2->Array->type->type));
                                 Q.emit("!",$$->Array->name,$2->Array->name);
                                 break;
                         }
                     }
                     | SIZEOF unary_expression
-                    { }
+                    { 
+
+                    }
                     | SIZEOF '(' type_name ')'  
-                    { }
+                    { 
+
+                    }
                     ;    
 
 
 unary_operator: 
                     BITWISE_AND
-                    { $$ = '&'; }
+                    { 
+                        $$ = '&'; 
+                    }
                     | MULT
-                    { $$ = '*'; }
+                    { 
+                        $$ = '*'; 
+                    }
                     | PLUS
-                    { $$ = '+'; }
+                    { 
+                        $$ = '+'; 
+                    }
                     | MINUS
-                    { $$ = '-'; }
+                    { 
+                        $$ = '-'; 
+                    }
                     | BITWISE_NOT
-                    { $$ = '~'; }
+                    { 
+                        $$ = '~'; 
+                    }
                     | LOGICAL_NOT
-                    { $$ = '!'; }
+                    { 
+                        $$ = '!'; 
+                    }
                     ;
 
 cast_expression:
                     unary_expression
-                    { $$ = $1; /* simply assign*/ }
+                    { 
+                        $$ = $1; 
+                    }
                     | '(' type_name ')' cast_expression
                     { 
                         $$=new Array();	
-                        $$->Array=convertType($4->Array,var_type);             //generate a new symbol of the given type	
+                        $$->Array=convertType($4->Array,var_type);             // Convert and assign
                     }
                     ;
 
 multiplicative_expression:
                     cast_expression
                     {
-                        $$ = new Expression();             //generate new expression							    
-                        if($1->atype=="arr") 			   //if it is of type arr
-                        {
+                        $$ = new Expression();             
+                        if($1->atype=="arr") {
                             $$->loc = gentemp($1->loc->type);	
-                            Q.emit("=[]", $$->loc->name, $1->Array->name, $1->loc->name);     //Q.emit with Array right
+                            Q.emit("=[]", $$->loc->name, $1->Array->name, $1->loc->name);     
                         }
                         else if($1->atype=="ptr")         //if it is of type ptr
                         { 
@@ -1092,11 +1062,11 @@ type_qualifier_list_opt:
 pointer:
                     MULT type_qualifier_list_opt 
                     { 
-                        $$ = new symboltype("ptr");   //create new pointer
+                        $$ = new symboltype("ptr");   //create a new pointer symbol
                     }
                     | MULT type_qualifier_list_opt pointer
                     { 
-                        $$ = new symboltype("ptr",$3);
+                        $$ = new symboltype("ptr",$3); // create the symboltype with type
                     }
                     ;
 
@@ -1202,8 +1172,8 @@ loop_statement:
                     labeled_statement   {  }
                     | expression_statement   
                     { 
-                        $$=new Statement();              //create new statement with same nextlist
-                        $$->nextlist=$1->nextlist; 
+                        $$=new Statement();                         // create new statement with same nextlist
+                        $$->nextlist=$1->nextlist;                  // assign the nextlist
                     }
                     | selection_statement   { $$=$1; }
                     | iteration_statement   { $$=$1; }
@@ -1225,7 +1195,7 @@ labeled_statement:
                         }
                     }
                     | CASE constant_expression ':' statement
-                    {  }
+                    { /* Not to be modelled */ }
                     | DEFAULT ':' statement
                     {  }
                     ;
@@ -1233,8 +1203,8 @@ labeled_statement:
 compound_statement:
                     '{' X changetable block_item_list_opt '}'
                     { 
-                        $$=$4;
-                        changeTable(ST->parent); 
+                        $$=$4;                           // Compound Statement = blockItemList
+                        changeTable(ST->parent);         // Change Symbol Table
                     }
                     ;
 
@@ -1251,7 +1221,8 @@ block_item_list:
 block_item_list_opt:
                     block_item_list
                     { $$=$1 ;/* simple assign */}
-                    | %empty { $$=new Statement(); /* Create new statement */} 
+                    | %empty 
+                    { $$=new Statement(); /* Create new statement */} 
                     ;
 
 block_item:
@@ -1271,21 +1242,21 @@ expression_statement:
 selection_statement:
                     IF '(' expression N ')' M statement N %prec "then"
                     {
-                        // if statement without else
-                        backpatch($4->nextlist, nextinstr());        //nextlist of N goes to nextinstr
-                        convertIntToBool($3);         //convert expression to bool
-                        $$ = new Statement();        //make new statement
-                        backpatch($3->truelist, $6);        //is expression is true, go to M i.e just before statement body
-                        list<int> temp = merge($3->falselist, $7->nextlist);   //merge falselist of expression, nextlist of statement and second N
+                                                                                // if statement without else
+                        backpatch($4->nextlist, nextinstr());                   // nextlist of N goes to nextinstr
+                        convertIntToBool($3);                                   // convert expression to bool
+                        $$ = new Statement();                                   // make new statement
+                        backpatch($3->truelist, $6);                            // is expression is true, go to M i.e just before statement body
+                        list<int> temp = merge($3->falselist, $7->nextlist);    // merge falselist of expression, nextlist of statement and second N
                         $$->nextlist = merge($8->nextlist, temp);
                     }
                     | IF '(' expression N ')' M statement N ELSE M statement
                     {
-                        //if statement with else
-                        backpatch($4->nextlist, nextinstr());		//nextlist of N goes to nextinstr
-                        convertIntToBool($3);        //convert expression to bool
-                        $$ = new Statement();       //make new statement
-                        backpatch($3->truelist, $6);    //when expression is true, go to M1 else go to M2
+                                                                                // if  else
+                        backpatch($4->nextlist, nextinstr());		            // nextlist of N goes to nextinstr
+                        convertIntToBool($3);                                   // convert expression to bool
+                        $$ = new Statement();                                   // create new statement
+                        backpatch($3->truelist, $6);                            // If expr true then go to M1 else go to M2
                         backpatch($3->falselist, $10);
                         list<int> temp = merge($7->nextlist, $8->nextlist);       //merge the nextlists of the statements and second N
                         $$->nextlist = merge($11->nextlist,temp);	
@@ -1387,14 +1358,14 @@ iteration_statement:
                     }
                     | FOR F '(' X changetable expression_statement M expression_statement M expression N ')' M '{' block_item_list_opt '}'
                     {	
-                        $$ = new Statement();		 //create new statement
-                        convertIntToBool($8);  //convert check expression to boolean
-                        backpatch($8->truelist, $13);	//if expression is true, go to M2
-                        backpatch($11->nextlist, $7);	//after N, go back to M1
-                        backpatch($15->nextlist, $9);	//statement go back to expression
+                        $$ = new Statement();		                    // create new statement
+                        convertIntToBool($8);                           // convert expression to boolean
+                        backpatch($8->truelist, $13);	                // if expression is true, go to M2
+                        backpatch($11->nextlist, $7);	                //after N, go back to M1
+                        backpatch($15->nextlist, $9);	                //statement go back to expression
                         string str=convertIntToString($9);
-                        Q.emit("goto", str);				//prevent fallthrough
-                        $$->nextlist = $8->falselist;	//move out if statement is false
+                        Q.emit("goto", str);				            //prevent fallthrough
+                        $$->nextlist = $8->falselist;	                //move out if statement is false
                         loop_name = "";
                         changeTable(ST->parent);
                     }
@@ -1425,12 +1396,12 @@ jump_statement:
                     | RETURN expression ';'
                     {
                         $$ = new Statement();	
-                        Q.emit("return",$2->loc->name);               //Q.emit return with the name of the return value
+                        Q.emit("return",$2->loc->name);               // Q.emit return with the name of the return value
                     }
                     | RETURN ';'
                     {
                         $$ = new Statement();	
-                        Q.emit("return","");                         //simply Q.emit return
+                        Q.emit("return","");                         // Q.emit return
                     }
                     ;
 
@@ -1453,12 +1424,11 @@ function_definition:
                     {
                         int next_instr=0;	 	
                         ST->parent=globalST;
-                        // $2->update(new symboltype("func"));
                         $2->updateFuntionStatus(true);
                         // Add a function name
                         table_count = 0;
-                        label_table.clear();
-                        changeTable(globalST);                     //once we come back to this at the end, change the table to global Symbol table
+                        label_table.clear();                        
+                        changeTable(globalST);                     // Change the table again to Global ST
                     }
                     ;
 
@@ -1474,10 +1444,66 @@ declaration_list:
                     {  }
                     ;
 
+M: %empty 
+	{
+        // Used in backpatching
+		$$ = nextinstr();
+	}   
+	;
+
+F: %empty 
+	{
+		// Beginning of the for statement
+		loop_name = "FOR";
+	}   
+	;
+
+W: %empty 
+	{
+		// Beginning of the while statement
+		loop_name = "WHILE";
+	}   
+	;
+
+D: %empty 
+	{
+		// Beginning of the do while statement
+		loop_name = "DO_WHILE";
+	}   
+	;
+
+X: %empty 
+	{
+		string name = ST->name+"."+loop_name+"$"+to_string(table_count);
+		table_count++; 
+
+        // First an entry is created
+		sym* s = ST->lookup(name); 
+		s->nested = new symtable(name);
+		s->nested->parent = ST;
+		s->name = name;
+		s->type = new symboltype("block");
+
+		currSymbolPtr = s;          // updating the current symbol
+	}   
+	;
+
+N: %empty
+	{
+        /*
+            This is also useful in backpatching
+        */
+		$$ = new Statement();
+		$$->nextlist=makelist(nextinstr());
+
+		Q.emit("goto","");
+	}
+	;
 %%
+
 /*Auxiliaries*/
 void yyerror(string s)
 {
-    // printf("Found error %s\n", s);
+    // print error
     cout<<s<<endl;
 }

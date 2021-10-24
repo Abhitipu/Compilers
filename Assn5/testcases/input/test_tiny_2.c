@@ -10,7 +10,8 @@ void swapTwoNumbers(int* a, int* b) //pointers
 float areaOfCircle(int r) {
 	float pi = 3.14, area;
 	int rSquare = r*r;
-	area = pi *rSquare; // type casting int -> float
+	area = rSquare * pi; // type casting int -> float
+	{}
 	return area;
 }
 

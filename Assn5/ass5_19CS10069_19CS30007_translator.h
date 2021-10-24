@@ -138,7 +138,6 @@ class quadArray
         //------------------------------------------------------------------//
         //          Overloaded emit function used by the parser             //
         //------------------------------------------------------------------//
-        // TODO: Make static fuction of Quad Array
         void emit(string , string , string arg1="", string arg2 = "");  
         void emit(string , string , int, string arg2 = "");		  
         void emit(string , string , float , string arg2 = "");   
@@ -157,13 +156,15 @@ class basicType
 //     Definition of the expression type        //
 //----------------------------------------------//
 
-// TODO: change to class?
-struct Expression {
+// TODO: change to class? ok
+class Expression {
+    public:
     s* loc;                                                                                  // pointer to the symbol table entry
     string type;                                                                             // to store whether the expression is of type int or bool or float or char
     list<int> truelist;                                                                      // fruelist for boolean expressions
     list<int> falselist;                                                                     // falselist for boolean expressions
     list<int> nextlist;                                                                      // for statement expressions
+    
 };
 
 //--------------------------------------------------------------//

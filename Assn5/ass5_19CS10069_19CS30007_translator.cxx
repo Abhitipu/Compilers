@@ -55,7 +55,7 @@ sym::sym(string name, string t, symboltype* arrtype, int width)
 
 sym* sym::update(symboltype* t) 
 {
-    type=t;                                                                                        // Update the new type
+    type = t;                                                                                       // Update the new type
     this->size=computeSize(t);                                                                   // new size
     return this;                                                                                   // return the same variable	
 }
@@ -450,7 +450,7 @@ string convertFloatToString(float x)                                            
 }
 
 Expression* convertBoolToInt(Expression* e)                                                             // Convert any Expression to bool using standard procedure
-{	
+{
 	if(e->type=="bool") 
     {
         e->loc=gentemp(new symboltype("int"));                                                          // use general goto statements and standard procedure

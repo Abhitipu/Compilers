@@ -35,16 +35,16 @@ test: a.out
 	@echo "\nALL TEST FILES SUCCESSFULLY TRANSLATED !!\n"
 
 a.out: lex.yy.o ass5_19CS10069_19CS30007.tab.o ass5_19CS10069_19CS30007_translator.o
-	g++ lex.yy.o ass5_19CS10069_19CS30007.tab.o ass5_19CS10069_19CS30007_translator.o -lfl
+	g++ -g lex.yy.o ass5_19CS10069_19CS30007.tab.o ass5_19CS10069_19CS30007_translator.o -lfl
 
 ass5_19CS10069_19CS30007_translator.o: ass5_19CS10069_19CS30007_translator.cxx ass5_19CS10069_19CS30007_translator.h
-	g++ -c ass5_19CS10069_19CS30007_translator.cxx
+	g++ -g -c ass5_19CS10069_19CS30007_translator.cxx
 
 lex.yy.o: lex.yy.c
-	g++ -c lex.yy.c
+	g++ -g -c lex.yy.c
 
 ass5_19CS10069_19CS30007.tab.o: ass5_19CS10069_19CS30007.tab.c
-	g++ -c ass5_19CS10069_19CS30007.tab.c
+	g++ -g -c ass5_19CS10069_19CS30007.tab.c
 
 lex.yy.c: ass5_19CS10069_19CS30007.l ass5_19CS10069_19CS30007.tab.h ass5_19CS10069_19CS30007_translator.h
 	flex ass5_19CS10069_19CS30007.l

@@ -416,7 +416,7 @@ multiplicative_expression:
                         {
                             // cout<<"Type Error in Program"<< endl;	// error
                             cout<<"Line: "<<line<<"\n";
-                            yyerror("Type Error in Program, in line ");
+                            yyerror("Type Error in Program!");
                             return 1;
                         }    
                         else 								 //if types are compatible, generate new temporary and equate to the product

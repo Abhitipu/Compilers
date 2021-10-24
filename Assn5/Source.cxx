@@ -9,9 +9,6 @@
 
 using namespace std;
 
-/*
-  Global variables for storing required data  
-*/ 
 
 basicType bt;                                                                                      // basic types
 

@@ -1577,7 +1577,7 @@ X: %empty
 		s->nested = new symtable(name);
 		s->nested->parent = ST;
 		s->name = name;
-		s->type = new symboltype("block");
+		s->update(new symboltype("block"));
 
 		currSymbolPtr = s;          // updating the current symbol
 	}   

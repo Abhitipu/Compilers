@@ -54,7 +54,10 @@ ass5_19CS10069_19CS30007.tab.c: ass5_19CS10069_19CS30007.y
 
 ass5_19CS10069_19CS30007.tab.h: ass5_19CS10069_19CS30007.y
 	bison -dv ass5_19CS10069_19CS30007.y -W
-
+tarify:
+	tar -cvf ass5_19CS10069_19CS30007.tar ./input/ ./output/ ass5_19CS10069_19CS30007_translator.h ass5_19CS10069_19CS30007_translator.cxx ass5_19CS10069_19CS30007.l ass5_19CS10069_19CS30007.y Makefile README.md
+cleanTarify:
+	rm ass5_19CS10069_19CS30007.tar
 clean:
 	rm lex.yy.c\
 	   lex.yy.o\

@@ -21,38 +21,35 @@ ________________________________________________________________________________
 15:     return ans
 
 16: min: 
-17:     if x > y goto 20
+17:     if x > y goto 19
 18:     goto 21
-19:     goto 25
-20:     goto 23
+19:     t_0 = y
+20:     goto 22
 21:     t_0 = x
-22:     goto 25
-23:     t_0 = y
-24:     goto 25
-25:     ans = t_0
-26:     return ans
+22:     ans = t_0
+23:     return ans
 
-27: absMin: 
-28:     param a
-29:     param b
-30:     t_0 = call min, 2
-31:     i = t_0
-32:     param i
-33:     t_2 = call abs, 1
-34:     j = t_2
-35:     return j
+24: absMin: 
+25:     param a
+26:     param b
+27:     t_0 = call min, 2
+28:     i = t_0
+29:     param i
+30:     t_2 = call abs, 1
+31:     j = t_2
+32:     return j
 
-36: main: 
-37:     t_0 = 10
-38:     a = t_0
-39:     t_2 = 5
-40:     b = t_2
-41:     param a
-42:     param b
-43:     t_4 = call absMin, 2
-44:     d = t_4
-45:     t_6 = 0
-46:     return t_6
+33: main: 
+34:     t_0 = 10
+35:     a = t_0
+36:     t_2 = 5
+37:     b = t_2
+38:     param a
+39:     param b
+40:     t_4 = call absMin, 2
+41:     d = t_4
+42:     t_6 = 0
+43:     return t_6
 ____________________________________________________________________________________________________________________________________________________
 
 SYMBOL TABLES:

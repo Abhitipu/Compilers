@@ -717,24 +717,21 @@ logical_or_expression:
 conditional_expression:
                     logical_or_expression
                     { $$=$1;/* Simple assign */ }
-                    | logical_or_expression N '?' M expression N ':' M conditional_expression
+                    | logical_or_expression '?' expression ':' conditional_expression
                     {
                         //normal conversion method to get conditional expressions
-                        $$->loc = gentemp($5->loc->type);       //generate temporary for expression
-                        $$->loc->update($5->loc->type);
-                        Q.emit("=", $$->loc->name, $9->loc->name);      //make it equal to sconditional_expression
-                        list<int> l = makelist(nextinstr());        //makelist next instruction
-                        Q.emit("goto", "");              //prevent fallthrough
-                        backpatch($6->nextlist, nextinstr());        //after N, go to next instruction
-                        Q.emit("=", $$->loc->name, $5->loc->name);
-                        list<int> m = makelist(nextinstr());         //makelist next instruction
-                        l = merge(l, m);						//merge the two lists
-                        Q.emit("goto", "");						//prevent fallthrough
-                        backpatch($2->nextlist, nextinstr());   //backpatching
-                        convertIntToBool($1);                   //convert expression to boolean
-                        backpatch($1->truelist, $4);           //$1 true goes to expression
-                        backpatch($1->falselist, $8);          //$1 false goes to conditional_expression
-                        backpatch(l, nextinstr());
+                        $$->loc = gentemp($3->loc->type);       //generate temporary for expression
+                        $$->loc->update($3->loc->type);
+                        
+                        backpatch($1->truelist, nextinstr());           // $1 true goes to expression
+                        Q.emit("=", $$->loc->name, $3->loc->name);      // make it equal to first expression
+                        list<int> l = makelist(nextinstr());            //makelist next instruction
+                        Q.emit("goto", "");                             //prevent fallthrough
+
+                        backpatch($1->falselist, nextinstr());          // $1 false goes to conditional expression
+                        Q.emit("=", $$->loc->name, $5->loc->name);      // Second Expression
+
+                        backpatch(l, nextinstr());                      // fallthrough, go to next instruction
                     }
                     ;
 

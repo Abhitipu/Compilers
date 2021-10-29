@@ -5,7 +5,7 @@ void computeActivationRecord(symtable *st) {
     int locals_offset = -4;
 
     for(auto &it: st->symbols) {
-        if(it.category != "param") {
+        if(it.category == "param") {
             st->ActivationRecord[it.name] = param_offset;
             param_offset += it.size;
         } else if(it.name != "return") {

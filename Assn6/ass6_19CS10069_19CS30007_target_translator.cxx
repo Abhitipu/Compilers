@@ -293,7 +293,7 @@ void generateAsm() {
 				asmFile << "movq\t" << off << "(%rbp), "<<"%rax" << endl;
 				asmFile << "\tmovq \t%rax, " <<  ST->ActivationRecord[res] << "(%rbp)";
 			}	 			
-			else if (op=="ARRL") { // TODO also check if offset is correct according to our AR 
+			else if (op=="ARRL") { // TODO also check if offset is correct according to our AR standards
 				int off=0;
 				off=theMap[arg1]*(-1)+ST->ActivationRecord[res];
 				asmFile << "movq\t" << ST->ActivationRecord[arg2] << "(%rbp), "<<"%rdx" << endl;

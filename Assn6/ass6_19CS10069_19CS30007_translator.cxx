@@ -269,7 +269,7 @@ void quad::print()  {
     // Assignment + operation | Unary Assignment Instruction
 	else if(op=="=&") cout<<res<<" = &"<<arg1;         // reference
 	else if(op=="=*") cout<<res<<" = *"<<arg1;         // pointer
-	else if(op=="*=") cout<<"*"<<res<<" = "<<arg1;     // multiplication
+	else if(op=="*=") cout<<"*"<<res<<" = "<<arg1;     // *res = something TODO :C
 	else if(op=="uminus") cout<<res<<" = -"<<arg1;         
 	else if(op=="~") cout<<res<<" = ~"<<arg1;
 	else if(op=="!") cout<<res<<" = !"<<arg1;

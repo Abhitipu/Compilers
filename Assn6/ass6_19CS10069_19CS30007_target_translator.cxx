@@ -1,10 +1,23 @@
-#include "ass5_19CS10069_19CS30007_translator.h"
+#include "ass6_19CS10069_19CS30007_translator.h"
 
 #include <iostream>
 #include <string>
 #include <sstream>
 
 using namespace std;
+
+extern FILE *yyin;
+extern vector<string> stringsToBePrinted;       // by printString meth
+
+using namespace std;
+
+int labelCount=0;							
+map<int, int> labelMap;				        // map from quad number to label number
+ofstream out;								// asm file stream
+vector <quad> Array;						// quad Array
+string asmFile ="ass6_19CS10069_19CS30007";		// asm file name
+string testFile ="ass6_19CS10069_19CS30007_test";		// input file name
+
 
 void computeActivationRecord(symtable *st) {
     // TODO: maybe augment return waala logic
@@ -25,6 +38,27 @@ void computeActivationRecord(symtable *st) {
 
 void generateAsm() {
     // Ismein kya karna hai?
+    Array = Q.Array;
+
+    for(auto &u: Array) {
+        const auto v = u.op;
+        vector<string> operations = {"goto", "<", ">", "<=", ">=", "==", "!="};
+
+        for(auto &operation: operations)
+            if(v == operation) {
+                int cur = stoi(u.res.c_str());
+                labelMap[cur] = 1;
+            }
+    }
+
+    for(auto it = labelMap.begin(); it != labelMap.end(); ++it) {
+        if(it != labelMap.begin()) {
+            auto previous = prev(it);
+            it->second += previous->second;
+        }        
+    }
+
+    list<symtable*> tableList;
     return;
 }
 

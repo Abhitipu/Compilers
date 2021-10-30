@@ -773,6 +773,7 @@ assignment_expression:
                         else                                                            // otherwise simple assignment
                         {
                             $3->loc = convertType($3->loc, $1->Array->type->type);
+                            // ithink we can fix this TODO
                             Q.emit("=", $1->Array->name, $3->loc->name);
                         }
                         

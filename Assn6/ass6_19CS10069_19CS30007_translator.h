@@ -57,6 +57,8 @@ class sym  {                                                                    
         string val;                                                                        // initial value of the symbol if specified
         bool isItFunction;                                                                 // True if the symbol represent a function
 
+        string category; //TODO constructor and linking
+
         inline void updateFuntionStatus(bool b){ isItFunction = b; }                       // inline function to update isItFunction
         sym (string , string t="int", symboltype* ptr = NULL, int width = 0);              // constructor
         sym* update(symboltype*);                                                          // Method to update different fields of an existing entry.
@@ -99,6 +101,8 @@ class symtable
         list<sym> symbols;                                                                  // The table of symbols which is essentially a list of sym
         symtable* parent;                                                                   // Parent SymbolTable of the current ST
         
+        map<string, int> ActivationRecord; // TODO
+
         symtable (string name="NULL");                                                      // Constructor
         s* lookup (string);                                                                 // Lookup for a symbol in ST
         void print();                                                                       // Print the ST

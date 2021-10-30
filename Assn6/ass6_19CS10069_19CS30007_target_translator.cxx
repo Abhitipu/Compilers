@@ -1,5 +1,12 @@
-void computeActivationRecord(symtable *st) {
+#include "ass5_19CS10069_19CS30007_translator.h"
 
+#include <iostream>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+void computeActivationRecord(symtable *st) {
     // TODO: maybe augment return waala logic
     int param_offset = 8;
     int locals_offset = -4;
@@ -14,4 +21,32 @@ void computeActivationRecord(symtable *st) {
         }
     }    
     return;
+}
+
+void generateAsm() {
+    // Ismein kya karna hai?
+    return;
+}
+
+
+int main() {
+    label_table.clear();
+
+    table_count = 0;                                                                                    // count of nested table
+    globalST=new symtable("Global");                                                                    // Global Symbol Table
+    ST = globalST;
+    parST = NULL;
+    loop_name = "";
+
+    if(yyparse()){
+        cout<<"Error while parsing\n";
+    }
+    else{
+        globalST->update();                                                                                 // update the global Symbol Table
+        cout<<"\n";
+        Q.print();                                                                                          // print the three address codes
+        cout << "\nSYMBOL TABLES:\n\n";
+        globalST->print();                                                                                  // print all Symbol Tables
+        generateAsm();
+    }
 }

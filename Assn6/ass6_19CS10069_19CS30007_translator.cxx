@@ -9,76 +9,70 @@
 
 using namespace std;
 
-//**********************************************//
-//              global variables                //
-//          (Reference from the headers)        //
-//**********************************************//
-basicType bt;                                                                                      // basic types
+/*
+  Global variables for storing required data  
+*/ 
+basicType bt;                                                                                      // all the basic types
 
-symtable* globalST;                                                                                // Global Symbol Table
-symtable* parST;                                                                                   // denotes the Parent of the current Symbol Table
-symtable* ST;                                                                                      // Points to current symbol table
+// For Required Data structures
+symtable* globalST;                                                                                // Our Global ST
+symtable* parST;                                                                                   // Parent of the current symbol table
+symtable* ST;                                                                                      // Current ST
 
-quadArray Q;                                                                                       // Quad Array
-sym* currSymbolPtr;                                                                                // points to current symbol
-vector<label>label_table;                                                                          // table to store the labels
+quadArray Q;                                                                                       // Our array of quads
+sym* currSymbolPtr;                                                                                // Current symbol
+vector<label>label_table;                                                                          // For storing labels
 
-string var_type;                                                                                   // Stores latest type
-long long table_count;                                                                             // count of table
-bool debug_on;                                                                                     // bool for printing debug output
-string loop_name;                                                                                  // get the name of the loop
-int line = 1;
+// Utility variables
+string var_type;                                                                                   // Latest type found
+long long table_count;                                                                             // Count of the no of tables
+string loop_name;                                                                                  // Name of the loop
+int line = 1;                                                                                      // Line number
 
-//***********************************************************//
-//      Implementation of the Symbol Type Class functions    //
-//***********************************************************//
-
-symboltype::symboltype(string _type,symboltype* _arrtype,int _width)                                  // Constructor for a symbol type
-:type(_type),
-arrtype(_arrtype),
-width(_width)
-{
-
+/*
+    Implementation of the Symbol Type Class functions  
+*/
+symboltype::symboltype(string type,symboltype* arrtype,int width)                                  
+:type(type), width(width), arrtype(arrtype){
+    // Constructor for a given type of symbol
 }
 
-//**************************************************************//
-//      Implementation of the Symbol Element Class functions    //
-//**************************************************************//
+/*
+    The actual symbols that will be stored in the symbol table
+*/
 sym::sym(string name, string t, symboltype* arrtype, int width) 
-{
-    this->name = name;
-    type = new symboltype(t,arrtype,width);                                                        // Generate type of symbol
-    size = computeSize(type);                                                                      // find the size from the type
-    offset = 0;                                                                                    // put initial offset as 0
-    val = "-";                                                                                     // no initial value
-    nested = NULL;                                                                                 // no nested table
-    isItFunction = false;                                                                          // by default its not a function
+:name(name){
+    type = new symboltype(t,arrtype,width);                                                        // We obtain the symbol type
+    size = computeSize(type);                                                                      // We compute its size
+    offset = 0;                                                                                    // Initial offset is set to 0.. will be adjusted later
+    val = "-";                                                                                     // Initial value not yet defined
+    nested = NULL;                                                                                  // No nested tables attached
+    isItFunction = false;                                                                           // Stores if current entry is a symbol
 }
 
-sym* sym::update(symboltype* t) 
-{
-    type = t;                                                                                       // Update the new type
-    this->size=computeSize(t);                                                                   // new size
+/*
+    Utility function for updating the symbol table and returning the updated version
+*/
+sym* sym::update(symboltype* t) {
+    type=t;                                                                                        // Update the new type
+    size=computeSize(t);                                                                           // new size
     return this;                                                                                   // return the same variable	
 }
 
-//**************************************************************//
-//      Implementation of the Label Symbol functions            //
-//**************************************************************//
-label::label(string _name, int _addr):name(_name),addr(_addr){}
+/*
+    Constructor for a label
+*/
+label::label(string _name, int _addr):name(_name),addr(_addr),nextlist(){}
 
-//**************************************************************//
-//      Implementation of the Symbol Table functions            //
-//**************************************************************//
-
+/*
+    Constructor for an empty symbol table
+*/
 symtable::symtable(string _name):
     name(_name),
     count(0),
     symbols(),
-    parent(NULL)                                                                    // constructor for a symbol table
-{
+    parent(NULL){                                                                    // constructor for a symbol table
                                                                               // Initialize the name of the symbol table
-    ActivationRecord.clear();
                                                                                           // Put count of number of temporary variables as 0
 }
 
@@ -89,178 +83,160 @@ sym* symtable::lookup(string name)                                              
     // iterating over the table and checking
     for(auto &it : symbols) {
         if(it.name==name) 
-            return &it;                                                                         // if the name of the symbol is found in the table then return the address of the element
+            return &it;                                                                         
     }
 
     sym *ptr = NULL;
 
+    // Look up recursively on its parent
     if(this->parent) 
         ptr = this->parent->lookup(name);
 
-	/**
-	 * If the symbol has not been found 
-	 * in the symbol table then create 
-	 * a new entry for the symbol table
-	 * and insert in the table
-	 * 
-	 * Return the pointer to this 
-	 * new element inserted
-	 */
-
-    // Activated only from the current symbol table
+    // If we have not found anything from the base symbol table
+    // we create a new symbol and return its address
     if(ST == this and !ptr){
         symbol = new sym(name);
         symbols.push_back(*symbol);                                                                  // push the symbol into the table
         return &symbols.back();                                                                      // return the symbol
     } else if(ptr) 
+        // Else if we find it, we return that existing address
         return ptr;
 
     return NULL;
 }
 
-void symtable::update()                                                                            // Update the symbol table and sets the offsets in it
-{
-    list<symtable*> tb;                                                                            // list of tables
+/*
+    Utility function to update the symbol table
+*/
+void symtable::update() {                                                                            
+
+    // For storing the list of tables
+    list<symtable*> tb;                                                                            
     int off = 0;
 
     for(auto &it: symbols) {
         it.offset = off;
-        if(it.isItFunction)
-        {
+        if(it.isItFunction) {
             it.size = 0;    // function size made 0, previously it was size of return type
         }
         off += it.size;
-        if(it.nested!=NULL)                                                                        // if there is something nested, store it for future updates
+
+        // We check for nested symbol tables here
+        if(it.nested!=NULL)                                                                        
             tb.push_back(it.nested);
     }
-
-    list<symtable*>::iterator it1;                                                                   // list iterator for the nested tables
-
-    for(auto &it1 : tb) {                                                                            // recursively update all the nested tables 
+    
+    // We then recursively update all the nested tables 
+    for(auto &it1 : tb) {                                                                            
         it1->update();
     }
 }
 
-void symtable::print()                                                                                // print a symbol table
-{
+/*
+    Utility function for printing the symbol table with proper indentation
+*/
+void symtable::print() {                                                                                
     int next_instr=0;
-    list<symtable*> tb;                                                                               // list of tables
 
-    for(int i=0;i<73;i++) 
-        cout << "__";                                                            // print lines for the border of the table
+    // We store all the nested symbol tables in a list
+    list<symtable*> tb;                                                                               
+
+    for(int i=0;i<74;i++) 
+        cout << "__";                                                            // For better readability
     cout<<'\n';
 
     cout << "Table Name: " << name ;
-	generateSpaces(53-name.length());
-	cout << " Parent Name: ";                                                                    // table name
+	indentWithSpaces(54-name.length());
+	cout << " Parent Name: ";                                                                    
 
-    if((parent==NULL)) 
-        cout<<"NULL"<<'\n';                                          // If no parent for the current table print NULL  
+    if(!parent) 
+        cout<<"NULL"<<'\n';                                                     // No parent -> NULL
     else 
-        cout<<parent->name<<'\n';                                                  // print the name for the current table
+        cout<<parent->name<<'\n';                                               // Print parents name if available
 
-    for(int i=0; i<73; i++) 
-        cout<<"__";                                                          // Design formatting
+    for(int i=0; i<74; i++) 
+        cout<<"__";                                                             // Design formatting
     cout<<'\n';
     
-	//----------- Print the headers for the table --------------
-    cout<<"Name";                                                                                // Name of the entry in the symbol table
-    generateSpaces(36);
+    // Table headers as per requirement
+    cout<<"Name";                                                                                
+    indentWithSpaces(37);
 
-    cout<<"Type";                                                                                // Type of the symbol table entry
-    generateSpaces(26);
+    cout<<"Type";                                                                               
+    indentWithSpaces(27);
 
-    cout<<"Initial Value";                                                                       // Initial Value of the symbol table entry
-    generateSpaces(7);
+    cout<<"Initial Value";                                                                     
+    indentWithSpaces(8);
 
-    cout<<"Size";                                                                                // Size of the type of the symbol table entry
-    generateSpaces(11);
+    cout<<"Size";                                                                             
+    indentWithSpaces(12);
 
-    cout<<"Offset";                                                                              // Offset for the current entry in thr symbol table
-    generateSpaces(9);
+    cout<<"Offset";                                                                          
+    indentWithSpaces(10);
 
-    cout<<"Nested"<<'\n';                                                                   // Nested symbol table (if any)
-    generateSpaces(100);
+    cout<<"Nested"<<'\n';                                                                  
+    indentWithSpaces(101);
     cout<<'\n';
 
-    for(auto &it : symbols) {                                // iterate through all the elements in the symbol table and print their details
-    
-        cout << it.name;                                                                        // Print name of the symbol entry	
-        generateSpaces(40-it.name.length());
+    // Printing the symbols inside
+    for(auto &it : symbols) {                                
+        cout << it.name;                                                                        
+        indentWithSpaces(41-it.name.length());
 
-        string rec_type=(it.isItFunction)?"func":printType(it.type);                            // Use PrintType to print type of the symbol entry, and it its a function print func
+        // Use PrintType to print type of the symbol entry, and it its a function print func
+        string rec_type=(it.isItFunction)?"func":printType(it.type);                            
         cout << rec_type;
-        generateSpaces(30-rec_type.length());
+        indentWithSpaces(31-rec_type.length());
 
-        cout << it.val;                                                                         // Print initial value of the current symbol table entry
-        generateSpaces(20-it.val.length());
+        // Print all the required information
+        cout << it.val;                                                                         
+        indentWithSpaces(21-it.val.length());
 
-        cout<<it.size;                                                                          // Print size of the current symbol table entry
-        generateSpaces(15-to_string(it.size).length());
+        cout<<it.size;                                                                          
+        indentWithSpaces(16-to_string(it.size).length());
 
-        cout<<it.offset;                                                                        // print offset of the current symbol entry
-        generateSpaces(15-to_string(it.offset).length());
+        cout<<it.offset;                                                                       
+        indentWithSpaces(16-to_string(it.offset).length());
 
-        if(it.nested==NULL) {                                                                        // print nested table's name if it exists
+        // Check for nested tables
+        if(it.nested==NULL) {                                                                 
             cout<<"NULL"<<'\n';
         }
         else {
             cout<<it.nested->name<<'\n';	
-            tb.push_back(it.nested);                                                                 // Insert the names of the nested tables that need to be recursively printed
+            tb.push_back(it.nested);                                                                 
+            // Store nested tables for further printing
         }
     }
  
-    for(int i=0;i<130;i++) 
-        cout<<"-";
+    for(int i=0;i<74;i++) 
+        cout<<"--";
     cout<<"\n\n";
 
-    for(auto &it: tb) 
-    {
-		/**
-		 * print symbol table that are nested in the 
-		 * current symbol table, hence recursively 
-		 * print all nested tables
-		 */
+    // Recursively print nested symbol tables
+    for(auto &it: tb) {
         it->print();
     }
 }
 
-//**************************************************************//
-//      Implementation of the quad functions                    //
-//**************************************************************//
+/*
+    Quad functions
+*/
 
-//----------------Constrtuctors overloaded----------------------//
-
-// --------- (string, string, string, string)
+// All the overloaded constructors possible
 quad::quad(string res,string arg1,string op,string arg2)
-{
-	this->op=op;
-	this->arg1=arg1;
-	this->arg2=arg2;
-	this->res=res;
-}
+:op(op), arg1(arg1), arg2(arg2), res(res){}
 
-// --------- (string, int, string, string)
 quad::quad(string res,int arg1,string op,string arg2)
-{	
-	this->op=op;
-	this->arg1=convertIntToString(arg1);
-	this->arg2=arg2;
-	this->res=res;	
-}
+:op(op), arg1(convertIntToString(arg1)), arg2(arg2), res(res){}
 
-// --------- (string, float, string, string)
 quad::quad(string res,float arg1,string op,string arg2)
-{
-	this->op=op;
-	this->arg1=convertFloatToString(arg1);
-	this->arg2=arg2;
-	this->res=res;
-}
+:op(op), arg1(convertFloatToString(arg1)), arg2(arg2), res(res){}
 
-//------------- Helper function to print the quads -----------------
-void quad::print() 
-{
+/*
+    Utility function to print quads
+*/
+void quad::print()  {
 	int next_instr=0;
 
     // Binary Assignment Instruction
@@ -280,7 +256,7 @@ void quad::print()
             cout << '\n';
             return;
         }
-    // Unconditional Jump Instructi
+    // Unconditional Jump Instruction
 	if(op=="goto") cout<<"goto "<<res;
 
     // Shift operators| Binary Assignment Instruction
@@ -308,163 +284,145 @@ void quad::print()
     else if(op=="param") cout<<"param "<<res;
 	else if(op=="call") cout<<res<<" = "<<"call "<<arg1<<", "<<arg2;
 	else if(op=="label") cout<<res<<": ";
-	else cout<<"Can't find the operator"<<op;		
+	else cout<<"Operator not found"<<op;		
 	cout<<'\n';
 }
 
-void quad::type1()                                                                                    // Printing binary operators
-{
+// For priniting quads qith binary ops
+void quad::type1() {
     cout<<res<<" = "<<arg1<<" "<<op<<" "<<arg2;	
 }
 
-void quad::type2()                                                                                    // Printing relation operators and jumps
-{
+// For priniting quads with relational ops and jumps
+void quad::type2() {
     cout<<"if "<<arg1<< " "<<op<<" "<<arg2<<" goto "<<res;	
 }
 
-//**************************************************************//
-//        Implementation of the Quad Array Class functions      //
-//**************************************************************//
+/*
+    The main utility function for printing quads 
+    i.e. all the three address codes
+*/
 
-void quadArray::print()                                                                                // print the quad Array i.e the list of TAC
-{
-    for(int i=0;i<60;i++)  cout<<"__";
+void quadArray::print() {                                                                                
+    for(int i=0;i<74;i++)  cout<<"__";
     cout<<'\n';
 
-    cout<<"THREE ADDRESS CODE (TAC): "<<'\n';                                                       // print all the three address codes TAC
-    for(int i=0;i<60;i++) cout<<"__";
+    cout<<"THREE ADDRESS CODE (TAC): "<<'\n';                                                       
+    for(int i=0;i<74;i++) cout<<"__";
     cout<<'\n';    
     
     int j=0;
-    // iterate over the Quads and print them along with serial number j
-    for(auto &it: Array) 
-    {
-        if(it.op=="label")                                                                             // print the label if it is the operator 
-        {
+    // Priniting all the stored quads in Array with proper indentation
+    for(auto &it: Array) {
+        if(it.op=="label") {                                                                             
             cout<<'\n'<<j<<": ";
             it.print();
         }
-        else {                                                                                          // otherwise give 4 spaces and then print
+        else {                                                                                          
             cout<<j<<": ";
-            generateSpaces(4);
+            indentWithSpaces(4);
             it.print();
         }
         j++;
     }
-    for(int i=0;i<65;i++) cout<<"__";                                                              // End of printing of the TAC
+    for(int i=0;i<74;i++) cout<<"__";                                                  
     cout<<'\n';
 }
 
-//**************************************************************//
-//          Overloaded emit function used by the parser         //
-//**************************************************************//
-
-//----------------- Emit a three address code TAC and add it to the Quad Array ------------
-void quadArray::emit(string op, string res, string arg1, string arg2) 
-{
-	quad *q1= new quad(res,arg1,op,arg2);
-	this->Array.push_back(*q1);
+/*
+    Creates a corresponding quad from the three address code and then stores it in the array
+*/
+void quadArray::emit(string op, string res, string arg1, string arg2) {
+	quad q1(res,arg1,op,arg2);
+	Array.push_back(q1);
 }
 
-void quadArray::emit(string op, string res, int arg1, string arg2) 
-{
-    quad *q2= new quad(res,arg1,op,arg2);
-    this->Array.push_back(*q2);
+void quadArray::emit(string op, string res, int arg1, string arg2) {
+    quad q2(res,arg1,op,arg2);
+    Array.push_back(q2);
 }
 
-void quadArray::emit(string op, string res, float arg1, string arg2) 
-{
-    quad *q3= new quad(res,arg1,op,arg2);
-    this->Array.push_back(*q3);
+void quadArray::emit(string op, string res, float arg1, string arg2){
+    quad q3(res,arg1,op,arg2);
+    Array.push_back(q3);
 }
 
-/**
- * GENTEMP
- * -------
- * generates a temporary variable 
- * and insert it in the current 
- * Symbole table 
- * 
- * Parameter
- * ---------
- * symbol type * : pointer to the 
- *                 class of symbol type
- * init : initial value of the structure
- * 
- * Return
- * ------
- * Pointer to the newly created symbol 
- * table entry
- */
-
-sym* gentemp(symboltype* t, string str_new) 
-{                                                                                                       // generate temp variable
-    string tmp_name = "t_"+convertIntToString(ST->count++);                                              // generate name of temporary variable
+/*
+    The gentemp function generates a new symbol (temporary variable) in the current symbol table
+    Then it returns the pointer to the Current entry
+*/
+sym* gentemp(symboltype* t, string str_new) {                                                                                                       
+    string tmp_name = "t_"+convertIntToString(ST->count++);                                              
     sym* s = new sym(tmp_name);
-    (*s).type = t;
-    (*s).size=computeSize(t);                                                                           // calculate the size of the current symbol
-    (*s).val = str_new;
+    s->type = t;
+    s->size=computeSize(t);                                                                           
+    s->val = str_new;
 
-    ST->symbols.push_back(*s);                                                                            // push the newly created symbol in the Symbol table
+    ST->symbols.push_back(*s);                                                                       
     return &ST->symbols.back();
 }
 
 
+/*
+    Utility function to search for a label
+    Returns a pointer to the label if found
+*/
 label* find_label(string _name){
     for(auto &it : label_table){
         if(it.name==_name)return &(it);
     }
-    return nullptr;
+    return NULL;
 }
 
-//**************************************************************//
-//            Backpatching and related functions               //
-//**************************************************************//
-void backpatch(list<int> list1,int addr)                                                                // backpatching
-{
-    string str=convertIntToString(addr);                                                                // get string form of the address
-    
-    // iterate of list1 and backpatch
+/*
+    The backpatch utility function
+    Takes in a list and then stores the
+    target value given in addr 
+*/
+void backpatch(list<int> list1,int addr) {
+    string str=convertIntToString(addr);  
+    // The key step
     for(auto &it: list1)
-    {
-        Q.Array[it].res=str;                                                                           // do the backpatching
-    }
+        Q.Array[it].res=str;                                                                           
 }
 
-list<int> makelist(int init) 
-{
-    list<int> newlist(1,init);                                                                          // make a new list	
-    return newlist;                                                                                     // return the newly created list
+/*
+    Initializes a list with only one element (init)
+    Then returns it
+*/
+list<int> makelist(int init)  {
+    list<int> newlist(1,init);                                                                          
+    return newlist;                                                                                    
 }
 
-list<int> merge(list<int> &a,list<int> &b)
-{
-    a.merge(b);                                                                                         // merge two existing lists
-    return a;                                                                                           // return the merged list
+/*
+    Merges 2 lists and returns the result
+*/
+list<int> merge(list<int> &a,list<int> &b) {
+    a.merge(b);                                                                                         
+    return a;                                                                                          
 }
 
-//**********************************************************************//
-//          Other helper functions required for TAC generation          //
-//**********************************************************************//
+/*
+    Some miscellaneous functions to aid our design
+*/
 
-//------------- Type checking and Type conversion functions -------------
-string convertIntToString(int a)                                                                        // helper function to convert int to string
-{
+// Some standard conversions
+string convertIntToString(int a){
     return to_string(a);
 }
 
-string convertFloatToString(float x)                                                                    // Take float as input and produce string as output
-{
+string convertFloatToString(float x){
     ostringstream buff;
     buff<<x;
     return buff.str();
 }
 
-Expression* convertBoolToInt(Expression* e)                                                             // Convert any Expression to bool using standard procedure
-{
-	if(e->type=="bool") 
-    {
-        e->loc=gentemp(new symboltype("int"));                                                          // use general goto statements and standard procedure
+Expression* convertBoolToInt(Expression* e) {                                                             
+	if(e->type=="bool") {
+        // Implementing the standard procedures and 
+        // Generating required attributes for int
+        e->loc=gentemp(new symboltype("int"));                                                          
         backpatch(e->truelist,nextinstr());
         Q.emit("=",e->loc->name,"true");
         int p=nextinstr()+1;
@@ -476,59 +434,61 @@ Expression* convertBoolToInt(Expression* e)                                     
     return e;
 }
 
-Expression* convertIntToBool(Expression* e)                                                             // Convert any Expression to bool using standard procedure
-{
-    if(e->type!="bool")                
-    {
-        e->falselist=makelist(nextinstr());                                                             // update the falselist
-        Q.emit("==","",e->loc->name,"0");                                                                 // Q.emit general goto statements
-        e->truelist=makelist(nextinstr());                                                              // update the truelist
+Expression* convertIntToBool(Expression* e) {                                                             
+    if(e->type!="bool"){
+        // Implementing the standard procedures and 
+        // Generating required attributes for bool
+        e->falselist=makelist(nextinstr());                                                             
+        Q.emit("==","",e->loc->name,"0");                                                              
+        e->truelist=makelist(nextinstr());                                                            
         Q.emit("goto","");
     }
     return e;
 }
 
-sym* convertType(sym* s, string rettype)                                                                // convert symbol s into the required return type
-{
+/*
+    Converts from one type to another and returns the converted instance
+*/
+
+sym* convertType(sym* s, string rettype) {                                                                
 	sym* temp=gentemp(new symboltype(rettype));	
-    if((*s).type->type=="float")                                                                        // if type float
-    {
-        if(rettype=="int")                                                                              // converting float to int
-        {
+
+    if(s->type->type=="float") {                                                                        
+        // float -> int
+        if(rettype=="int") {                                                                           
             Q.emit("=",temp->name,"float2int("+(*s).name+")");
             return temp;
         }
-        else if(rettype=="char")                                                                        // or converting to char
-        {
+        // float -> char
+        else if(rettype=="char") {
             Q.emit("=",temp->name,"float2char("+(*s).name+")");
             return temp;
         }
         return s;
     }
-    else if((*s).type->type=="int")                                                                     // if type int
-    {
-        if(rettype=="float")                                                                            // converting int to float
-        {
+    else if((*s).type->type=="int") {                                                                   
+        // int -> float
+        if(rettype=="float") {                                                                            
             Q.emit("=",temp->name,"int2float("+(*s).name+")");
             return temp;
         }
-        else if(rettype=="char")                                                                        // or converting to char
-        {
+        //int -> char
+        else if(rettype=="char") {                                                                        
+        
             Q.emit("=",temp->name,"int2char("+(*s).name+")");
             return temp;
         }
         return s;
     }
-    else if((*s).type->type=="char")                                                                    // if type char
-    {
-        if(rettype=="int")                                                                              // converting char to int
-        {
+    else if((*s).type->type=="char") {                                                                    
+        // char -> int
+        if(rettype=="int") {                                                                              
             Q.emit("=",temp->name,"char2int("+(*s).name+")");
             return temp;
         }
-        if(rettype=="double")                                                                           // or converting to double
-        {
-            Q.emit("=",temp->name,"char2double("+(*s).name+")");
+        // char -> float
+        if(rettype=="float") {                                                                           
+            Q.emit("=",temp->name,"char2float("+(*s).name+")");
             return temp;
         }
         return s;
@@ -536,78 +496,80 @@ sym* convertType(sym* s, string rettype)                                        
     return s;
 }
 
-void changeTable(symtable* newtable)                                                                    // Change current symbol table
-{
+/*
+    A utility function for changing the current symbol table
+*/
+void changeTable(symtable* newtable) {                                                                    
     ST = newtable;
 } 
 
-bool compareSymbolType(sym*& s1,sym*& s2)                                                               // Check if the symbols have same type or not
-{
-    symboltype* type1=s1->type;                                                                         // get the basic type of symbol 1
-    symboltype* type2=s2->type;                                                                         // get the basic type of symbol 2
+/*
+    Overloaded compareSymbolType function to compare two entries in the symbol table
+    Initially called with 2 symbols then we may call with the types for further checking
+*/
+
+bool compareSymbolType(sym*& s1,sym*& s2) {                                                               
+    symboltype* type1=s1->type;                                                                         
+    symboltype* type2=s2->type;                                                                        
     sym* temp;
     int flag=0;
     
-    if(compareSymbolType(type1,type2)) flag=1;                                                          // check if the two types are already equal
+    if(compareSymbolType(type1,type2)) flag=1;                                                        
     else if(s1!=(temp = convertType(s1,type2->type))) {
-        flag=1;                                                     // check if one can be converted to the other then convert them
+        flag=1;                                                     
         s1 = temp;
     }
     else if(s2!=(temp =convertType(s2,type1->type))){
-        flag=1;                                                     // check if one can be converted to the other then convert them
+        flag=1;                                                                                         // check if one can be converted to the other then convert them
         s2=temp;
     }
     if(flag)return true;                                                                                // if the two types are compatible return true
     else return false;                                                                                  // else return false
 }
 
-bool compareSymbolType(symboltype* t1,symboltype* t2)                                                   // Check if the symbol types are same or not
-{
-    int flag=0;
-    if(t1==NULL && t2==NULL) flag=1;                                                                    // if both symbol types are NULL
-    else if(t1==NULL || t2==NULL || t1->type!=t2->type) flag=2;                                         // if only one of them is NULL or if base type isn't same
-    
-    if(flag==1) return true;
-    else if(flag==2) return false;
-    else return compareSymbolType(t1->arrtype,t2->arrtype);                                             // otherwise check their Array type
+/*
+    Utility function to compare types of two symbols
+*/
+bool compareSymbolType(symboltype* t1,symboltype* t2) {                                                   
+    if(!t1 && !t2)              // Both null
+        return true;
+    else if(!t1 || !t2 || t1->type != t2->type)     // Any one is null or tyoes dont match
+        return false;
+    else 
+        return compareSymbolType(t1->arrtype,t2->arrtype);                                                  // Otherwise we check in a recursive manner for arrays
 }
 
-//**********************************************************************//
-//           Other helper function for debugging and printing           //
-//**********************************************************************//
-
-void generateSpaces(int n)                                                                              // Generate required number of spaces
-{
+// Aiding in indentation
+void indentWithSpaces(int n) {                                                                              
     cout<<" ";
     n--;
-    while(n-- > 0) cout<<" ";
+    while(n-- > 0) 
+        cout<<" ";
 }
 
-int nextinstr() 
-{
-    return Q.Array.size();                                                                              // next instruction will be 1+last index and lastindex=size-1. hence return size
+// Getting the address of the next instruction: Simply the size of the quad array
+int nextinstr() {
+    return Q.Array.size();                                                                              
 }
 
-int computeSize(symboltype* t)                                                                          // calculate size function
-{
+// Utility function to compute the size
+int computeSize(symboltype* t) {                                                                          // calculate size function
     if((t->arrtype!=NULL) && (t->type == "arr"))
-    {
         return (t->width)*computeSize(t->arrtype);
-    }
     else if(basicType :: getSize.count(t->type))
         return basicType :: getSize[t->type];
         
     return -1;
 }
 
-string printType(symboltype* t)                                                                         // Print type of variable(imp for multidimensional arrays)
-{
+// Prints the type of the symbol in the symbol table
+string printType(symboltype* t) {                                                                         
     if(t == NULL)
         return "NULL";
     else if(t->type == "ptr")
         return "ptr("+ printType(t->arrtype) + ")";
     else if(t->type == "arr") {
-        string str=convertIntToString(t->width);                                                        // recursive for arrays
+        string str=convertIntToString(t->width);                                                            // recursive for arrays
         return "arr("+str+","+printType(t->arrtype)+")";
     }
     else if(basicType :: getSize.count(t->type))
@@ -627,25 +589,25 @@ map<string, int> basicType :: getSize = {   {"null", 0},
                         {"arr", 0},
                         {"func", 0},
                         {"block", 0}    };
-
+/*
 int main() {
     label_table.clear();
 
     table_count = 0;                                                                                    // count of nested table
-    // debug_on= 0;                                                                                        // debugging is off
     globalST=new symtable("Global");                                                                    // Global Symbol Table
-    ST=globalST;
-    parST=nullptr;
+    ST = globalST;
+    parST = NULL;
     loop_name = "";
-    int InvalidParse = yyparse();                                                                                          // initialize parse
-    if(InvalidParse)
-    {
+
+    if(yyparse()){
         cout<<"Error while parsing\n";
     }
     else{
         globalST->update();                                                                                 // update the global Symbol Table
         cout<<"\n";
         Q.print();                                                                                          // print the three address codes
+        cout << "\nSYMBOL TABLES:\n\n";
         globalST->print();                                                                                  // print all Symbol Tables
     }
 };
+*/

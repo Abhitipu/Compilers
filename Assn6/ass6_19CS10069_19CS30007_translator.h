@@ -33,7 +33,9 @@ typedef Expression* Exps;
 //
 //              global variables
 //
-
+extern string symbolTableSuffix;                                                           // Current symbol suffix
+extern bool lookupInsideParent;
+extern string curPossibleSTName;
 extern symtable* ST;                                                                       // Points to the current Symbol Table
 extern symtable* globalST;                                                                 // Points to the Global Symbol Table
 extern symtable* parST;                                                                    // Points to the Parent of the current Symbol Table

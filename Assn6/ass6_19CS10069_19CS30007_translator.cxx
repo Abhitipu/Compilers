@@ -19,6 +19,10 @@ symtable* globalST;                                                             
 symtable* parST;                                                                                   // Parent of the current symbol table
 symtable* ST;                                                                                      // Current ST
 
+string symbolTableSuffix;                                                                          // current symbol suffix
+bool lookupInsideParent;
+string curPossibleSTName;
+
 quadArray Q;                                                                                       // Our array of quads
 sym* currSymbolPtr;                                                                                // Current symbol
 vector<label>label_table;                                                                          // For storing labels
@@ -89,8 +93,26 @@ sym* symtable::lookup(string name)                                              
     sym *ptr = NULL;
 
     // Look up recursively on its parent
-    if(this->parent) 
-        ptr = this->parent->lookup(name);
+    if((this->parent) && lookupInsideParent)
+    {
+        string tosearchname = name;
+        if(tosearchname.find("@")!= tosearchname.npos)
+        {
+            
+            while(!tosearchname.empty() && tosearchname.back() != '@')
+            {
+                tosearchname.pop_back();
+            }
+            if(!tosearchname.empty() && tosearchname.back() == '@')
+            {
+                tosearchname.pop_back();
+            }
+            tosearchname += ("@"+this->parent->name);
+
+            // cout<<name<<" "<< tosearchname<<"\n";
+        }
+        ptr = this->parent->lookup(tosearchname);
+    } 
 
     // If we have not found anything from the base symbol table
     // we create a new symbol and return its address
@@ -352,8 +374,9 @@ void quadArray::emit(string op, string res, float arg1, string arg2){
     Then it returns the pointer to the Current entry
 */
 sym* gentemp(symboltype* t, string str_new) {
-    // TODO easy use static count for unique temps                                                                                                 
-    string tmp_name = "t_"+convertIntToString(ST->count++);                                              
+    // TODO easy use static count for unique temps 
+    static int tempCnt = 1;                                                                                                
+    string tmp_name = "t_"+convertIntToString(tempCnt++);                                              
     sym* s = new sym(tmp_name);
     s->type = t;
     s->size=computeSize(t);                                                                           
@@ -502,6 +525,7 @@ sym* convertType(sym* s, string rettype) {
 */
 void changeTable(symtable* newtable) {                                                                    
     ST = newtable;
+    symbolTableSuffix =  "@" +  newtable->name;
 } 
 
 /*

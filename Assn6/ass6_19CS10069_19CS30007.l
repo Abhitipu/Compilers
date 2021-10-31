@@ -4,7 +4,7 @@
     #include "ass6_19CS10069_19CS30007_translator.h"
     // #include "y.tab.h"
     #include "ass6_19CS10069_19CS30007.tab.h"
-
+    #include <string>
     extern YYSTYPE yylval;
     extern int line;
 %}
@@ -83,7 +83,8 @@ ENUMERATION_CONST   {IDENTIFIER}
 "union"                     {return UNION;}
 
 {IDENTIFIER}                {
-                                yylval.symp = ST->lookup(yytext);
+                                string str = string(yytext) + symbolTableSuffix;
+                                yylval.symp = ST->lookup(str);
                                 return IDENTIFIER;
                             }
 {FLOATING_CONST}            {

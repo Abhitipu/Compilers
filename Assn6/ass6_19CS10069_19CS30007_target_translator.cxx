@@ -56,7 +56,9 @@ void computeActivationRecord(symtable *st) {
 }
 
 void generateAsm() {
-    // Ismein kya karna hai?
+    // We are generating the .s file here
+
+	// Add the quads for the three address codes
     Array = Q.Array;
 
     for(auto &u: Array) {
@@ -65,16 +67,17 @@ void generateAsm() {
 
         for(auto &operation: operations)
             if(v == operation) {
-                int cur = stoi(u.res.c_str());
-                labelMap[cur] = 1;
+                int targetLabel = stoi(u.res.c_str());
+                labelMap[targetLabel] = 1;
             }
     }
 
+	// Basically we assign a unique map to each unique label using prefix sums
     for(auto it = labelMap.begin(); it != labelMap.end(); ++it) {
         if(it != labelMap.begin()) {
             auto previous = prev(it);
             it->second += previous->second;
-        }        
+        }
     }
 
     // flatten the global ST
@@ -129,28 +132,27 @@ void generateAsm() {
         asmFile << "\t.section\t.rodata\n";
         int cnt = 0;
         for(auto& it: stringsToBePrinted) {
-            asmFile << ".LC" << cnt++ << it << ":\n";
-            asmFile << "\t.string\t" << it << "\n";
+			asmFile << ".LC" << cnt++ << it << ":\n";
+			asmFile << "\t.string\t" << it << "\n";
         }
     }
 
     // beginning of the text section
     asmFile << "\t.text\n";
-
     
     vector <string> params;
     map<string, int> theMap;
     int opSerialNumber = 0;
-    for( auto it: Array){
-        if(labelMap.count(opSerialNumber)){
-            asmFile<< ".L"<< (2*labelCount + labelMap.at(opSerialNumber) + 2)<<": "<<'\n';
-        }
 
-        string op = it.op;
-        string arg1 = it.arg1;
-        string arg2 = it.arg2;
-        string res = it.res;
-        string s = arg2;        // change this later
+    for(auto it: Array){
+        if(labelMap.count(opSerialNumber))
+            asmFile<< ".L"<< (2*labelCount + labelMap.at(opSerialNumber) + 2)<<": "<<'\n';
+
+		string op = it.op;
+		string arg1 = it.arg1;
+		string arg2 = it.arg2;
+		string res = it.res;
+		string s = arg2;        // change this later
         
 
         // if param -> add to the param list
@@ -160,63 +162,72 @@ void generateAsm() {
 			asmFile << "\t";
 
 			// Binary Operations
+			
 			// addition operation
 			if (op == "+") {
 				if (isNumber(arg2)) {
 					asmFile << "addl \t$" << atoi(arg2.c_str()) << ", " << ST->ActivationRecord[arg1] << "(%rbp)";
 				}
 				else {
-					asmFile << "movl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << endl;
-					asmFile << "\tmovl \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%edx" << endl;
+					asmFile << "movl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
+					asmFile << "\tmovl \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%edx" << '\n';
 					asmFile << "\taddl \t%edx, %eax\n";
 					asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";
 				}
 			}
+
 			// subtract operation
 			else if (op=="-") {
-				asmFile << "movl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << endl;
-				asmFile << "\tmovl \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%edx" << endl;
+				asmFile << "movl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
+				asmFile << "\tmovl \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%edx" << '\n';
 				asmFile << "\tsubl \t%edx, %eax\n";
 				asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";
 			}
 			// multiplcation operator
 			else if (op=="*") {
-				asmFile << "movl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << endl;
+				asmFile << "movl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
 				
 				if (isNumber(arg2)) {
-					asmFile << "\timull \t$" << atoi(arg2.c_str()) << ", " << "%eax" << endl;
+					asmFile << "\timull \t$" << atoi(arg2.c_str()) << ", " << "%eax" << '\n';
 					symtable* t = ST;
 					string value;
 					for (auto& it : t->symbols) {
 						if(it.name == arg1) 
-                            value=it.val; 
+							value=it.val; 
 					}
-                    // stores the numerical value of the result
+					// stores the numerical value of the result
 					theMap[res]=atoi(arg2.c_str())*atoi(value.c_str());
 				}
 				else 
-                    asmFile << "\timull \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%eax" << endl;
+            		asmFile << "\timull \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%eax" << '\n';
 				
                 asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";			
 			}
 			// divide operation
 			else if(op=="/") {
-				asmFile << "movl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << endl;
-				asmFile << "\tcltd" << endl;
-				asmFile << "\tidivl \t" << ST->ActivationRecord[arg2] << "(%rbp)" << endl;
+				asmFile << "movl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
+				asmFile << "\tcltd" << '\n';
+				asmFile << "\tidivl \t" << ST->ActivationRecord[arg2] << "(%rbp)" << '\n';
 				asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";		
 			}
 
-			// Bit Operators /* Ignored */
-			else if (op=="%")		    asmFile << res << " = " << arg1 << " % " << arg2;
-			else if (op=="^")			asmFile << res << " = " << arg1 << " ^ " << arg2;
-			else if (op=="|")		    asmFile << res << " = " << arg1 << " | " << arg2;
-			else if (op=="&")		    asmFile << res << " = " << arg1 << " & " << arg2;
-			// Shift Operations /* Ignored */
-			else if (op=="<<")		    asmFile << res << " = " << arg1 << " << " << arg2;
-			else if (op==">>")		    asmFile << res << " = " << arg1 << " >> " << arg2;
+			// Ignoring bitwise operations
+			else if (op=="%")		    
+				asmFile << res << " = " << arg1 << " % " << arg2;
+			else if (op=="^")			
+				asmFile << res << " = " << arg1 << " ^ " << arg2;
+			else if (op=="|")		    
+				asmFile << res << " = " << arg1 << " | " << arg2;
+			else if (op=="&")		    
+				asmFile << res << " = " << arg1 << " & " << arg2;
+			
+			// Ignoring shift operations
+			else if (op=="<<")		    
+				asmFile << res << " = " << arg1 << " << " << arg2;
+			else if (op==">>")		    
+				asmFile << res << " = " << arg1 << " >> " << arg2;
 
-			// copy
+			// assignment
 			else if (op=="=")	{
 				if (isNumber(arg1))
 					asmFile << "movl\t$" << atoi(arg1.c_str()) << ", " << "%eax" << '\n';
@@ -224,13 +235,15 @@ void generateAsm() {
 					asmFile << "movl\t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
                     
 				asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";
-			}			
-			else if (op=="=*")	{
-				asmFile << "movq \t$.LC" << arg1 << ", " << ST->ActivationRecord[res] << "(%rbp)";
 			}
-			else if (op=="EQUALCHAR")	{//todo in y
+
+			// dereferencing
+			else if (op=="=*")
+				asmFile << "movq \t$.LC" << arg1 << ", " << ST->ActivationRecord[res] << "(%rbp)";
+			
+			// todo in y
+			else if (op=="EQUALCHAR")	
 				asmFile << "movb\t$" << atoi(arg1.c_str()) << ", " << ST->ActivationRecord[res] << "(%rbp)";
-			}	
 
 			// Relational Operations
 			else if (op=="==") {
@@ -238,6 +251,7 @@ void generateAsm() {
 				asmFile << "\tcmpl\t" << ST->ActivationRecord[arg2] << "(%rbp), %eax\n";
 				asmFile << "\tje .L" << (2*labelCount+labelMap.at(atoi( res.c_str() )) +2 );
 			}
+
 			else if (op=="!=") {
 				asmFile << "movl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
 				asmFile << "\tcmpl\t" << ST->ActivationRecord[arg2] << "(%rbp), %eax\n";
@@ -285,20 +299,27 @@ void generateAsm() {
 			else if (op=="uminus") {
 				asmFile << "negl\t" << ST->ActivationRecord[arg1] << "(%rbp)";
 			}
-			else if (op=="~")		        asmFile << res 	<< " = ~" << arg1;
-			else if (op=="!")			asmFile << res 	<< " = !" << arg1;
-			else if (op=="ARRR") { // TODO []= or []=
+			else if (op=="~")		        
+				asmFile << res 	<< " = ~" << arg1;
+			else if (op=="!")			
+				asmFile << res 	<< " = !" << arg1;
+
+			else if (op=="ARRR") { 
+				// TODO []= or []=
 				int off=0;
 				off=theMap[arg2]*(-1)+ST->ActivationRecord[arg1];
-				asmFile << "movq\t" << off << "(%rbp), "<<"%rax" << endl;
+				asmFile << "movq\t" << off << "(%rbp), "<<"%rax" << '\n';
 				asmFile << "\tmovq \t%rax, " <<  ST->ActivationRecord[res] << "(%rbp)";
-			}	 			
-			else if (op=="ARRL") { // TODO also check if offset is correct according to our AR standards
+			}	
+
+			else if (op=="ARRL") { 
+				// TODO also check if offset is correct according to our AR standards
 				int off=0;
 				off=theMap[arg1]*(-1)+ST->ActivationRecord[res];
-				asmFile << "movq\t" << ST->ActivationRecord[arg2] << "(%rbp), "<<"%rdx" << endl;
+				asmFile << "movq\t" << ST->ActivationRecord[arg2] << "(%rbp), "<<"%rdx" << '\n';
 				asmFile << "\tmovq\t" << "%rdx, " << off << "(%rbp)";
-			}	 
+			}
+
 			else if (op=="return") {
 				if(res!="") asmFile << "movl\t" << ST->ActivationRecord[res] << "(%rbp), "<<"%eax";
 				else asmFile << "nop";
@@ -317,36 +338,36 @@ void generateAsm() {
 					if (it->category== "param") {
 						if(j==0) {
 							// the first parameter to the function
-							asmFile << "movl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << endl;
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdi" << endl;
+							asmFile << "movl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << '\n';
+							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdi" << '\n';
 							j++;
 						}
 						else if(j==1) {
 							// the second parameter to the function
-							asmFile << "movl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << endl;
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rsi" << endl;
+							asmFile << "movl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << '\n';
+							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rsi" << '\n';
 							j++;
 						}
 						else if(j==2) {
 							// the third parameter to the function
-							asmFile << "movl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << endl;
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdx" << endl;
+							asmFile << "movl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << '\n';
+							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdx" << '\n';
 							j++;
 						}
 						else if(j==3) {
 							// the fourth parameter to the function
-							asmFile << "movl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << endl;
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rcx" << endl;
+							asmFile << "movl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << '\n';
+							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rcx" << '\n';
 							j++;
 						}
 						else {
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdi" << endl;							
+							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdi" << '\n';							
 						}
 					}
 					else break;
 				}
 				params.clear();
-				asmFile << "\tcall\t"<< arg1 << endl;
+				asmFile << "\tcall\t"<< arg1 << '\n';
 				asmFile << "\tmovl\t%eax, " << ST->ActivationRecord[res] << "(%rbp)";
 			}
 
@@ -355,15 +376,15 @@ void generateAsm() {
 				asmFile <<".globl\t" << res << "\n";
 				asmFile << "\t.type\t"	<< res << ", @function\n";
 				asmFile << res << ": \n";
-				asmFile << ".LFB" << labelCount <<":" << endl;
-				asmFile << "\t.cfi_startproc" << endl;
-				asmFile << "\tpushq \t%rbp" << endl;
-				asmFile << "\t.cfi_def_cfa_offset 8" << endl;
-				asmFile << "\t.cfi_offset 5, -8" << endl;
-				asmFile << "\tmovq \t%rsp, %rbp" << endl;
-				asmFile << "\t.cfi_def_cfa_register 5" << endl;
+				asmFile << ".LFB" << labelCount <<":" << '\n';
+				asmFile << "\t.cfi_startproc" << '\n';
+				asmFile << "\tpushq \t%rbp" << '\n';
+				asmFile << "\t.cfi_def_cfa_offset 8" << '\n';
+				asmFile << "\t.cfi_offset 5, -8" << '\n';
+				asmFile << "\tmovq \t%rsp, %rbp" << '\n';
+				asmFile << "\t.cfi_def_cfa_register 5" << '\n';
 				ST = globalST->lookup(res)->nested;
-				asmFile << "\tsubq\t$" << ST->symbols.back().offset+24 << ", %rsp"<<endl;
+				asmFile << "\tsubq\t$" << ST->symbols.back().offset+24 << ", %rsp"<<'\n';
 				
 				// Function Table
 				symtable* t = ST;
@@ -398,12 +419,14 @@ void generateAsm() {
 				asmFile << "\t.cfi_restore 5\n";
 				asmFile << "\t.cfi_def_cfa 4, 4\n";
 				asmFile << "\tret\n";
-				asmFile << "\t.cfi_endproc" << endl;
-				asmFile << ".LFE" << labelCount++ <<":" << endl;
+				asmFile << "\t.cfi_endproc" << '\n';
+				asmFile << ".LFE" << labelCount++ <<":" << '\n';
 				asmFile << "\t.size\t"<< res << ", .-" << res;
 			}
-			else asmFile << "op";
-			asmFile << endl;
+			else 
+				asmFile << "op";
+			
+			asmFile << '\n';
 		}
         opSerialNumber++;
     }

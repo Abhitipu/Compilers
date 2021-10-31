@@ -1,4 +1,4 @@
-#include "ass5_19CS10069_19CS30007_translator.h"
+#include "ass6_19CS10069_19CS30007_translator.h"
 
 #include <iostream>
 #include <vector>
@@ -351,7 +351,8 @@ void quadArray::emit(string op, string res, float arg1, string arg2){
     The gentemp function generates a new symbol (temporary variable) in the current symbol table
     Then it returns the pointer to the Current entry
 */
-sym* gentemp(symboltype* t, string str_new) {                                                                                                       
+sym* gentemp(symboltype* t, string str_new) {
+    // TODO easy use static count for unique temps                                                                                                 
     string tmp_name = "t_"+convertIntToString(ST->count++);                                              
     sym* s = new sym(tmp_name);
     s->type = t;

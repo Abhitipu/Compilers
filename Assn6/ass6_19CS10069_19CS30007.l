@@ -1,9 +1,9 @@
 /*definitions for each token*/
 %{
     #include "stdio.h"
-    #include "ass5_19CS10069_19CS30007_translator.h"
+    #include "ass6_19CS10069_19CS30007_translator.h"
     // #include "y.tab.h"
-    #include "ass5_19CS10069_19CS30007.tab.h"
+    #include "ass6_19CS10069_19CS30007.tab.h"
 
     extern YYSTYPE yylval;
     extern int line;

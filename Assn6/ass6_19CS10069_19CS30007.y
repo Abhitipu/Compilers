@@ -2,7 +2,7 @@
 %{
     #include <bits/stdc++.h>
     #include <sstream>
-    #include "ass5_19CS10069_19CS30007_translator.h"
+    #include "ass6_19CS10069_19CS30007_translator.h"
     extern int yylex();
     void yyerror(string s);
     extern string var_type;

@@ -313,13 +313,6 @@ void generateAsm() {
 				asmFile << res 	<< " = !" << arg1;
 
 			else if (op=="=[]") { 
-				// a = b[t1];
-				
-				// movl    -28(%rbp), %eax 
-				//  | 24     cltq 
-				//  | 25     movl    -20(%rbp,%rax,4), %eax
-				//  | 26     movl    %eax, -24(%rbp)
-				// teri awaaz nhi aa rhi 
 				asmFile << "movl \t" << getOffset(arg2) << "%eax\n";
 				asmFile << "\tnegl\t" << "%eax\n";
 				asmFile << "\tcltq\n";
@@ -328,12 +321,6 @@ void generateAsm() {
 			}	
 
 			else if (op=="[]=") { 
-				// TODO also check if offset is correct according to our AR standards
-				// movl    $345, -20(%rbp,%rax,1) 
-				// -20(%rbp,%rax,1)
-				// else if(op=="[]=") cout<<res<<"["<<arg1<<"]"<<" = "<< arg2;
-				// res[arg1] =  arg2;
-				// neg D Arithmetic negation 
 				asmFile << "movl \t" << getOffset(arg2) << "%edx\n";
 				asmFile << "\tmovl \t" << getOffset(arg1) << "%eax\n";
 				asmFile << "\tnegl\t" << "%eax\n";

@@ -22,6 +22,7 @@ symtable* ST;                                                                   
 string symbolTableSuffix;                                                                          // current symbol suffix
 bool lookupInsideParent;
 string curPossibleSTName;
+list <sym*> listOffunctions;
 
 quadArray Q;                                                                                       // Our array of quads
 sym* currSymbolPtr;                                                                                // Current symbol
@@ -86,6 +87,14 @@ sym* symtable::lookup(string name)                                              
     sym* symbol;
     // TODO: check if we need category here?
 
+    // function check
+    string nameOffunc = name;
+    if(nameOffunc.find("@")!=nameOffunc.npos)
+        nameOffunc = nameOffunc.substr(0, nameOffunc.find("@"));
+    for(auto funcs : listOffunctions) {
+        if(funcs != NULL && funcs->name == nameOffunc)
+            return funcs;                                                                         
+    }
     // iterating over the table and checking
     for(auto &it : symbols) {
         if(it.name==name) 
@@ -611,6 +620,35 @@ string printType(symboltype* t) {
         return t->type;
     
     return "NA";
+}
+
+symtable* flattenFunctionSymbolTable(sym *function){
+    symtable *originalFunctionTable = function->nested;
+    symtable *functionTable = new symtable(originalFunctionTable->name);
+
+    functionTable->parent = originalFunctionTable->parent;
+
+    vector <symtable*> listOfFunctionTables = {originalFunctionTable};
+
+    for(int i=0;  i< listOfFunctionTables.size(); ++i)
+    {
+        symtable *curfuntable = listOfFunctionTables[i];
+        for(auto &currentSymbol: curfuntable->symbols)
+        {
+            if(currentSymbol.nested != NULL)
+            {
+                listOfFunctionTables.push_back((currentSymbol.nested));
+                cout<<currentSymbol.name<<"\n";
+            }
+            else
+            {
+                functionTable->symbols.push_back(currentSymbol);
+                // cout<<currentSymbol.name<<"\n";
+            }
+        }
+    }
+    function->nested = functionTable;
+    return functionTable;
 }
 
 // Storing the basic types with size

@@ -123,7 +123,8 @@ changetable: %empty
 
 
 constant:
-                    INTEGER_CONST { 
+                    INTEGER_CONST 
+                    { 
                         // Here we are creating a new instance and storing it
                         $$=new Expression();	
                         string p=convertIntToString($1);
@@ -141,7 +142,7 @@ constant:
                     {                                                                        
                         $$=new Expression();
                         $$->loc=gentemp(new symboltype("char"),$1);
-                        Q.emit("=",$$->loc->name,string($1));
+                        Q.emit("EQUALCHAR",$$->loc->name,string($1));
                     }
                     ;
 

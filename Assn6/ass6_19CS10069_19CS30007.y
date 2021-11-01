@@ -115,7 +115,7 @@ changetable: %empty
 		}
 		else {
 			changeTable(currSymbolPtr ->nested);						               
-			Q.emit("label", ST->name);
+			Q.emit("func", ST->name);
 		}
 	}
 	;
@@ -1070,19 +1070,18 @@ direct_declarator:
                         }
                         if(prev==NULL) 
                         {
-                            int temp = atoi($3->loc->val.c_str());                                      // temp = string(value)
-                            symboltype* s = new symboltype("arr", $1->type, temp);                      // Create a new symbol with the initial value
+                            symboltype* s = new symboltype("arr", t, stoi($3->loc->val));                      // Create a new symbol with the initial value
                             $$ = $1->update(s);                                                         // Update the symbol type
                         }
                         else 
                         {
-                            prev->arrtype =  new symboltype("arr", t, atoi($3->loc->val.c_str()));      // similar arguments as above		
+                            prev->arrtype =  new symboltype("arr", t, stoi($3->loc->val));      // similar arguments as above		
                             $$ = $1->update($1->type);
                         }
                     }
                     | direct_declarator '[' ']' 
                     {
-                        symboltype *t = $1 -> type;
+                        symboltype *t = $1->type;
                         symboltype *prev = NULL;                                    // initialize prev to NULL
                         while(t->type == "arr") 
                         {
@@ -1091,7 +1090,7 @@ direct_declarator:
                         }
                         if(prev==NULL) 
                         {
-                            symboltype* s = new symboltype("arr", $1->type, 0);     // no initial values, simply keep 0
+                            symboltype* s = new symboltype("arr", t, 0);     // no initial values, simply keep 0
                             $$ = $1->update(s);                                     // Update the symboltype of $$
                         }
                         else 
@@ -1549,8 +1548,10 @@ external_declaration:
 function_definition:
                     declaration_specifiers declarator declaration_list_opt changetable '{' block_item_list_opt '}' 
                     {
-                        int next_instr=0;	 	
+                        // int next_instr=0;	 	
+                        Q.emit("funcend", ST->name);
                         ST->parent=globalST;
+
                         $2->updateFuntionStatus(true);
                         // Add a function name
                         table_count = 0;

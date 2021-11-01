@@ -314,7 +314,8 @@ void quad::print()  {
 	// procedure call
     else if(op=="param") cout<<"param "<<res;
 	else if(op=="call") cout<<res<<" = "<<"call "<<arg1<<", "<<arg2;
-	else if(op=="label") cout<<res<<": ";
+	else if(op=="label" || op == "func") cout<<res<<": ";
+    else if(op=="funcend") cout << "";
 	else cout<<"Operator not found"<<op;		
 	cout<<'\n';
 }
@@ -345,11 +346,11 @@ void quadArray::print() {
     int j=0;
     // Priniting all the stored quads in Array with proper indentation
     for(auto &it: Array) {
-        if(it.op=="label") {                                                                             
+        if(it.op=="label" || it.op=="func") {                                                                             
             cout<<'\n'<<j<<": ";
             it.print();
         }
-        else {                                                                                          
+        else if (it.op!="funcend") {                                                                                          
             cout<<j<<": ";
             indentWithSpaces(4);
             it.print();
@@ -593,7 +594,7 @@ int computeSize(symboltype* t) {                                                
     else if(basicType :: getSize.count(t->type))
         return basicType :: getSize[t->type];
         
-    return -1;
+    return 0;
 }
 
 // Prints the type of the symbol in the symbol table

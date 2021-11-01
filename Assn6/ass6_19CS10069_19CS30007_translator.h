@@ -36,6 +36,7 @@ typedef Expression* Exps;
 extern string symbolTableSuffix;                                                           // Current symbol suffix
 extern bool lookupInsideParent;
 extern string curPossibleSTName;
+extern list <sym*> listOffunctions;
 extern symtable* ST;                                                                       // Points to the current Symbol Table
 extern symtable* globalST;                                                                 // Points to the Global Symbol Table
 extern symtable* parST;                                                                    // Points to the Parent of the current Symbol Table
@@ -244,4 +245,5 @@ int nextinstr();                                                                
 string printType(symboltype *);                                                              // print type of symbol
 void indentWithSpaces(int);
 
+symtable* flattenFunctionSymbolTable(sym *function);
 #endif

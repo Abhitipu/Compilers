@@ -1117,6 +1117,7 @@ direct_declarator:
                         }
                         $1->nested=ST;                              // link nested Symbol Table 
                         $1->category = "function";                   // TODO: clarify
+                        listOffunctions.push_back($1);
                         ST->parent = globalST;                      // link parent Symbol Table
                         
                         changeTable(globalST);				        // Come back to globalsymbol table
@@ -1138,6 +1139,7 @@ direct_declarator:
                         }
                         $1->nested=ST;                      // link nested Symbol table
                         $1->category = "function";                   // TODO: clarify
+                        listOffunctions.push_back($1);
                         ST->parent = globalST;              // Set parent to Global Symbol table
                         
                         changeTable(globalST);				// Go back to global Symbol table

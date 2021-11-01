@@ -466,6 +466,7 @@ int main() {
     ST = globalST;
 	symbolTableSuffix = "@Global";
 	lookupInsideParent = true;
+	listOffunctions.clear();
     parST = NULL;
     loop_name = "";
 
@@ -478,6 +479,16 @@ int main() {
         Q.print();                                                                                          // print the three address codes
         cout << "\nSYMBOL TABLES:\n\n";
         globalST->print();                                                                                  // print all Symbol Tables
+		cout<<"All functions\n";
+		cout<<listOffunctions.size()<<"\n";
+		for(auto funcs: listOffunctions)
+		{
+			cout<<funcs->name<<"\n";
+			flattenFunctionSymbolTable(funcs);
+		}
+		globalST->update(); 
+		cout << "\nSYMBOL TABLES:\n\n";
+		globalST->print();
         // generateAsm();
     }
 }

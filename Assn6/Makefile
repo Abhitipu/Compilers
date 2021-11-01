@@ -62,13 +62,9 @@ tarify:
 cleanTarify:
 	rm ass6_19CS10069_19CS30007.tar
 clean:
-	rm lex.yy.c\
-	   lex.yy.o\
-	   a.out\
+	rm lex.yy.c *.o	a.out\
 	   ass6_19CS10069_19CS30007.tab.c\
 	   ass6_19CS10069_19CS30007.tab.h\
-	   ass6_19CS10069_19CS30007.tab.o\
 	   ass6_19CS10069_19CS30007.output\
-	   ass6_19CS10069_19CS30007_translator.o\
 	   testcases/output/*
 	   

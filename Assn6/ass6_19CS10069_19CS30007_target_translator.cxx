@@ -96,6 +96,7 @@ void generateAsm() {
     // compute activation record for each 
     for(auto it: tableList)
         computeActivationRecord(it);
+	
 
     ofstream asmFile;
     asmFile.open(asmFileName + ".s");
@@ -105,6 +106,7 @@ void generateAsm() {
     asmFile << "\"" << testFileName << ".c\"\n";
 
     asmFile << "\t.text\n";
+
 
     for(auto& it: ST->symbols) {
         if(it.category != "function") {
@@ -133,7 +135,6 @@ void generateAsm() {
             }
         }
     }
-
 
     // Dealing with the strings to be printed in the program
     if(!stringsToBePrinted.empty()) {
@@ -432,6 +433,7 @@ void generateAsm() {
 		}
         opSerialNumber++;
     }
+	asmFile.close();
     
     return;
 }
@@ -475,6 +477,6 @@ int main() {
 		globalST->update(); 
 		cout << "\nSYMBOL TABLES:\n\n";
 		globalST->print();
-        // generateAsm();
+        generateAsm();
     }
 }

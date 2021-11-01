@@ -8,6 +8,7 @@
     extern string var_type;
     extern vector<label> label_table;
     extern int line;
+    vector<string> stringsToBePrinted;
     using namespace std;
 %}
 
@@ -158,6 +159,13 @@ primary_expression:
                     | STRING_LITERAL
                     {
                         // TODO: pushback in the strings to be printed
+                        $$ = new Expression();
+                        symboltype* temp = new symboltype("PTR");
+                        $$->loc = gentemp(temp, $1);
+                        $$->loc->type->arrtype = new symboltype("CHAR");
+
+                        Q.emit("EQUALSTR", $$->loc->name, to_string(stringsToBePrinted.size()));          // TODO: verify this
+                        stringsToBePrinted.push_back($1);
                     }
                     | '(' expression ')'
                     {                                                                        
@@ -1108,7 +1116,7 @@ direct_declarator:
                             s->update($1->type);		            // update return type
                         }
                         $1->nested=ST;                              // link nested Symbol Table 
-                        $1->category = "function"                   // TODO: clarify
+                        $1->category = "function";                   // TODO: clarify
                         ST->parent = globalST;                      // link parent Symbol Table
                         
                         changeTable(globalST);				        // Come back to globalsymbol table
@@ -1129,7 +1137,7 @@ direct_declarator:
                             s->update($1->type);            // update return type
                         }
                         $1->nested=ST;                      // link nested Symbol table
-                        $1->category = "function"                   // TODO: clarify
+                        $1->category = "function";                   // TODO: clarify
                         ST->parent = globalST;              // Set parent to Global Symbol table
                         
                         changeTable(globalST);				// Go back to global Symbol table
@@ -1178,7 +1186,7 @@ parameter_list:
 parameter_declaration:
                     declaration_specifiers declarator
                     {  
-                        $2->category = "param"              // verify
+                        $2->category = "param";              // verify
                     }
                     | declaration_specifiers
                     {  }

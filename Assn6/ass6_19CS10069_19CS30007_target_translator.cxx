@@ -7,7 +7,7 @@
 using namespace std;
 
 extern FILE *yyin;
-vector<string> stringsToBePrinted;               // by printString meth TODO
+extern vector<string> stringsToBePrinted;               // by printString meth TODO
 
 using namespace std;
 

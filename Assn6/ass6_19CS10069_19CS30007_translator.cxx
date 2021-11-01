@@ -52,6 +52,7 @@ sym::sym(string name, string t, symboltype* arrtype, int width)
     val = "-";                                                                                     // Initial value not yet defined
     nested = NULL;                                                                                  // No nested tables attached
     isItFunction = false;                                                                           // Stores if current entry is a symbol
+    category = "";                                                                                  // TODO: update this
 }
 
 /*
@@ -83,6 +84,7 @@ symtable::symtable(string _name):
 sym* symtable::lookup(string name)                                                 // Lookup an symbol in the symbol table, whether it exists or not
 {
     sym* symbol;
+    // TODO: check if we need category here?
 
     // iterating over the table and checking
     for(auto &it : symbols) {
@@ -118,6 +120,7 @@ sym* symtable::lookup(string name)                                              
     // we create a new symbol and return its address
     if(ST == this and !ptr){
         symbol = new sym(name);
+        symbol->category = "local";                                                                 // TODO: check this (it will be a local variable tho
         symbols.push_back(*symbol);                                                                  // push the symbol into the table
         return &symbols.back();                                                                      // return the symbol
     } else if(ptr) 
@@ -187,6 +190,9 @@ void symtable::print() {
     cout<<"Type";                                                                               
     indentWithSpaces(27);
 
+    cout<<"Category";
+    indentWithSpaces(13);
+
     cout<<"Initial Value";                                                                     
     indentWithSpaces(8);
 
@@ -211,6 +217,9 @@ void symtable::print() {
         indentWithSpaces(31-rec_type.length());
 
         // Print all the required information
+        cout << it.category;
+        indentWithSpaces(20 - it.category.length());
+
         cout << it.val;                                                                         
         indentWithSpaces(21-it.val.length());
 
@@ -305,7 +314,8 @@ void quad::print()  {
 	// procedure call
     else if(op=="param") cout<<"param "<<res;
 	else if(op=="call") cout<<res<<" = "<<"call "<<arg1<<", "<<arg2;
-	else if(op=="label") cout<<res<<": ";
+	else if(op=="label" || op == "func") cout<<res<<": ";
+    else if(op=="funcend") cout << "";
 	else cout<<"Operator not found"<<op;		
 	cout<<'\n';
 }
@@ -336,11 +346,11 @@ void quadArray::print() {
     int j=0;
     // Priniting all the stored quads in Array with proper indentation
     for(auto &it: Array) {
-        if(it.op=="label") {                                                                             
+        if(it.op=="label" || it.op=="func") {                                                                             
             cout<<'\n'<<j<<": ";
             it.print();
         }
-        else {                                                                                          
+        else if (it.op!="funcend") {                                                                                          
             cout<<j<<": ";
             indentWithSpaces(4);
             it.print();
@@ -381,7 +391,7 @@ sym* gentemp(symboltype* t, string str_new) {
     s->type = t;
     s->size=computeSize(t);                                                                           
     s->val = str_new;
-
+    s->category = "temp";               
     ST->symbols.push_back(*s);                                                                       
     return &ST->symbols.back();
 }
@@ -584,7 +594,7 @@ int computeSize(symboltype* t) {                                                
     else if(basicType :: getSize.count(t->type))
         return basicType :: getSize[t->type];
         
-    return -1;
+    return 0;
 }
 
 // Prints the type of the symbol in the symbol table

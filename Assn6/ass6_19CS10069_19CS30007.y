@@ -8,6 +8,7 @@
     extern string var_type;
     extern vector<label> label_table;
     extern int line;
+    vector<string> stringsToBePrinted;
     using namespace std;
 %}
 
@@ -114,7 +115,7 @@ changetable: %empty
 		}
 		else {
 			changeTable(currSymbolPtr ->nested);						               
-			Q.emit("label", ST->name);
+			Q.emit("func", ST->name);
 		}
 	}
 	;
@@ -122,7 +123,8 @@ changetable: %empty
 
 
 constant:
-                    INTEGER_CONST { 
+                    INTEGER_CONST 
+                    { 
                         // Here we are creating a new instance and storing it
                         $$=new Expression();	
                         string p=convertIntToString($1);
@@ -140,7 +142,7 @@ constant:
                     {                                                                        
                         $$=new Expression();
                         $$->loc=gentemp(new symboltype("char"),$1);
-                        Q.emit("=",$$->loc->name,string($1));
+                        Q.emit("equalchar",$$->loc->name,string($1));
                     }
                     ;
 
@@ -154,6 +156,17 @@ primary_expression:
                     | constant
                     { 
                         $$ = $1; 
+                    }
+                    | STRING_LITERAL
+                    {
+                        // TODO: pushback in the strings to be printed
+                        $$ = new Expression();
+                        symboltype* temp = new symboltype("PTR");
+                        $$->loc = gentemp(temp, $1);
+                        $$->loc->type->arrtype = new symboltype("CHAR");
+
+                        Q.emit("equalstr", $$->loc->name, to_string(stringsToBePrinted.size()));          // TODO: verify this
+                        stringsToBePrinted.push_back($1);
                     }
                     | '(' expression ')'
                     {                                                                        
@@ -1057,19 +1070,18 @@ direct_declarator:
                         }
                         if(prev==NULL) 
                         {
-                            int temp = atoi($3->loc->val.c_str());                                      // temp = string(value)
-                            symboltype* s = new symboltype("arr", $1->type, temp);                      // Create a new symbol with the initial value
+                            symboltype* s = new symboltype("arr", t, stoi($3->loc->val));                      // Create a new symbol with the initial value
                             $$ = $1->update(s);                                                         // Update the symbol type
                         }
                         else 
                         {
-                            prev->arrtype =  new symboltype("arr", t, atoi($3->loc->val.c_str()));      // similar arguments as above		
+                            prev->arrtype =  new symboltype("arr", t, stoi($3->loc->val));      // similar arguments as above		
                             $$ = $1->update($1->type);
                         }
                     }
                     | direct_declarator '[' ']' 
                     {
-                        symboltype *t = $1 -> type;
+                        symboltype *t = $1->type;
                         symboltype *prev = NULL;                                    // initialize prev to NULL
                         while(t->type == "arr") 
                         {
@@ -1078,7 +1090,7 @@ direct_declarator:
                         }
                         if(prev==NULL) 
                         {
-                            symboltype* s = new symboltype("arr", $1->type, 0);     // no initial values, simply keep 0
+                            symboltype* s = new symboltype("arr", t, 0);     // no initial values, simply keep 0
                             $$ = $1->update(s);                                     // Update the symboltype of $$
                         }
                         else 
@@ -1104,6 +1116,7 @@ direct_declarator:
                             s->update($1->type);		            // update return type
                         }
                         $1->nested=ST;                              // link nested Symbol Table 
+                        $1->category = "function";                   // TODO: clarify
                         ST->parent = globalST;                      // link parent Symbol Table
                         
                         changeTable(globalST);				        // Come back to globalsymbol table
@@ -1124,6 +1137,7 @@ direct_declarator:
                             s->update($1->type);            // update return type
                         }
                         $1->nested=ST;                      // link nested Symbol table
+                        $1->category = "function";                   // TODO: clarify
                         ST->parent = globalST;              // Set parent to Global Symbol table
                         
                         changeTable(globalST);				// Go back to global Symbol table
@@ -1171,7 +1185,9 @@ parameter_list:
 
 parameter_declaration:
                     declaration_specifiers declarator
-                    {  }
+                    {  
+                        $2->category = "param";              // verify
+                    }
                     | declaration_specifiers
                     {  }
                     ;
@@ -1532,8 +1548,10 @@ external_declaration:
 function_definition:
                     declaration_specifiers declarator declaration_list_opt changetable '{' block_item_list_opt '}' 
                     {
-                        int next_instr=0;	 	
+                        // int next_instr=0;	 	
+                        Q.emit("funcend", ST->name);
                         ST->parent=globalST;
+
                         $2->updateFuntionStatus(true);
                         // Add a function name
                         table_count = 0;

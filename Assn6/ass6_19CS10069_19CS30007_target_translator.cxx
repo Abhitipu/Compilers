@@ -299,13 +299,13 @@ void generateAsm() {
 				asmFile << "\tmovq \t%rax, " <<  ST->ActivationRecord[res] << "(%rbp)";
 			}
             // What is this?
-			else if (op=="PTRR") {// TODO
+			else if (op=="=*") {// TODO
 				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
 				asmFile << "\tmovl\t(%eax),%eax\n";
 				asmFile << "\tmovl \t%eax, " <<  ST->ActivationRecord[res] << "(%rbp)";	
 			}
             // And this??
-			else if (op=="PTRL") { // TODO
+			else if (op=="*=") { // TODO
 				asmFile << "\tmovl\t" << ST->ActivationRecord[res] << "(%rbp), %eax\n";
 				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %edx\n";
 				asmFile << "\tmovl\t%edx, (%eax)";
@@ -320,7 +320,7 @@ void generateAsm() {
 			else if (op=="!")			
 				asmFile << res 	<< " = !" << arg1;
 
-			else if (op=="ARRR") { 
+			else if (op=="=[]") { 
 				// TODO []= or []=
 				int off=0;
 				off=theMap[arg2]*(-1)+ST->ActivationRecord[arg1];
@@ -328,7 +328,7 @@ void generateAsm() {
 				asmFile << "\tmovq \t%rax, " <<  ST->ActivationRecord[res] << "(%rbp)";
 			}	
 
-			else if (op=="ARRL") { 
+			else if (op=="[]=") { 
 				// TODO also check if offset is correct according to our AR standards
 				int off=0;
 				off=theMap[arg1]*(-1)+ST->ActivationRecord[res];

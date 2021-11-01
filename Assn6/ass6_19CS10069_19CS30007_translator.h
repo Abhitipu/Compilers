@@ -60,6 +60,7 @@ class sym  {                                                                    
         bool isItFunction;                                                                 // True if the symbol represent a function
 
         string category; //TODO constructor and linking
+        // local, param, function??
 
         inline void updateFuntionStatus(bool b){ isItFunction = b; }                       // inline function to update isItFunction
         sym (string , string t="int", symboltype* ptr = NULL, int width = 0);              // constructor

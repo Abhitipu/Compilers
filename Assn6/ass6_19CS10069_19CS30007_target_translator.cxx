@@ -57,6 +57,10 @@ void computeActivationRecord(symtable *st) {
     return;
 }
 
+inline int getOffset(string arg) {
+	return ST->ActivationRecord[arg];
+}
+
 void generateAsm() {
     // We are generating the .s file here
 
@@ -144,7 +148,6 @@ void generateAsm() {
     // beginning of the text section
     asmFile << "\t.text\n";
     
-    // Ponder: what are these for?
     vector <string> params;
     map<string, int> theMap;
 
@@ -164,59 +167,48 @@ void generateAsm() {
         // if param -> add to the param list
 		if(op=="param"){
 			params.push_back(res);
-		} else{
+		} else {
 
 			// Binary Operations
 			
 			// addition operation
 			if (op == "+") {
 				if (isNumber(arg2)) {
-					asmFile << "\taddl \t$" << arg2 << ", " << ST->ActivationRecord[arg1] << "(%rbp)";
+					asmFile << "\taddl \t$" << arg2 << ", " << getOffset(arg1) << "(%rbp)";
 				}
 				else {
-					asmFile << "\tmovl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
-					asmFile << "\tmovl \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%edx" << '\n';
+					asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
+					asmFile << "\tmovl \t" << getOffset(arg2) << "(%rbp), " << "%edx" << '\n';
 					asmFile << "\taddl \t%edx, %eax\n";
-					asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";
+					asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";
 				}
 			}
 
 			// subtract operation
 			else if (op=="-") {
-				asmFile << "\tmovl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
-				asmFile << "\tmovl \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%edx" << '\n';
+				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
+				asmFile << "\tmovl \t" << getOffset(arg2) << "(%rbp), " << "%edx" << '\n';
 				asmFile << "\tsubl \t%edx, %eax\n";
-				asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";
+				asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";
 			}
 
 			// multiplcation operator
 			else if (op=="*") {
-				asmFile << "\tmovl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
-				
-                // check this
-				if (isNumber(arg2)) {
-					asmFile << "\timull \t$" << arg2 << ", " << "%eax" << '\n';
-					symtable* t = ST;
-					string value;
-					for (auto& it : t->symbols) {
-						if(it.name == arg1) 
-							value=it.val; 
-					}
-					// stores the numerical value of the result
-					theMap[res]=stoi(arg2)*stoi(value);
-				}
-				else 
-            		asmFile << "\timull \t" << ST->ActivationRecord[arg2] << "(%rbp), " << "%eax" << '\n';
-				
-                asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";			
+				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
+                if(isNumber(arg2)) {
+                    asmFile << "\timull \t$" << stoi(arg2) << ", " << "%eax" << endl;
+                } else {
+                    asmFile  << "\timull \t" << getOffset(arg2) << "(%rbp), " << "%eax" << endl;
+                }
+                asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";			
 			}
 
 			// divide operation
 			else if(op=="/") {
-				asmFile << "\tmovl \t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
+				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
 				asmFile << "\tcltd" << '\n';
-				asmFile << "\tidivl \t" << ST->ActivationRecord[arg2] << "(%rbp)" << '\n';
-				asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";		
+				asmFile << "\tidivl \t" << getOffset(arg2) << "(%rbp)" << '\n';
+				asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";		
 			}
 
 			// Ignoring bitwise operations
@@ -240,52 +232,52 @@ void generateAsm() {
 				if (isNumber(arg1))
 					asmFile << "\tmovl\t$" << arg1 << ", " << "%eax" << '\n';
 				else
-					asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), " << "%eax" << '\n';
+					asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
                     
-				asmFile << "\tmovl \t%eax, " << ST->ActivationRecord[res] << "(%rbp)";
+				asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";
 			}
 
 			// dereferencing
 			else if (op=="=*")
-				asmFile << "\tmovq \t$.LC" << arg1 << ", " << ST->ActivationRecord[res] << "(%rbp)";
+				asmFile << "\tmovq \t$.LC" << arg1 << ", " << getOffset(res) << "(%rbp)";
 			
 			// todo in y
 			else if (op=="equalchar")	
-				asmFile << "\tmovb\t$" << arg1 << ", " << ST->ActivationRecord[res] << "(%rbp)";
+				asmFile << "\tmovb\t$" << arg1 << ", " << getOffset(res) << "(%rbp)";
 
             else if(op=="equalstr")
-                asmFile << "\tmovq \t$.LC" << arg1 << ", " << ST->ActivationRecord[res] << "(%rbp)";
+                asmFile << "\tmovq \t$.LC" << arg1 << ", " << getOffset(res) << "(%rbp)";
 
 			// Relational Operations
 			else if (op=="==") {
-				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
-				asmFile << "\tcmpl\t" << ST->ActivationRecord[arg2] << "(%rbp), %eax\n";
+				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
+				asmFile << "\tcmpl\t" << getOffset(arg2) << "(%rbp), %eax\n";
 				asmFile << "\tje .L" << labelSerialNumber[stoi(res)];
 			}
 
 			else if (op=="!=") {
-				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
-				asmFile << "\tcmpl\t" << ST->ActivationRecord[arg2] << "(%rbp), %eax\n";
+				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
+				asmFile << "\tcmpl\t" << getOffset(arg2) << "(%rbp), %eax\n";
 				asmFile << "\tjne .L" << labelSerialNumber[stoi(res)];
 			}
 			else if (op=="<") {
-				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
-				asmFile << "\tcmpl\t" << ST->ActivationRecord[arg2] << "(%rbp), %eax\n";
+				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
+				asmFile << "\tcmpl\t" << getOffset(arg2) << "(%rbp), %eax\n";
 				asmFile << "\tjl .L" << labelSerialNumber[stoi(res)];
 			}
 			else if (op==">") {
-				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
-				asmFile << "\tcmpl\t" << ST->ActivationRecord[arg2] << "(%rbp), %eax\n";
+				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
+				asmFile << "\tcmpl\t" << getOffset(arg2) << "(%rbp), %eax\n";
 				asmFile << "\tjg .L" << labelSerialNumber[stoi(res)];
 			}
 			else if (op==">=") {
-				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
-				asmFile << "\tcmpl\t" << ST->ActivationRecord[arg2] << "(%rbp), %eax\n";
+				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
+				asmFile << "\tcmpl\t" << getOffset(arg2) << "(%rbp), %eax\n";
 				asmFile << "\tjge .L" << labelSerialNumber[stoi(res)];
 			}
 			else if (op=="<=") {
-				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
-				asmFile << "\tcmpl\t" << ST->ActivationRecord[arg2] << "(%rbp), %eax\n";
+				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
+				asmFile << "\tcmpl\t" << getOffset(arg2) << "(%rbp), %eax\n";
 				asmFile << "\tjle .L" << labelSerialNumber[stoi(res)];
 			}
 			else if (op=="goto") {
@@ -295,24 +287,24 @@ void generateAsm() {
 			// Unary Operators
             // Extracting the address
 			else if (op=="=&") {
-				asmFile << "\tleaq\t" << ST->ActivationRecord[arg1] << "(%rbp), %rax\n";
-				asmFile << "\tmovq \t%rax, " <<  ST->ActivationRecord[res] << "(%rbp)";
+				asmFile << "\tleaq\t" << getOffset(arg1) << "(%rbp), %rax\n";
+				asmFile << "\tmovq \t%rax, " <<  getOffset(res) << "(%rbp)";
 			}
             // What is this?
 			else if (op=="=*") {// TODO
-				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %eax\n";
+				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
 				asmFile << "\tmovl\t(%eax),%eax\n";
-				asmFile << "\tmovl \t%eax, " <<  ST->ActivationRecord[res] << "(%rbp)";	
+				asmFile << "\tmovl \t%eax, " <<  getOffset(res) << "(%rbp)";	
 			}
             // And this??
 			else if (op=="*=") { // TODO
-				asmFile << "\tmovl\t" << ST->ActivationRecord[res] << "(%rbp), %eax\n";
-				asmFile << "\tmovl\t" << ST->ActivationRecord[arg1] << "(%rbp), %edx\n";
+				asmFile << "\tmovl\t" << getOffset(res) << "(%rbp), %eax\n";
+				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %edx\n";
 				asmFile << "\tmovl\t%edx, (%eax)";
 			} 			
             // This is simple
 			else if (op=="uminus") {
-				asmFile << "\tnegl\t" << ST->ActivationRecord[arg1] << "(%rbp)";
+				asmFile << "\tnegl\t" << getOffset(arg1) << "(%rbp)";
 			}
             // Ignored for now
 			else if (op=="~")		        
@@ -321,24 +313,37 @@ void generateAsm() {
 				asmFile << res 	<< " = !" << arg1;
 
 			else if (op=="=[]") { 
-				// TODO []= or []=
-				int off=0;
-				off=theMap[arg2]*(-1)+ST->ActivationRecord[arg1];
-				asmFile << "\tmovq\t" << off << "(%rbp), "<<"%rax" << '\n';
-				asmFile << "\tmovq \t%rax, " <<  ST->ActivationRecord[res] << "(%rbp)";
+				// a = b[t1];
+				
+				// movl    -28(%rbp), %eax 
+				//  | 24     cltq 
+				//  | 25     movl    -20(%rbp,%rax,4), %eax
+				//  | 26     movl    %eax, -24(%rbp)
+				// teri awaaz nhi aa rhi 
+				asmFile << "movl \t" << getOffset(arg2) << "%eax\n";
+				asmFile << "\tnegl\t" << "%eax\n";
+				asmFile << "\tcltq\n";
+				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp, %rax, 1), " << "%eax\n";
+				asmFile << "\tmovl \t%eax, " <<  getOffset(res) << "(%rbp)";
 			}	
 
 			else if (op=="[]=") { 
 				// TODO also check if offset is correct according to our AR standards
-				int off=0;
-				off=theMap[arg1]*(-1)+ST->ActivationRecord[res];
-				asmFile << "\tmovq\t" << ST->ActivationRecord[arg2] << "(%rbp), "<<"%rdx" << '\n';
-				asmFile << "\tmovq\t" << "%rdx, " << off << "(%rbp)";
+				// movl    $345, -20(%rbp,%rax,1) 
+				// -20(%rbp,%rax,1)
+				// else if(op=="[]=") cout<<res<<"["<<arg1<<"]"<<" = "<< arg2;
+				// res[arg1] =  arg2;
+				// neg D Arithmetic negation 
+				asmFile << "movl \t" << getOffset(arg2) << "%edx\n";
+				asmFile << "\tmovl \t" << getOffset(arg1) << "%eax\n";
+				asmFile << "\tnegl\t" << "%eax\n";
+				asmFile << "\tcltq\n";
+				asmFile << "\tmovl \t" << "%edx, " << getOffset(res) << "(%rbp, %rax, 1)";
 			}
 
 			else if (op=="return") {
 				if(res!="") 
-                    asmFile << "\tmovl\t" << ST->ActivationRecord[res] << "(%rbp), "<<"%eax";
+                    asmFile << "\tmovl\t" << getOffset(res) << "(%rbp), "<<"%eax";
 				else 
                     asmFile << "\tnop";
 			}
@@ -350,42 +355,36 @@ void generateAsm() {
 			// call a function
 			else if (op=="call") {
 				// Function Table
-				symtable* t = globalST->lookup(arg1)->nested;
 
-				int i = 0, paramCount = 0;	// index
+				for(int paramCount = 0; paramCount < (int)params.size(); paramCount++) {
+					int ourOffset = getOffset(params[paramCount]);
 
-                for(auto& symbol: t->symbols) {
-					if (symbol.category == "param") {
-						if(paramCount==0) {
-							asmFile << "\tmovl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << '\n';
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdi" << '\n';
-						}
-						else if(paramCount==1) {
-							asmFile << "\tmovl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << '\n';
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rsi" << '\n';
-						}
-						else if(paramCount==2) {
-							asmFile << "\tmovl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << '\n';
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdx" << '\n';
-						}
-						else if(paramCount==3) {
-							asmFile << "\tmovl \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%eax" << '\n';
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rcx" << '\n';
-						}
-						else {
-							asmFile << "\tmovq \t" << ST->ActivationRecord[params[i]] << "(%rbp), " << "%rdi" << '\n';							
-						}
-
-                        ++paramCount;
+					if(paramCount==0) {
+						// asmFile << "\tmovl \t" << ourOffset << "(%rbp), " << "%eax" << '\n';
+						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rdi" << '\n';
 					}
-					else 
-                        break;
-                    ++i;
+					else if(paramCount==1) {
+						// asmFile << "\tmovl \t" << ourOffset << "(%rbp), " << "%eax" << '\n';
+						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rsi" << '\n';
+					}
+					else if(paramCount==2) {
+						// asmFile << "\tmovl \t" << ourOffset << "(%rbp), " << "%eax" << '\n';
+						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rdx" << '\n';
+					}
+					else if(paramCount==3) {
+						// asmFile << "\tmovl \t" << ourOffset << "(%rbp), " << "%eax" << '\n';
+						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rcx" << '\n';
+					}
+					else {
+						// TODO
+						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rdi" << '\n';							
+					}
 				}
 
-				params.clear();
+				params.clear();				// Clear parameters after loading
+
 				asmFile << "\tcall\t"<< arg1 << '\n';
-				asmFile << "\tmovl\t%eax, " << ST->ActivationRecord[res] << "(%rbp)";
+				asmFile << "\tmovl\t%eax, " << getOffset(res) << "(%rbp)";
 			}
 
 			else if (op=="func") { 
@@ -411,16 +410,16 @@ void generateAsm() {
 					if (symbol.category== "param") {
 
 						if (paramCount==0)
-							asmFile << "\tmovq\t%rdi, " << ST->ActivationRecord[symbol.name] << "(%rbp)";
+							asmFile << "\tmovq\t%rdi, " << getOffset(symbol.name) << "(%rbp)";
 
 						else if(paramCount==1)
-							asmFile << "\n\tmovq\t%rsi, " << ST->ActivationRecord[symbol.name] << "(%rbp)";
+							asmFile << "\n\tmovq\t%rsi, " << getOffset(symbol.name) << "(%rbp)";
 
 						else if (paramCount==2) 
-							asmFile << "\n\tmovq\t%rdx, " << ST->ActivationRecord[symbol.name] << "(%rbp)";
+							asmFile << "\n\tmovq\t%rdx, " << getOffset(symbol.name) << "(%rbp)";
 						
 						else if(paramCount==3)
-							asmFile << "\n\tmovq\t%rcx, " << ST->ActivationRecord[symbol.name] << "(%rbp)";
+							asmFile << "\n\tmovq\t%rcx, " << getOffset(symbol.name) << "(%rbp)";
 
 						paramCount++;
 					}

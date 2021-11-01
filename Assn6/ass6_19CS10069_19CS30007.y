@@ -110,7 +110,7 @@ changetable: %empty
 
         // If nested call recursively on the nested table
 		if(currSymbolPtr->nested==NULL) {
-			changeTable(new symtable(""));	                                           
+			changeTable(new symtable(curPossibleSTName));	                                           
 		}
 		else {
 			changeTable(currSymbolPtr ->nested);						               
@@ -820,7 +820,7 @@ constant_expression:
                     ;
 
 declaration:
-                    declaration_specifiers init_declarator_list_opt ';'
+                    declaration_specifiers init_declarator_list_opt semicolon
                     {  }
                     ;
 
@@ -879,17 +879,22 @@ storage_class_specifier:
 
 type_specifier:
                     VOID
-                    { var_type="void"; /* Store the latest var type */ }
+                    { var_type="void"; /* Store the latest var type */ 
+                        lookupInsideParent = false;
+                    }
                     | CHAR
-                    { var_type="char"; /* Store the latest var type */ }
+                    { var_type="char"; /* Store the latest var type */ 
+                    lookupInsideParent = false;}
                     | SHORT
                     {  }
                     | INT
-                    { var_type="int"; /* Store the latest var type */ }
+                    { var_type="int"; /* Store the latest var type */ 
+                    lookupInsideParent = false;}
                     | LONG
                     {  }
                     | FLOAT
-                    { var_type="float"; /* Store the latest var type */ }
+                    { var_type="float"; /* Store the latest var type */ 
+                    lookupInsideParent = false;}
                     | DOUBLE
                     {  }
                     | SIGNED
@@ -944,9 +949,9 @@ struct_declaration_list:
                     ;
 
 struct_declaration:
-                    specifier_qualifier_list ';'
+                    specifier_qualifier_list semicolon
                     {  }
-                    | specifier_qualifier_list struct_declarator_list ';'
+                    | specifier_qualifier_list struct_declarator_list semicolon
                     {  }
                     ;
 
@@ -1030,6 +1035,11 @@ direct_declarator:
                     IDENTIFIER                 
                     {
                         //if ID, simply add a new variable of var_type
+                        
+                        string nameOfTable = $1->name;
+                        if(nameOfTable.find("@")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("@"));
+                        curPossibleSTName = nameOfTable;	 
                         $$ = $1->update(new symboltype(var_type));                                      // update the symbol type to latest type specifier
                         currSymbolPtr = $$;	                                                            // store the latest Symbol
                     }
@@ -1083,7 +1093,11 @@ direct_declarator:
                     | direct_declarator '[' MULT ']' {	}
                     | direct_declarator '(' changetable parameter_type_list ')' 
                     {
-                        ST->name = $1->name;	                    // change the ST name to fun
+                        string nameOfTable = $1->name;
+                        if(nameOfTable.find("@")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("@"));
+                        ST->name = nameOfTable;
+                        $1->name = nameOfTable;	                    // change the ST name to fun
                         if($1->type->type !="void") 
                         {
                             sym *s = ST->lookup("return");          // lookup for return value	
@@ -1098,7 +1112,12 @@ direct_declarator:
                     | direct_declarator '(' identifier_list ')' {	}
                     | direct_declarator '(' changetable ')' 
                     {        //similar as above
-                        ST->name = $1->name;
+
+                        string nameOfTable = $1->name;
+                        if(nameOfTable.find("@")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("@"));
+                        ST->name = nameOfTable;
+                        $1->name = nameOfTable;
                         if($1->type->type !="void") 
                         {
                             sym *s = ST->lookup("return");
@@ -1292,10 +1311,12 @@ block_item:
                     ;
 
 expression_statement:
-                    ';'
-                    { $$ = new Expression(); /* new Expression */ }
-                    | expression ';'
-                    { $$=$1; /* Simple assign */}
+                    semicolon
+                    { $$ = new Expression(); /* new Expression */
+                    }
+                    | expression semicolon
+                    { $$=$1; /* Simple assign */
+                    }
                     ;
 
 selection_statement:
@@ -1363,7 +1384,7 @@ iteration_statement:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-                    | DO D M loop_statement M WHILE '(' expression ')' ';'
+                    | DO D M loop_statement M WHILE '(' expression ')' semicolon
                     {
                         //do statement
                         $$ = new Statement();                               //create statement	
@@ -1376,7 +1397,7 @@ iteration_statement:
                         $$->nextlist = $8->falselist;                       // Exit loop if statement is false
                         loop_name = "";
                     }
-                    | DO D '{' M block_item_list_opt '}' M WHILE '(' expression ')' ';'      
+                    | DO D '{' M block_item_list_opt '}' M WHILE '(' expression ')' semicolon      
 	                {
                         //do statement
 		                $$ = new Statement();     //create statement	
@@ -1461,7 +1482,7 @@ iteration_statement:
                     ;
 
 jump_statement:
-                    GOTO IDENTIFIER ';'
+                    GOTO IDENTIFIER semicolon
                     { 
                         $$ = new Statement();
                         label *l = find_label($2->name);
@@ -1478,16 +1499,16 @@ jump_statement:
                             label_table.push_back(*l);
                         }
                     }  
-                    | CONTINUE ';'
+                    | CONTINUE semicolon
                     { $$ = new Statement(); }	
-                    | BREAK ';'
+                    | BREAK semicolon
                     { $$ = new Statement(); }
-                    | RETURN expression ';'
+                    | RETURN expression semicolon
                     {
                         $$ = new Statement();	
                         Q.emit("return",$2->loc->name);             
                     }
-                    | RETURN ';'
+                    | RETURN semicolon
                     {
                         $$ = new Statement();	
                         Q.emit("return","");                         
@@ -1589,6 +1610,11 @@ N: %empty
 		Q.emit("goto","");
 	}
 	;
+semicolon:
+        ';'
+        {
+            lookupInsideParent = true;
+        };
 %%
 
 /*Auxiliaries*/

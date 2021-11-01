@@ -16,7 +16,8 @@ int MatrixChainMultiplication(int p[6], int start, int end) {
 
 	for (k = start; k < end; k++) {
 		count = MatrixChainMultiplication(p, start, k) * MatrixChainMultiplication(p, k + 1, end);
-		int extra = p[start - 1] *(p[end] * (p[k])); // second term in parenthesis
+		int extra; // TODO I used something, whenever i see type specifier i want to lookup only inside current table, use a proper fix
+		extra = p[start - 1] * (p[end] * (p[k])); // second term in parenthesis
 		count += extra;
 		min_val = min(min_val, count);
 	}

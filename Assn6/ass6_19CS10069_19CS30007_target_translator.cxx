@@ -7,7 +7,7 @@
 using namespace std;
 
 extern FILE *yyin;
-extern vector<string> stringsToBePrinted;               // by printString meth
+vector<string> stringsToBePrinted;               // by printString meth TODO
 
 using namespace std;
 
@@ -463,6 +463,8 @@ int main() {
     table_count = 0;                                                                                    // count of nested table
     globalST=new symtable("Global");                                                                    // Global Symbol Table
     ST = globalST;
+	symbolTableSuffix = "@Global";
+	lookupInsideParent = true;
     parST = NULL;
     loop_name = "";
 
@@ -475,6 +477,6 @@ int main() {
         Q.print();                                                                                          // print the three address codes
         cout << "\nSYMBOL TABLES:\n\n";
         globalST->print();                                                                                  // print all Symbol Tables
-        generateAsm();
+        // generateAsm();
     }
 }

@@ -142,7 +142,7 @@ constant:
                     {                                                                        
                         $$=new Expression();
                         $$->loc=gentemp(new symboltype("char"),$1);
-                        Q.emit("EQUALCHAR",$$->loc->name,string($1));
+                        Q.emit("equalchar",$$->loc->name,string($1));
                     }
                     ;
 
@@ -165,7 +165,7 @@ primary_expression:
                         $$->loc = gentemp(temp, $1);
                         $$->loc->type->arrtype = new symboltype("CHAR");
 
-                        Q.emit("EQUALSTR", $$->loc->name, to_string(stringsToBePrinted.size()));          // TODO: verify this
+                        Q.emit("equalstr", $$->loc->name, to_string(stringsToBePrinted.size()));          // TODO: verify this
                         stringsToBePrinted.push_back($1);
                     }
                     | '(' expression ')'

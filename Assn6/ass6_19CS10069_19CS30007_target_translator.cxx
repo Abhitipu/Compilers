@@ -105,7 +105,7 @@ void generateAsm() {
     for(auto& it: ST->symbols) {
         if(it.category != "function") {
             if(it.val != "") {
-                if(it.type->type == "CHAR") {
+                if(it.type->type == "char") {
                     asmFile << "\t.globl\t" << it.name << "\n";
                     asmFile << "\t.type\t" << it.name << ", @object\n";
                     asmFile << "\t.size\t" << it.name << ", 1\n";
@@ -113,7 +113,7 @@ void generateAsm() {
                     asmFile << "\t.byte\t" << it.val << "\n";
                 }
 
-                if(it.type->type == "INT") {
+                if(it.type->type == "int") {
                     asmFile << "\t.globl\t" << it.name << "\n";
                     asmFile << "\t.data\n";
                     asmFile << "\t.align 4\n";
@@ -160,7 +160,7 @@ void generateAsm() {
         
 
         // if param -> add to the param list
-		if(op=="PARAM"){
+		if(op=="param"){
 			params.push_back(res);
 		} else{
 
@@ -247,8 +247,11 @@ void generateAsm() {
 				asmFile << "movq \t$.LC" << arg1 << ", " << ST->ActivationRecord[res] << "(%rbp)";
 			
 			// todo in y
-			else if (op=="EQUALCHAR")	
+			else if (op=="equalchar")	
 				asmFile << "movb\t$" << atoi(arg1.c_str()) << ", " << ST->ActivationRecord[res] << "(%rbp)";
+
+            else if(op=="equalstr")
+                asmFile << "movq \t$.LC" << arg1 << ", " << ST->ActivationRecord[res] << "(%rbp)";
 
 			// Relational Operations
 			else if (op=="==") {

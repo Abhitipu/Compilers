@@ -1,24 +1,44 @@
-// typecasting and pointers
-void swapTwoNumbers(int* a, int* b) //pointers
+int printInt(int);
+// int printStr(char * p);
+
+// // pointers
+
+// void swapTwoNumbers(int* a, int* b) //pointers
+// {
+// 	// int temp = *a;
+// 	// *a = *b;
+// 	// *b = temp;
+// 	return;
+// }
+
+// int main() {
+// 	int a;
+// 	int b;
+// 	a = 2;
+// 	b = 3;
+
+// 	printStr("\n\n------------------------------------------\n\n");
+// 	printStr("Testing function calls\n");
+
+// 	printStr("Numbers before swapping\n");
+// 	printInt(a); printStr(" "); printInt(b); printStr("\n");
+
+// 	swapTwoNumbers(&a, &b);
+
+// 	printStr("Numbers after swapping\n");
+// 	printInt(a); printStr(" "); printInt(b); printStr("\n");
+
+// 	printStr("\n\nDone test\n\n");
+
+// 	return 0;
+// }
+
+int main()
 {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-	return;
-}
-
-float areaOfCircle(int r) {
-	float pi = 3.14, area;
-	int rSquare = r*r;
-	area = rSquare * pi; // type casting int -> float
-	return area;
-}
-
-int main() {
-	int q=8,r=2;
-	float x=2.5, area;
-	area = areaOfCircle(r);
-	swapTwoNumbers(&q,&r);
-	area = areaOfCircle(r);
-	return 0;
+    int a;
+    a = 5;
+    int *b;
+    b = &a;
+	printInt(*b);
+    return 0;
 }

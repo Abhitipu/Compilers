@@ -23,7 +23,7 @@ string symbolTableSuffix;                                                       
 bool lookupInsideParent;
 string curPossibleSTName;
 list <sym*> listOffunctions;
-
+vector<string> stringsToBePrinted;
 quadArray Q;                                                                                       // Our array of quads
 sym* currSymbolPtr;                                                                                // Current symbol
 vector<label>label_table;                                                                          // For storing labels
@@ -50,7 +50,7 @@ sym::sym(string name, string t, symboltype* arrtype, int width)
     type = new symboltype(t,arrtype,width);                                                        // We obtain the symbol type
     size = computeSize(type);                                                                      // We compute its size
     offset = 0;                                                                                    // Initial offset is set to 0.. will be adjusted later
-    val = "-";                                                                                     // Initial value not yet defined
+    val = "";                                                                                     // Initial value not yet defined
     nested = NULL;                                                                                  // No nested tables attached
     isItFunction = false;                                                                           // Stores if current entry is a symbol
     category = "";                                                                                  // TODO: update this
@@ -89,8 +89,8 @@ sym* symtable::lookup(string name)                                              
 
     // function check
     string nameOffunc = name;
-    if(nameOffunc.find("@")!=nameOffunc.npos)
-        nameOffunc = nameOffunc.substr(0, nameOffunc.find("@"));
+    if(nameOffunc.find(".")!=nameOffunc.npos)
+        nameOffunc = nameOffunc.substr(0, nameOffunc.find("."));
     for(auto funcs : listOffunctions) {
         if(funcs != NULL && funcs->name == nameOffunc)
             return funcs;                                                                         
@@ -107,7 +107,7 @@ sym* symtable::lookup(string name)                                              
     if((this->parent) && lookupInsideParent)
     {
         string tosearchname = name;
-        if(tosearchname.find("@")!= tosearchname.npos)
+        if(tosearchname.find(".")!= tosearchname.npos)
         {
             
             while(!tosearchname.empty() && tosearchname.back() != '@')
@@ -118,7 +118,7 @@ sym* symtable::lookup(string name)                                              
             {
                 tosearchname.pop_back();
             }
-            tosearchname += ("@"+this->parent->name);
+            tosearchname += ("."+this->parent->name);
 
             // cout<<name<<" "<< tosearchname<<"\n";
         }
@@ -326,7 +326,8 @@ void quad::print()  {
 	else if(op=="label") cout<<"Label "<<res<<": ";
     else if(op == "func") cout<<"function " <<res<<": ";
     else if(op=="funcend") cout << "";
-	else cout<<"Operator not found"<<op;		
+    else if(op =="equalstr") cout<<res << " = "<<stringsToBePrinted.at(stoi(arg1));
+	else cout<<"Operator not found "<<op;		
 	cout<<'\n';
 }
 
@@ -545,7 +546,7 @@ sym* convertType(sym* s, string rettype) {
 */
 void changeTable(symtable* newtable) {                                                                    
     ST = newtable;
-    symbolTableSuffix =  "@" +  newtable->name;
+    symbolTableSuffix =  "." +  newtable->name;
 } 
 
 /*

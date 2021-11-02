@@ -99,7 +99,7 @@ void generateAsm() {
 	
 
     ofstream asmFile;
-    asmFile.open(asmFileName + ".s");
+    asmFile.open(asmFileName + ".s", std::ofstream::out);
 
     // beginning of the .s file
     asmFile << "\t.file\t";
@@ -294,14 +294,14 @@ void generateAsm() {
             // What is this?
 			else if (op=="=*") {// TODO
 				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
-				asmFile << "\tmovl\t(%eax),%eax\n";
+				asmFile << "\tmovl\t0(%eax),%eax\n";
 				asmFile << "\tmovl \t%eax, " <<  getOffset(res) << "(%rbp)";	
 			}
             // And this??
 			else if (op=="*=") { // TODO
 				asmFile << "\tmovl\t" << getOffset(res) << "(%rbp), %eax\n";
 				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %edx\n";
-				asmFile << "\tmovl\t%edx, (%eax)";
+				asmFile << "\tmovl\t%edx, 0(%eax)";
 			} 			
             // This is simple
 			else if (op=="uminus") {
@@ -457,7 +457,7 @@ int main(int argc, char *argv[]) {
     table_count = 0;                                                                                    // count of nested table
     globalST=new symtable("Global");                                                                    // Global Symbol Table
     ST = globalST;
-	symbolTableSuffix = "@Global";
+	symbolTableSuffix = ".Global";
 	lookupInsideParent = true;
 	listOffunctions.clear();
     parST = NULL;

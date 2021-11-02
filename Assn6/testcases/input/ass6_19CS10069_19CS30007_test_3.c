@@ -1,34 +1,45 @@
+int printInt(int);
+int printStr(char * p);
+
 // function calling and conditional statements (ternary and if-else)
+// Return from functions
+
 int abs(int x) {
-   	int ans;
-   	if(x > 0)  // if-else-if-else
-   		ans = x;
-   	else if( x < 0)
-   		ans= x;
-	else
-		ans = 0;
-    return ans;
+	if(x < 0)
+		return -x;
+	return x;
 }
 
-int min(int x, int y) 
-{
+int min(int x, int y) {
    int ans;
    ans = x > y ? y : x; // ternary
    return ans;
 }
 
-int a;
-
-int absMin(int a, int b){
-	int i, j;
-	i = min(a, b);
-	j = abs(i);
-	return j;
+int max(int x, int y) {
+   int ans;
+   ans = x < y ? y : x; // ternary
+   return ans;
 }
 
 int main(){
-	int a, b, d;
-	a = 10, b = 5;
-	d = absMin(a,b);
+	int x = -23;
+	int y = 24;
+
+	printStr("Testing the abs function\n");
+	int ans1 = abs(x);
+	printStr("abs("); printInt(x); printStr(") = "); printInt(ans1); printStr("\n");
+	
+	int ans2 = abs(y);
+	printStr("abs("); printInt(y); printStr(") = "); printInt(ans2); printStr("\n");
+
+	int ans3 = min(x, y);
+	printStr("Testing the min function\n");
+	printStr("Min("); printInt(x); printStr(", "); printInt(y); printStr(") = "); printInt(ans3);
+
+	int ans4 = max(x, y);
+	printStr("Testing the max function\n");
+	printStr("Max("); printInt(x); printStr(", "); printInt(y); printStr(") = "); printInt(ans4);
+
 	return 0;
 }

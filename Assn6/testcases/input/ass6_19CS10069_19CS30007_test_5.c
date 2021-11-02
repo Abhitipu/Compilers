@@ -1,4 +1,5 @@
-
+int printInt(int);
+int printStr(char * p);
 int checkPrime (int n) {
   int i = 2;
   int n1 = 1;

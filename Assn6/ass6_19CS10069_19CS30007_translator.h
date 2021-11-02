@@ -37,6 +37,7 @@ extern string symbolTableSuffix;                                                
 extern bool lookupInsideParent;
 extern string curPossibleSTName;
 extern list <sym*> listOffunctions;
+extern vector<string> stringsToBePrinted;
 extern symtable* ST;                                                                       // Points to the current Symbol Table
 extern symtable* globalST;                                                                 // Points to the Global Symbol Table
 extern symtable* parST;                                                                    // Points to the Parent of the current Symbol Table

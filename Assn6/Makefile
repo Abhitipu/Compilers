@@ -59,7 +59,12 @@ test: tinyC libass2_19CS10069.a
 	gcc testcases/output/ass6_19CS10069_19CS30007_test_8.o -o testcases/output/test8 -L. -lass2_19CS10069 -no-pie
 	gcc testcases/output/ass6_19CS10069_19CS30007_test_9.o -o testcases/output/test9 -L. -lass2_19CS10069 -no-pie
 	@echo "Successfully Compiled All test files !\n\n"
-	
+testmini: tinyC libass2_19CS10069.a
+	@echo "TEST 2"
+	./tinyC _test_2 < testcases/input/ass6_19CS10069_19CS30007_test_2.c > testcases/output/ass6_19CS10069_19CS30007_quads2.out
+	@echo "\nTest 2 Successfully Translated !\n"
+	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_2.s -o testcases/output/ass6_19CS10069_19CS30007_test_2.o
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_2.o -o testcases/output/test2 -L. -lass2_19CS10069 -no-pie
 tinyC: lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o
 	g++ -g lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o -lfl -o tinyC
 

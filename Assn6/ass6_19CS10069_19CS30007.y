@@ -8,7 +8,7 @@
     extern string var_type;
     extern vector<label> label_table;
     extern int line;
-    vector<string> stringsToBePrinted;
+    extern vector<string> stringsToBePrinted;
     using namespace std;
 %}
 
@@ -1050,8 +1050,8 @@ direct_declarator:
                         //if ID, simply add a new variable of var_type
                         
                         string nameOfTable = $1->name;
-                        if(nameOfTable.find("@")!=nameOfTable.npos)
-                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("@"));
+                        if(nameOfTable.find(".")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("."));
                         curPossibleSTName = nameOfTable;	 
                         $$ = $1->update(new symboltype(var_type));                                      // update the symbol type to latest type specifier
                         currSymbolPtr = $$;	                                                            // store the latest Symbol
@@ -1106,8 +1106,8 @@ direct_declarator:
                     | direct_declarator '(' FUN_CT parameter_type_list ')' 
                     {
                         string nameOfTable = $1->name;
-                        if(nameOfTable.find("@")!=nameOfTable.npos)
-                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("@"));
+                        if(nameOfTable.find(".")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("."));
                         ST->name = nameOfTable;
                         $1->name = nameOfTable;	                    // change the ST name to fun
                         if($1->type->type !="void") 
@@ -1117,6 +1117,7 @@ direct_declarator:
                         }
                         $1->nested=ST;                              // link nested Symbol Table 
                         $1->category = "function";                   // TODO: clarify
+                        $1->updateFuntionStatus(true);
                         listOffunctions.push_back($1);
                         ST->parent = globalST;                      // link parent Symbol Table
                         
@@ -1128,8 +1129,8 @@ direct_declarator:
                     {        //similar as above
 
                         string nameOfTable = $1->name;
-                        if(nameOfTable.find("@")!=nameOfTable.npos)
-                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("@"));
+                        if(nameOfTable.find(".")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("."));
                         ST->name = nameOfTable;
                         $1->name = nameOfTable;
                         if($1->type->type !="void") 
@@ -1139,6 +1140,7 @@ direct_declarator:
                         }
                         $1->nested=ST;                      // link nested Symbol table
                         $1->category = "function";                   // TODO: clarify
+                        $1->updateFuntionStatus(true);
                         listOffunctions.push_back($1);
                         ST->parent = globalST;              // Set parent to Global Symbol table
                         

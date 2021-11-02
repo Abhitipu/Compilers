@@ -1,5 +1,6 @@
 // Our famous gcd algorithm
-
+int printInt(int);
+int printStr(char * p);
 int fib(int n);
 
 int gcdAlgorithm(int a, int b) { 

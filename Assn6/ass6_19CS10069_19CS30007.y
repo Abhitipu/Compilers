@@ -115,7 +115,7 @@ changetable: %empty
 		}
 		else {
 			changeTable(currSymbolPtr ->nested);						               
-			Q.emit("func", ST->name);
+			Q.emit("label", ST->name);
 		}
 	}
 	;
@@ -161,9 +161,9 @@ primary_expression:
                     {
                         // TODO: pushback in the strings to be printed
                         $$ = new Expression();
-                        symboltype* temp = new symboltype("PTR");
+                        symboltype* temp = new symboltype("ptr");
                         $$->loc = gentemp(temp, $1);
-                        $$->loc->type->arrtype = new symboltype("CHAR");
+                        $$->loc->type->arrtype = new symboltype("char");
 
                         Q.emit("equalstr", $$->loc->name, to_string(stringsToBePrinted.size()));          // TODO: verify this
                         stringsToBePrinted.push_back($1);
@@ -1103,7 +1103,7 @@ direct_declarator:
                     | direct_declarator '[' STATIC assignment_expression ']' {	}
                     | direct_declarator '[' type_qualifier_list MULT ']' {	}
                     | direct_declarator '[' MULT ']' {	}
-                    | direct_declarator '(' changetable parameter_type_list ')' 
+                    | direct_declarator '(' FUN_CT parameter_type_list ')' 
                     {
                         string nameOfTable = $1->name;
                         if(nameOfTable.find("@")!=nameOfTable.npos)
@@ -1124,7 +1124,7 @@ direct_declarator:
                         currSymbolPtr = $$;
                     }
                     | direct_declarator '(' identifier_list ')' {	}
-                    | direct_declarator '(' changetable ')' 
+                    | direct_declarator '(' FUN_CT ')' 
                     {        //similar as above
 
                         string nameOfTable = $1->name;
@@ -1548,7 +1548,7 @@ external_declaration:
                     ;
 
 function_definition:
-                    declaration_specifiers declarator declaration_list_opt changetable '{' block_item_list_opt '}' 
+                    declaration_specifiers declarator declaration_list_opt FUN_CT '{' block_item_list_opt '}' 
                     {
                         // int next_instr=0;	 	
                         Q.emit("funcend", ST->name);
@@ -1628,6 +1628,22 @@ N: %empty
 		$$->nextlist=makelist(nextinstr());
 
 		Q.emit("goto","");
+	}
+	;
+
+FUN_CT: %empty 
+	{    
+        // Utility to change the table
+		parST = ST;                                                               
+
+        // If nested call recursively on the nested table
+		if(currSymbolPtr->nested==NULL) {
+			changeTable(new symtable(curPossibleSTName));	                                           
+		}
+		else {
+			changeTable(currSymbolPtr ->nested);						               
+			Q.emit("func", ST->name);
+		}
 	}
 	;
 semicolon:

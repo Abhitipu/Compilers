@@ -15,8 +15,8 @@ int functionLabelCount=0;
 map<int, int> labelSerialNumber;				                    // map from quad number to label number
 ofstream out;								            // asm file stream
 vector <quad> Array;						            // quad Array
-string asmFileName ="ass6_19CS10069_19CS30007";		        // asm file name
-string testFileName ="ass6_19CS10069_19CS30007_test";		// input file name
+string asmFileName ="./testcases/output/ass6_19CS10069_19CS30007";		        // asm file name
+string testFileName ="./testcases/input/ass6_19CS10069_19CS30007";		// input file name
 
 
 // take in a string to see if it is a number or not
@@ -141,7 +141,7 @@ void generateAsm() {
         asmFile << "\t.section\t.rodata\n";
         int cnt = 0;
         for(auto& it: stringsToBePrinted) {
-			asmFile << ".LC" << cnt++ << it << ":\n";
+			asmFile << ".LC" << cnt++ << ":\n";
 			asmFile << "\t.string\t" << it << "\n";
         }
     }
@@ -214,19 +214,19 @@ void generateAsm() {
 
 			// Ignoring bitwise operations
 			else if (op=="%")		    
-				asmFile << res << " = " << arg1 << " % " << arg2;
+				asmFile << "\t"<< res << " = " << arg1 << " % " << arg2;
 			else if (op=="^")			
-				asmFile << res << " = " << arg1 << " ^ " << arg2;
+				asmFile << "\t"<< res << " = " << arg1 << " ^ " << arg2;
 			else if (op=="|")		    
-				asmFile << res << " = " << arg1 << " | " << arg2;
+				asmFile << "\t"<< res << " = " << arg1 << " | " << arg2;
 			else if (op=="&")		    
-				asmFile << res << " = " << arg1 << " & " << arg2;
+				asmFile << "\t"<< res << " = " << arg1 << " & " << arg2;
 			
 			// Ignoring shift operations
 			else if (op=="<<")		    
-				asmFile << res << " = " << arg1 << " << " << arg2;
+				asmFile << "\t"<< res << " = " << arg1 << " << " << arg2;
 			else if (op==">>")		    
-				asmFile << res << " = " << arg1 << " >> " << arg2;
+				asmFile << "\t"<< res << " = " << arg1 << " >> " << arg2;
 
 			// assignment
 			else if (op=="=")	{
@@ -239,8 +239,8 @@ void generateAsm() {
 			}
 
 			// dereferencing
-			else if (op=="=*")
-				asmFile << "\tmovq \t$.LC" << arg1 << ", " << getOffset(res) << "(%rbp)";
+			// else if (op=="=*")
+			// 	asmFile << "\tmovq \t$.LC" << arg1 << ", " << getOffset(res) << "(%rbp)";
 			
 			// todo in y
 			else if (op=="equalchar")	
@@ -376,7 +376,7 @@ void generateAsm() {
 			}
 
 			else if (op=="func") { 
-				continue;
+				// continue;
 				// prologue of a function
 				asmFile << "\t.globl\t" << res << "\n";
 				asmFile << "\t.type\t"	<< res << ", @function\n";
@@ -419,7 +419,7 @@ void generateAsm() {
 				
 			// epilogue of a function
 			else if (op=="funcend") { 
-				continue;
+				// continue;
 				asmFile << "\tleave\n";
 				asmFile << "\t.cfi_restore 5\n";
 				asmFile << "\t.cfi_def_cfa 4, 4\n";
@@ -428,8 +428,11 @@ void generateAsm() {
 				asmFile << ".LFE" << functionLabelCount++ <<":" << '\n';
 				asmFile << "\t.size\t"<< res << ", .-" << res;
 			}
-			else 
-				asmFile << "\top";
+			else
+			{
+				cerr << op<<" "<<res<<"\n";
+				asmFile << "\tnop";
+			} 
 			
 			asmFile << '\n';
 		}
@@ -448,7 +451,7 @@ void generateAsm() {
 //     return os;
 // }
 
-int main() {
+int main(int argc, char *argv[]) {
     label_table.clear();
 
     table_count = 0;                                                                                    // count of nested table
@@ -459,7 +462,9 @@ int main() {
 	listOffunctions.clear();
     parST = NULL;
     loop_name = "";
-
+	// assert(argc == 2);
+	asmFileName = asmFileName + argv[1];
+	testFileName = testFileName + argv[1];
     if(yyparse()){
         cout<<"Error while parsing\n";
     }

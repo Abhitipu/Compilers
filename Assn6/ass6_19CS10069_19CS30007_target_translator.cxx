@@ -376,6 +376,7 @@ void generateAsm() {
 			}
 
 			else if (op=="func") { 
+				continue;
 				// prologue of a function
 				asmFile << "\t.globl\t" << res << "\n";
 				asmFile << "\t.type\t"	<< res << ", @function\n";
@@ -418,6 +419,7 @@ void generateAsm() {
 				
 			// epilogue of a function
 			else if (op=="funcend") { 
+				continue;
 				asmFile << "\tleave\n";
 				asmFile << "\t.cfi_restore 5\n";
 				asmFile << "\t.cfi_def_cfa 4, 4\n";
@@ -462,12 +464,7 @@ int main() {
         cout<<"Error while parsing\n";
     }
     else{
-        globalST->update();                                                                                 // update the global Symbol Table
-        cout<<"\n";
-        Q.print();                                                                                          // print the three address codes
-        cout << "\nSYMBOL TABLES:\n\n";
-        globalST->print();                                                                                  // print all Symbol Tables
-		cout<<"All functions\n";
+        cout<<"All functions\n";
 		cout<<listOffunctions.size()<<"\n";
 		for(auto funcs: listOffunctions)
 		{
@@ -475,8 +472,11 @@ int main() {
 			flattenFunctionSymbolTable(funcs);
 		}
 		globalST->update(); 
-		cout << "\nSYMBOL TABLES:\n\n";
-		globalST->print();
+        cout << "\nSYMBOL TABLES:\n\n";                                                                                // print all Symbol Tables
+		globalST->print();                                                                                 // update the global Symbol Table
+        cout<<"\n";
+        Q.print();                                                                                          // print the three address codes
+		
         generateAsm();
     }
 }

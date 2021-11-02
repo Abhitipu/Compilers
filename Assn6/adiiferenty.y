@@ -1341,27 +1341,27 @@ selection_statement:
                     IF '(' expression ')' M statement N %prec "then"
                     {
                         // if without else
-                        convertIntToBool($3);                                   // expression in IF is converted to bool
-
-                        $$ = new Statement();                                   
+                        $$ = new Statement();
+                        convertIntToBool($3);                                   // convert expression to bool                                    
                         backpatch($3->truelist, $5);                            // We do the backpatch here
-
-                        list<int> temp = merge($3->falselist, $6->nextlist);    // If it is false, we just escape the inner statement
-                        $$->nextlist = merge($7->nextlist, temp);
+                        list<int> temp = merge($7->nextlist, $6->nextlist);
+                        $$->nextlist = merge($3->falselist, temp);      // If it is false, we just escape the inner statement
                         backpatch($$->nextlist, nextinstr());
+
                     }
                     | IF '(' expression ')' M statement N ELSE M statement
                     {
                         // if with else
+                        		            // After we hit N we go to next instr
                         convertIntToBool($3);                                   // convert expression to bool 
 
                         $$ = new Statement();                                   
                         backpatch($3->truelist, $5);                            // If true, we access the first part
                         backpatch($3->falselist, $9);                          // Else the second prt
 
-                        list<int> temp = merge($6->nextlist, $7->nextlist);       // Then we merge with the nextlists of both statements
-                        $$->nextlist = merge($10->nextlist,temp);
-                        backpatch($$->nextlist, nextinstr());	
+                        list<int> temp = merge($7->nextlist, $6->nextlist);       // Then we merge with the nextlists of both statements
+                        $$->nextlist = merge($10->nextlist,temp);	
+                        backpatch($$->nextlist, nextinstr());
                     }
                     | SWITCH '(' expression ')' statement
                     { /* Not asked in question */ }

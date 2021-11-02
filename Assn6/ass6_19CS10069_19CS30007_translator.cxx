@@ -638,7 +638,7 @@ symtable* flattenFunctionSymbolTable(sym *function){
             if(currentSymbol.nested != NULL)
             {
                 listOfFunctionTables.push_back((currentSymbol.nested));
-                cout<<currentSymbol.name<<"\n";
+                // cout<<currentSymbol.name<<"\n";
             }
             else
             {

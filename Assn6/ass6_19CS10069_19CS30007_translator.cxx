@@ -323,7 +323,8 @@ void quad::print()  {
 	// procedure call
     else if(op=="param") cout<<"param "<<res;
 	else if(op=="call") cout<<res<<" = "<<"call "<<arg1<<", "<<arg2;
-	else if(op=="label" || op == "func") cout<<res<<": ";
+	else if(op=="label") cout<<"Label "<<res<<": ";
+    else if(op == "func") cout<<"function " <<res<<": ";
     else if(op=="funcend") cout << "";
 	else cout<<"Operator not found"<<op;		
 	cout<<'\n';
@@ -638,7 +639,7 @@ symtable* flattenFunctionSymbolTable(sym *function){
             if(currentSymbol.nested != NULL)
             {
                 listOfFunctionTables.push_back((currentSymbol.nested));
-                cout<<currentSymbol.name<<"\n";
+                // cout<<currentSymbol.name<<"\n";
             }
             else
             {

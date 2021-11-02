@@ -1,4 +1,4 @@
-int bsrch (int arr[],int num, int start,int end)
+int bsrch (int arr[6],int num, int start,int end)
 {
     if(start>end)
     	return -1;

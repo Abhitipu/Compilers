@@ -115,7 +115,7 @@ changetable: %empty
 		}
 		else {
 			changeTable(currSymbolPtr ->nested);						               
-			Q.emit("label", ST->name);
+			Q.emit("func", ST->name);
 		}
 	}
 	;
@@ -161,9 +161,9 @@ primary_expression:
                     {
                         // TODO: pushback in the strings to be printed
                         $$ = new Expression();
-                        symboltype* temp = new symboltype("ptr");
+                        symboltype* temp = new symboltype("PTR");
                         $$->loc = gentemp(temp, $1);
-                        $$->loc->type->arrtype = new symboltype("char");
+                        $$->loc->type->arrtype = new symboltype("CHAR");
 
                         Q.emit("equalstr", $$->loc->name, to_string(stringsToBePrinted.size()));          // TODO: verify this
                         stringsToBePrinted.push_back($1);
@@ -1103,7 +1103,7 @@ direct_declarator:
                     | direct_declarator '[' STATIC assignment_expression ']' {	}
                     | direct_declarator '[' type_qualifier_list MULT ']' {	}
                     | direct_declarator '[' MULT ']' {	}
-                    | direct_declarator '(' FUN_CT parameter_type_list ')' 
+                    | direct_declarator '(' changetable parameter_type_list ')' 
                     {
                         string nameOfTable = $1->name;
                         if(nameOfTable.find("@")!=nameOfTable.npos)
@@ -1124,7 +1124,7 @@ direct_declarator:
                         currSymbolPtr = $$;
                     }
                     | direct_declarator '(' identifier_list ')' {	}
-                    | direct_declarator '(' FUN_CT ')' 
+                    | direct_declarator '(' changetable ')' 
                     {        //similar as above
 
                         string nameOfTable = $1->name;
@@ -1341,27 +1341,27 @@ selection_statement:
                     IF '(' expression ')' M statement N %prec "then"
                     {
                         // if without else
-                        convertIntToBool($3);                                   // expression in IF is converted to bool
-
-                        $$ = new Statement();                                   
+                        $$ = new Statement();
+                        convertIntToBool($3);                                   // convert expression to bool                                    
                         backpatch($3->truelist, $5);                            // We do the backpatch here
-
-                        list<int> temp = merge($3->falselist, $6->nextlist);    // If it is false, we just escape the inner statement
-                        $$->nextlist = merge($7->nextlist, temp);
+                        list<int> temp = merge($7->nextlist, $6->nextlist);
+                        $$->nextlist = merge($3->falselist, temp);      // If it is false, we just escape the inner statement
                         backpatch($$->nextlist, nextinstr());
+
                     }
                     | IF '(' expression ')' M statement N ELSE M statement
                     {
                         // if with else
+                        		            // After we hit N we go to next instr
                         convertIntToBool($3);                                   // convert expression to bool 
 
                         $$ = new Statement();                                   
                         backpatch($3->truelist, $5);                            // If true, we access the first part
                         backpatch($3->falselist, $9);                          // Else the second prt
 
-                        list<int> temp = merge($6->nextlist, $7->nextlist);       // Then we merge with the nextlists of both statements
-                        $$->nextlist = merge($10->nextlist,temp);
-                        backpatch($$->nextlist, nextinstr());	
+                        list<int> temp = merge($7->nextlist, $6->nextlist);       // Then we merge with the nextlists of both statements
+                        $$->nextlist = merge($10->nextlist,temp);	
+                        backpatch($$->nextlist, nextinstr());
                     }
                     | SWITCH '(' expression ')' statement
                     { /* Not asked in question */ }
@@ -1548,7 +1548,7 @@ external_declaration:
                     ;
 
 function_definition:
-                    declaration_specifiers declarator declaration_list_opt FUN_CT '{' block_item_list_opt '}' 
+                    declaration_specifiers declarator declaration_list_opt changetable '{' block_item_list_opt '}' 
                     {
                         // int next_instr=0;	 	
                         Q.emit("funcend", ST->name);
@@ -1628,22 +1628,6 @@ N: %empty
 		$$->nextlist=makelist(nextinstr());
 
 		Q.emit("goto","");
-	}
-	;
-
-FUN_CT: %empty 
-	{    
-        // Utility to change the table
-		parST = ST;                                                               
-
-        // If nested call recursively on the nested table
-		if(currSymbolPtr->nested==NULL) {
-			changeTable(new symtable(curPossibleSTName));	                                           
-		}
-		else {
-			changeTable(currSymbolPtr ->nested);						               
-			Q.emit("func", ST->name);
-		}
 	}
 	;
 semicolon:

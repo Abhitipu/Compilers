@@ -2,31 +2,26 @@
 int printInt(int);
 int printStr(char * p);
 int fib(int n);
+int readInt(int *n);
 
 int gcdAlgorithm(int a, int b) { 
     if (a == 0) return b; 
     return gcdAlgorithm(b % a, a); 
 } 
 
-int main()  
-{  
-    int num1 = 10;
-    int num2 = 20;
+int main()  {  
+    printStr("Program to find gcd of two numbers\n");
 
-    if(num2 != 0) {
-        int g = euclidGCD(num1, num2);   // recursive function call
-        num1 /= g;
-        num2 /= g;
-    } else {
-        // cant divide by zeroooo!!
-    }
+    printStr("Enter the first number: ");
+    int num1;
+    readInt(&num1);
 
-    int xx = fib(100);  // this will take ages
+    printStr("Enter the second number: ");
+    int num2;
+    readInt(&num2);
+
+    int res = gcdAlgorithm(num1, num2);
+    printStr("The gcd comes out to be: "); printInt(res); printStr("\n\n");
 
     return 0;  
 }  
-
-// Our slow fibonacci function
-int fib(int n) {
-	return fib(n-1) + fib(n-2);
-}

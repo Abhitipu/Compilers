@@ -292,16 +292,16 @@ void generateAsm() {
 				asmFile << "\tmovq \t%rax, " <<  getOffset(res) << "(%rbp)";
 			}
             // What is this?
-			else if (op=="=*") {// TODO
-				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %eax\n";
-				asmFile << "\tmovl\t0(%eax),%eax\n";
+			else if (op=="=*") {
+				asmFile << "\tmovq\t" << getOffset(arg1) << "(%rbp), %rax\n";
+				asmFile << "\tmovl\t(%rax),%eax\n";
 				asmFile << "\tmovl \t%eax, " <<  getOffset(res) << "(%rbp)";	
 			}
             // And this??
-			else if (op=="*=") { // TODO
-				asmFile << "\tmovl\t" << getOffset(res) << "(%rbp), %eax\n";
+			else if (op=="*=") {
+				asmFile << "\tmovq\t" << getOffset(res) << "(%rbp), %rax\n";
 				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %edx\n";
-				asmFile << "\tmovl\t%edx, 0(%eax)";
+				asmFile << "\tmovl\t%edx, (%rax)";
 			} 			
             // This is simple
 			else if (op=="uminus") {

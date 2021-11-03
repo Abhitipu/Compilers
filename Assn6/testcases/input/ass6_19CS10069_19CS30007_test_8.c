@@ -1,15 +1,24 @@
 int printInt(int);
 int printStr(char * p);
-int main()
-{
-    int a;
-    a = 60;
-    int i = 10;
-    for(i = 0; i<10; ++i)
-    {
-        printStr("Loop iteration "); printInt(i); printStr("\n");
-        printStr("a = ");printInt(a);printStr("\n");
-        a = a + i;
-    }
-    return 0;
+
+int main() {
+    int x = 707;
+    printInt(x);
+    printStr("\nHello World\n");
+	if(x == 707)
+	{
+		printStr("If executed correctly\n");
+	}
+	if(x != 707)
+	{
+		printStr("If executed incorrectly\n");
+	}
+	else if (x > 500)
+	{
+		printStr("else if executed correctly\n");
+	}
+	else{
+		printStr("else executed correctly\n");
+	}
+    return x;
 }

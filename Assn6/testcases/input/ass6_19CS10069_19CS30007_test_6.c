@@ -1,6 +1,9 @@
+// A nested function to check the formation of blocks and 
+// indicates whether flattening was done properly
+
 int printInt(int);
 int printStr(char * p);
-// A really useless nested function
+
 int NestyFunction(int n) {
 	int k = 2;
 	{
@@ -11,24 +14,29 @@ int NestyFunction(int n) {
 				int k = 5;
 				{
 					k++;
+					printStr("K(should be 6) inside nested block = "); printInt(k);printStr("\n");
 				}
 			}
 		}
 	}
-	return k + 12;
+	printStr("K(should be 2) outside nested block = "); printInt(k);printStr("\n");
+	return n + k;
 }
 
 int main() {
 	int myInput[6];
 	myInput[0] = 1;
-	myInput[1] = 23;
-	myInput[2] = 45;
-	myInput[3] = 222;
-	myInput[4] = 1;
-	myInput[5]= 1222;
-	int n = 6;
+	myInput[1] = 10;
+	myInput[2] = 100;
+	myInput[3] = 1000;
+	myInput[4] = 10000;
+	myInput[5] = 100000;
 
-	int minMults = MatrixChainMultiplication(myInput, 1, n - 1);
+	int sum = 0;
+	// A wierd way of finding the sum of elements of an array
+	for(int i = 0; i < 6; i++)
+		sum = sum + NestyFunction(myInput[i] - 2);
 
+	printStr("Sum of all elements of the array is: "); printInt(sum); printStr("\n");
 	return 0;
 }

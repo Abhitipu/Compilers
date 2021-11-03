@@ -1,6 +1,6 @@
 int printInt(int);
 int printStr(char * p);
-
+// TODO Array
 void printArray(int arr[6], int n)
 {
     printStr("Printing the array\n");
@@ -25,12 +25,12 @@ int main() {
 
     printStr("Before Sorting: \n");
     // printInt(&arr);printStr("\n");
-    printArray(arr, n);
-    //for(i=0;i<n;++i)
-   	//{
-   	//	printInt(arr[i]); printStr(", ");
-   	//}
-    //printStr("\n");
+    // printArray(arr, n);
+    for(i=0;i<n;++i)
+   	{
+   		printInt(arr[i]); printStr(", ");
+   	}
+    printStr("\n");
 
     int key, j;
     for (i = 1; i < n; i++)

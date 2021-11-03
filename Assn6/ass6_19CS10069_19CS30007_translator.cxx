@@ -109,12 +109,11 @@ sym* symtable::lookup(string name)                                              
         string tosearchname = name;
         if(tosearchname.find(".")!= tosearchname.npos)
         {
-            
-            while(!tosearchname.empty() && tosearchname.back() != '@')
+            while(!tosearchname.empty() && tosearchname.back() != '.')
             {
                 tosearchname.pop_back();
             }
-            if(!tosearchname.empty() && tosearchname.back() == '@')
+            if(!tosearchname.empty() && tosearchname.back() == '.')
             {
                 tosearchname.pop_back();
             }

@@ -291,19 +291,19 @@ void generateAsm() {
 				asmFile << "\tleaq\t" << getOffset(arg1) << "(%rbp), %rax\n";
 				asmFile << "\tmovq \t%rax, " <<  getOffset(res) << "(%rbp)";
 			}
-            // What is this?
+            // a = *b
 			else if (op=="=*") {
 				asmFile << "\tmovq\t" << getOffset(arg1) << "(%rbp), %rax\n";
 				asmFile << "\tmovl\t(%rax),%eax\n";
 				asmFile << "\tmovl \t%eax, " <<  getOffset(res) << "(%rbp)";	
 			}
-            // And this??
+            // *a = b
 			else if (op=="*=") {
 				asmFile << "\tmovq\t" << getOffset(res) << "(%rbp), %rax\n";
 				asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), %edx\n";
 				asmFile << "\tmovl\t%edx, (%rax)";
 			} 			
-            // This is simple
+            // a = -b
 			else if (op=="uminus") {
 				asmFile << "\tnegl\t" << getOffset(arg1) << "(%rbp)";
 			}

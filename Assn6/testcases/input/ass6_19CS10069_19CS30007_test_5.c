@@ -1,24 +1,22 @@
 int printInt(int);
 int printStr(char * p);
-int checkPrime (int n) {
-  int i = 2;
-  int n1 = 1;
-  int flag = 0;
-  for(i = 2; i<n; i++) {
-      n1 = n%i;
-      if(n1 == 0) {
-	      flag = 1;
-	      break;
-	  }	
-  }
 
-  return (flag);
+int fib(int n) {
+  int ans;
+  if(n <= 1)
+    ans =  n;
+  else
+    ans = fib(n-1) + fib(n-2);
+  return ans;
 }
 
-int main () 
-{ 
-  int n = 9; 
-  int fib_num;
-  fib_num = fib(n);
+int main () { 
+  int n;
+  int ans;
+  for(n = 1; n<=10; n++)
+  {
+    ans = fib(n);
+    printStr("Fib("); printInt(n); printStr(") = "); printInt(ans); printStr("\n");
+  }
   return 0; 
 } 

@@ -9,8 +9,6 @@ using namespace std;
 extern FILE *yyin;
 extern vector<string> stringsToBePrinted;               // by printString meth TODO
 
-using namespace std;
-
 int functionLabelCount=0;							
 map<int, int> labelSerialNumber;				                    // map from quad number to label number
 ofstream out;								            // asm file stream
@@ -150,7 +148,7 @@ void generateAsm() {
     asmFile << "\t.text\n";
     
     vector <string> params;
-    map<string, int> theMap;
+
 
     int opSerialNumber = 0;
 
@@ -212,9 +210,15 @@ void generateAsm() {
 				asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";		
 			}
 
+			// modulo operation
+			else if (op=="%") {
+				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
+				asmFile << "\tcltd" << '\n';
+				asmFile << "\tidivl \t" << getOffset(arg2) << "(%rbp)" << '\n';
+				asmFile << "\tmovl \t%edx, " << getOffset(res) << "(%rbp)";		
+			}
+
 			// Ignoring bitwise operations
-			else if (op=="%")		    
-				asmFile << "\t"<< res << " = " << arg1 << " % " << arg2;
 			else if (op=="^")			
 				asmFile << "\t"<< res << " = " << arg1 << " ^ " << arg2;
 			else if (op=="|")		    
@@ -239,10 +243,6 @@ void generateAsm() {
 			}
 
 			// dereferencing
-			// else if (op=="=*")
-			// 	asmFile << "\tmovq \t$.LC" << arg1 << ", " << getOffset(res) << "(%rbp)";
-			
-			// todo in y
 			else if (op=="equalchar")	
 				asmFile << "\tmovb\t$" << arg1 << ", " << getOffset(res) << "(%rbp)";
 
@@ -305,7 +305,13 @@ void generateAsm() {
 			} 			
             // a = -b
 			else if (op=="uminus") {
-				asmFile << "\tnegl\t" << getOffset(arg1) << "(%rbp)";
+				if (isNumber(arg1))
+					asmFile << "\tmovl\t$" << arg1 << ", " << "%eax" << '\n';
+				else
+					asmFile << "\tmovl\t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
+                    
+				asmFile << "\tnegl\t" << "%eax\n";
+				asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";
 			}
             // Ignored for now
 			else if (op=="~")		        
@@ -314,7 +320,7 @@ void generateAsm() {
 				asmFile << res 	<< " = !" << arg1;
 
 			else if (op=="=[]") { 
-				asmFile << "movl \t" << getOffset(arg2) << "%eax\n";
+				asmFile << "movl \t" << getOffset(arg2)<< "(%rbp), "  << "%eax\n";
 				asmFile << "\tnegl\t" << "%eax\n";
 				asmFile << "\tcltq\n";
 				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp, %rax, 1), " << "%eax\n";
@@ -322,8 +328,8 @@ void generateAsm() {
 			}	
 
 			else if (op=="[]=") { 
-				asmFile << "movl \t" << getOffset(arg2) << "%edx\n";
-				asmFile << "\tmovl \t" << getOffset(arg1) << "%eax\n";
+				asmFile << "movl \t" << getOffset(arg2)<< "(%rbp), " << "%edx\n";
+				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), "<< "%eax\n";
 				asmFile << "\tnegl\t" << "%eax\n";
 				asmFile << "\tcltq\n";
 				asmFile << "\tmovl \t" << "%edx, " << getOffset(res) << "(%rbp, %rax, 1)";

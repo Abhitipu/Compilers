@@ -5,8 +5,10 @@ int fib(int n);
 int readInt(int *n);
 
 int gcdAlgorithm(int a, int b) { 
-    if (a == 0) return b; 
-    return gcdAlgorithm(b % a, a); 
+    if (a == 0) 
+        return b; 
+    else 
+        return gcdAlgorithm(b % a, a); 
 } 
 
 int main()  {  

@@ -3,11 +3,12 @@ int printStr(char * p);
 
 // function calling and conditional statements (ternary and if-else)
 // Return from functions
-
+// TODO return
 int abs(int x) {
 	if(x < 0)
 		return -x;
-	return x;
+	else
+		return x;
 }
 
 int min(int x, int y) {
@@ -35,11 +36,11 @@ int main(){
 
 	int ans3 = min(x, y);
 	printStr("Testing the min function\n");
-	printStr("Min("); printInt(x); printStr(", "); printInt(y); printStr(") = "); printInt(ans3);
+	printStr("Min("); printInt(x); printStr(", "); printInt(y); printStr(") = "); printInt(ans3); printStr("\n");
 
 	int ans4 = max(x, y);
 	printStr("Testing the max function\n");
-	printStr("Max("); printInt(x); printStr(", "); printInt(y); printStr(") = "); printInt(ans4);
+	printStr("Max("); printInt(x); printStr(", "); printInt(y); printStr(") = "); printInt(ans4); printStr("\n");
 
 	return 0;
 }

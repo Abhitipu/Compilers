@@ -23,6 +23,7 @@ int main() {
     arr[5] = 12;
     n=6;
 
+    printStr("Sorting Arrays using insertion sort\n");
     printStr("Before Sorting: \n");
     // printInt(&arr);printStr("\n");
     // printArray(arr, n);

@@ -24,6 +24,7 @@ int NestyFunction(int n) {
 }
 
 int main() {
+	printStr("Program to find sum of all elements of an array\n");
 	int myInput[6];
 	myInput[0] = 1;
 	myInput[1] = 10;

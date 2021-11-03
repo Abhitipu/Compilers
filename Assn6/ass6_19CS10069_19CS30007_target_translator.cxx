@@ -320,7 +320,7 @@ void generateAsm() {
 				asmFile << res 	<< " = !" << arg1;
 
 			else if (op=="=[]") { 
-				asmFile << "movl \t" << getOffset(arg2)<< "(%rbp), "  << "%eax\n";
+				asmFile << "\tmovl \t" << getOffset(arg2)<< "(%rbp), "  << "%eax\n";
 				asmFile << "\tnegl\t" << "%eax\n";
 				asmFile << "\tcltq\n";
 				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp, %rax, 1), " << "%eax\n";
@@ -328,7 +328,7 @@ void generateAsm() {
 			}	
 
 			else if (op=="[]=") { 
-				asmFile << "movl \t" << getOffset(arg2)<< "(%rbp), " << "%edx\n";
+				asmFile << "\tmovl \t" << getOffset(arg2)<< "(%rbp), " << "%edx\n";
 				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), "<< "%eax\n";
 				asmFile << "\tnegl\t" << "%eax\n";
 				asmFile << "\tcltq\n";

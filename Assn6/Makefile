@@ -32,10 +32,6 @@ test: tinyC libass2_19CS10069.a
 	./tinyC _test_8 < testcases/input/ass6_19CS10069_19CS30007_test_8.c > testcases/output/ass6_19CS10069_19CS30007_quads8.out
 	@echo "\nTest 8 Successfully Translated !\n"
 
-	@echo "TEST 9"
-	./tinyC _test_9 < testcases/input/ass6_19CS10069_19CS30007_test_9.c > testcases/output/ass6_19CS10069_19CS30007_quads9.out
-	@echo "\nTest 9 Successfully Translated !\n"
-
 	@echo "Generating .o from .s !\n"
 	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_1.s -o testcases/output/ass6_19CS10069_19CS30007_test_1.o
 	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_2.s -o testcases/output/ass6_19CS10069_19CS30007_test_2.o
@@ -45,7 +41,6 @@ test: tinyC libass2_19CS10069.a
 	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_6.s -o testcases/output/ass6_19CS10069_19CS30007_test_6.o
 	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_7.s -o testcases/output/ass6_19CS10069_19CS30007_test_7.o
 	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_8.s -o testcases/output/ass6_19CS10069_19CS30007_test_8.o
-	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_9.s -o testcases/output/ass6_19CS10069_19CS30007_test_9.o
 	@echo "Successfully Generated .o files !\n\n"
 
 	@echo "Compiling the test files !\n"
@@ -57,15 +52,48 @@ test: tinyC libass2_19CS10069.a
 	gcc testcases/output/ass6_19CS10069_19CS30007_test_6.o -o testcases/output/test6 -L. -lass2_19CS10069 -no-pie
 	gcc testcases/output/ass6_19CS10069_19CS30007_test_7.o -o testcases/output/test7 -L. -lass2_19CS10069 -no-pie
 	gcc testcases/output/ass6_19CS10069_19CS30007_test_8.o -o testcases/output/test8 -L. -lass2_19CS10069 -no-pie
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_9.o -o testcases/output/test9 -L. -lass2_19CS10069 -no-pie
 	@echo "Successfully Compiled All test files !\n\n"
 
+	@echo "Executing all the files !\n"
+
+	@echo "Testing file 1\n"
+	./testcases/output/test1
+	@echo "Done!!\n"
+
+	@echo "Testing file 2\n"
+	./testcases/output/test2
+	@echo "Done!!\n"
+
+	@echo "Testing file 3\n"
+	./testcases/output/test3
+	@echo "Done!!\n"
+
+	@echo "Testing file 4\n"
+	./testcases/output/test4
+	@echo "Done!!\n"
+
+	@echo "Testing file 5\n"
+	./testcases/output/test5
+	@echo "Done!!\n"
+
+	@echo "Testing file 6\n"
+	./testcases/output/test6
+	@echo "Done!!\n"
+
+	@echo "Testing file 7\n"
+	./testcases/output/test7
+	@echo "Done!!\n"
+
+	@echo "Testing file 8\n"
+	./testcases/output/test8
+	@echo "Done!!\n"
+
 testmini: tinyC libass2_19CS10069.a
-	@echo "TEST 8"
-	./tinyC _test_8 < testcases/input/ass6_19CS10069_19CS30007_test_8.c > testcases/output/ass6_19CS10069_19CS30007_quads8.out
-	@echo "\nTest 8 Successfully Translated !\n"
-	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_8.s -o testcases/output/ass6_19CS10069_19CS30007_test_8.o
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_8.o -o testcases/output/test8 -L. -lass2_19CS10069 -no-pie
+	@echo "TEST 3"
+	./tinyC _test_3 < testcases/input/ass6_19CS10069_19CS30007_test_3.c > testcases/output/ass6_19CS10069_19CS30007_quads3.out
+	@echo "\nTest 3 Successfully Translated !\n"
+	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_3.s -o testcases/output/ass6_19CS10069_19CS30007_test_3.o
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_3.o -o testcases/output/test3 -L. -lass2_19CS10069 -no-pie
 
 tinyC: lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o
 	g++ -g lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o -lfl -o tinyC

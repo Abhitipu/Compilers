@@ -18,7 +18,6 @@ int main() {
 	char myCharValue='X';
 
 	// Binary operators
-	printStr("\n\n------------------------------------------\n\n");
 	printStr("Testing some binary operations\n");
 
 	i = 24;
@@ -31,8 +30,6 @@ int main() {
 	printInt(i); printStr(" * "); printInt(n); printStr(" = "); printInt(a3);printStr("\n");
 	int a4 = i/n;
 	printInt(i); printStr(" / "); printInt(n); printStr(" = "); printInt(a4);printStr("\n");
-
-	printStr("\n\nDone test\n\n");
 
 	return 0;
 }

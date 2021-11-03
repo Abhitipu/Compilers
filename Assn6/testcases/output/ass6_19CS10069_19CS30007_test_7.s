@@ -8,16 +8,18 @@
 .LC2:
 	.string	"\n"
 .LC3:
-	.string	"Before Sorting: \n"
+	.string	"Sorting Arrays using insertion sort\n"
 .LC4:
-	.string	", "
+	.string	"Before Sorting: \n"
 .LC5:
-	.string	"\n"
-.LC6:
-	.string	"After Sorting: \n"
-.LC7:
 	.string	", "
+.LC6:
+	.string	"\n"
+.LC7:
+	.string	"After Sorting: \n"
 .LC8:
+	.string	", "
+.LC9:
 	.string	"\n"
 	.text
 	movl	$6, %eax
@@ -55,7 +57,7 @@ printArray:
 	movl 	-52(%rbp), %eax
 	imull 	$4, %eax
 	movl 	%eax, -60(%rbp)
-movl 	-60(%rbp), %eax
+	movl 	-60(%rbp), %eax
 	negl	%eax
 	cltq
 	movl 	-20(%rbp, %rax, 1), %eax
@@ -91,7 +93,7 @@ main:
 	.cfi_offset 5, -8
 	movq 	%rsp, %rbp
 	.cfi_def_cfa_register 5
-	subq	$396, %rsp
+	subq	$408, %rsp
 
 	movl	$6, %eax
 	movl 	%eax, -56(%rbp)
@@ -102,7 +104,7 @@ main:
 	movl 	%eax, -64(%rbp)
 	movl	$5, %eax
 	movl 	%eax, -68(%rbp)
-movl 	-68(%rbp), %edx
+	movl 	-68(%rbp), %edx
 	movl 	-64(%rbp), %eax
 	negl	%eax
 	cltq
@@ -117,7 +119,7 @@ movl 	-68(%rbp), %edx
 	movl	-84(%rbp), %eax
 	negl	%eax
 	movl 	%eax, -88(%rbp)
-movl 	-88(%rbp), %edx
+	movl 	-88(%rbp), %edx
 	movl 	-80(%rbp), %eax
 	negl	%eax
 	cltq
@@ -132,7 +134,7 @@ movl 	-88(%rbp), %edx
 	movl	-104(%rbp), %eax
 	negl	%eax
 	movl 	%eax, -108(%rbp)
-movl 	-108(%rbp), %edx
+	movl 	-108(%rbp), %edx
 	movl 	-100(%rbp), %eax
 	negl	%eax
 	cltq
@@ -144,7 +146,7 @@ movl 	-108(%rbp), %edx
 	movl 	%eax, -120(%rbp)
 	movl	$98, %eax
 	movl 	%eax, -124(%rbp)
-movl 	-124(%rbp), %edx
+	movl 	-124(%rbp), %edx
 	movl 	-120(%rbp), %eax
 	negl	%eax
 	cltq
@@ -156,7 +158,7 @@ movl 	-124(%rbp), %edx
 	movl 	%eax, -136(%rbp)
 	movl	$14, %eax
 	movl 	%eax, -140(%rbp)
-movl 	-140(%rbp), %edx
+	movl 	-140(%rbp), %edx
 	movl 	-136(%rbp), %eax
 	negl	%eax
 	cltq
@@ -168,7 +170,7 @@ movl 	-140(%rbp), %edx
 	movl 	%eax, -152(%rbp)
 	movl	$12, %eax
 	movl 	%eax, -156(%rbp)
-movl 	-156(%rbp), %edx
+	movl 	-156(%rbp), %edx
 	movl 	-152(%rbp), %eax
 	negl	%eax
 	cltq
@@ -181,10 +183,14 @@ movl 	-156(%rbp), %edx
 	movq 	-172(%rbp), %rdi
 	call	printStr
 	movl	%eax, -180(%rbp)
+	movq 	$.LC4, -184(%rbp)
+	movq 	-184(%rbp), %rdi
+	call	printStr
+	movl	%eax, -192(%rbp)
 	nop
 	movl	$0, %eax
-	movl 	%eax, -232(%rbp)
-	movl	-232(%rbp), %eax
+	movl 	%eax, -244(%rbp)
+	movl	-244(%rbp), %eax
 	movl 	%eax, -24(%rbp)
 .L5: 
 	movl	-24(%rbp), %eax
@@ -197,29 +203,29 @@ movl 	-156(%rbp), %edx
 .L7: 
 	movl 	-24(%rbp), %eax
 	imull 	$4, %eax
-	movl 	%eax, -240(%rbp)
-movl 	-240(%rbp), %eax
+	movl 	%eax, -252(%rbp)
+	movl 	-252(%rbp), %eax
 	negl	%eax
 	cltq
 	movl 	-32(%rbp, %rax, 1), %eax
-	movl 	%eax, -244(%rbp)
-	movq 	-244(%rbp), %rdi
+	movl 	%eax, -256(%rbp)
+	movq 	-256(%rbp), %rdi
 	call	printInt
-	movl	%eax, -248(%rbp)
-	movq 	$.LC4, -252(%rbp)
-	movq 	-252(%rbp), %rdi
-	call	printStr
 	movl	%eax, -260(%rbp)
+	movq 	$.LC5, -264(%rbp)
+	movq 	-264(%rbp), %rdi
+	call	printStr
+	movl	%eax, -272(%rbp)
 	jmp .L6
 .L8: 
-	movq 	$.LC5, -184(%rbp)
-	movq 	-184(%rbp), %rdi
+	movq 	$.LC6, -196(%rbp)
+	movq 	-196(%rbp), %rdi
 	call	printStr
-	movl	%eax, -192(%rbp)
+	movl	%eax, -204(%rbp)
 	nop
 	movl	$1, %eax
-	movl 	%eax, -264(%rbp)
-	movl	-264(%rbp), %eax
+	movl 	%eax, -276(%rbp)
+	movl	-276(%rbp), %eax
 	movl 	%eax, -24(%rbp)
 .L9: 
 	movl	-24(%rbp), %eax
@@ -228,106 +234,106 @@ movl 	-240(%rbp), %eax
 	jmp .L16
 .L10: 
 	movl	-24(%rbp), %eax
-	movl 	%eax, -272(%rbp)
+	movl 	%eax, -284(%rbp)
 	addl 	$1, -24(%rbp)
 	jmp .L9
 .L11: 
 	movl 	-24(%rbp), %eax
 	imull 	$4, %eax
-	movl 	%eax, -276(%rbp)
-movl 	-276(%rbp), %eax
+	movl 	%eax, -288(%rbp)
+	movl 	-288(%rbp), %eax
 	negl	%eax
 	cltq
 	movl 	-32(%rbp, %rax, 1), %eax
-	movl 	%eax, -280(%rbp)
-	movl	-280(%rbp), %eax
-	movl 	%eax, -196(%rbp)
-	movl	$1, %eax
-	movl 	%eax, -288(%rbp)
-	movl 	-24(%rbp), %eax
-	movl 	-288(%rbp), %edx
-	subl 	%edx, %eax
 	movl 	%eax, -292(%rbp)
 	movl	-292(%rbp), %eax
-	movl 	%eax, -200(%rbp)
+	movl 	%eax, -208(%rbp)
+	movl	$1, %eax
+	movl 	%eax, -300(%rbp)
+	movl 	-24(%rbp), %eax
+	movl 	-300(%rbp), %edx
+	subl 	%edx, %eax
+	movl 	%eax, -304(%rbp)
+	movl	-304(%rbp), %eax
+	movl 	%eax, -212(%rbp)
 	nop
 .L12: 
 	movl	$0, %eax
-	movl 	%eax, -348(%rbp)
-	movl	-200(%rbp), %eax
-	cmpl	-348(%rbp), %eax
+	movl 	%eax, -360(%rbp)
+	movl	-212(%rbp), %eax
+	cmpl	-360(%rbp), %eax
 	jge .L13
 	jmp .L15
 .L13: 
-	movl 	-200(%rbp), %eax
+	movl 	-212(%rbp), %eax
 	imull 	$4, %eax
-	movl 	%eax, -352(%rbp)
-movl 	-352(%rbp), %eax
+	movl 	%eax, -364(%rbp)
+	movl 	-364(%rbp), %eax
 	negl	%eax
 	cltq
 	movl 	-32(%rbp, %rax, 1), %eax
-	movl 	%eax, -356(%rbp)
-	movl	-356(%rbp), %eax
-	cmpl	-196(%rbp), %eax
+	movl 	%eax, -368(%rbp)
+	movl	-368(%rbp), %eax
+	cmpl	-208(%rbp), %eax
 	jg .L14
 	jmp .L15
 .L14: 
 	movl	$1, %eax
-	movl 	%eax, -360(%rbp)
-	movl 	-200(%rbp), %eax
-	movl 	-360(%rbp), %edx
-	addl 	%edx, %eax
-	movl 	%eax, -364(%rbp)
-	movl 	-364(%rbp), %eax
-	imull 	$4, %eax
-	movl 	%eax, -368(%rbp)
-	movl 	-200(%rbp), %eax
-	imull 	$4, %eax
 	movl 	%eax, -372(%rbp)
-movl 	-372(%rbp), %eax
+	movl 	-212(%rbp), %eax
+	movl 	-372(%rbp), %edx
+	addl 	%edx, %eax
+	movl 	%eax, -376(%rbp)
+	movl 	-376(%rbp), %eax
+	imull 	$4, %eax
+	movl 	%eax, -380(%rbp)
+	movl 	-212(%rbp), %eax
+	imull 	$4, %eax
+	movl 	%eax, -384(%rbp)
+	movl 	-384(%rbp), %eax
 	negl	%eax
 	cltq
 	movl 	-32(%rbp, %rax, 1), %eax
-	movl 	%eax, -376(%rbp)
-movl 	-376(%rbp), %edx
-	movl 	-368(%rbp), %eax
+	movl 	%eax, -388(%rbp)
+	movl 	-388(%rbp), %edx
+	movl 	-380(%rbp), %eax
 	negl	%eax
 	cltq
 	movl 	%edx, -32(%rbp, %rax, 1)
 	movl	$1, %eax
-	movl 	%eax, -384(%rbp)
-	movl 	-200(%rbp), %eax
-	movl 	-384(%rbp), %edx
+	movl 	%eax, -396(%rbp)
+	movl 	-212(%rbp), %eax
+	movl 	-396(%rbp), %edx
 	subl 	%edx, %eax
-	movl 	%eax, -388(%rbp)
-	movl	-388(%rbp), %eax
-	movl 	%eax, -200(%rbp)
+	movl 	%eax, -400(%rbp)
+	movl	-400(%rbp), %eax
+	movl 	%eax, -212(%rbp)
 	jmp .L12
 .L15: 
 	movl	$1, %eax
-	movl 	%eax, -300(%rbp)
-	movl 	-200(%rbp), %eax
-	movl 	-300(%rbp), %edx
+	movl 	%eax, -312(%rbp)
+	movl 	-212(%rbp), %eax
+	movl 	-312(%rbp), %edx
 	addl 	%edx, %eax
-	movl 	%eax, -304(%rbp)
-	movl 	-304(%rbp), %eax
+	movl 	%eax, -316(%rbp)
+	movl 	-316(%rbp), %eax
 	imull 	$4, %eax
-	movl 	%eax, -308(%rbp)
-movl 	-196(%rbp), %edx
-	movl 	-308(%rbp), %eax
+	movl 	%eax, -320(%rbp)
+	movl 	-208(%rbp), %edx
+	movl 	-320(%rbp), %eax
 	negl	%eax
 	cltq
 	movl 	%edx, -32(%rbp, %rax, 1)
 	jmp .L10
 .L16: 
-	movq 	$.LC6, -204(%rbp)
-	movq 	-204(%rbp), %rdi
+	movq 	$.LC7, -216(%rbp)
+	movq 	-216(%rbp), %rdi
 	call	printStr
-	movl	%eax, -212(%rbp)
+	movl	%eax, -224(%rbp)
 	nop
 	movl	$0, %eax
-	movl 	%eax, -316(%rbp)
-	movl	-316(%rbp), %eax
+	movl 	%eax, -328(%rbp)
+	movl	-328(%rbp), %eax
 	movl 	%eax, -24(%rbp)
 .L17: 
 	movl	-24(%rbp), %eax
@@ -340,28 +346,28 @@ movl 	-196(%rbp), %edx
 .L19: 
 	movl 	-24(%rbp), %eax
 	imull 	$4, %eax
-	movl 	%eax, -324(%rbp)
-movl 	-324(%rbp), %eax
+	movl 	%eax, -336(%rbp)
+	movl 	-336(%rbp), %eax
 	negl	%eax
 	cltq
 	movl 	-32(%rbp, %rax, 1), %eax
-	movl 	%eax, -328(%rbp)
-	movq 	-328(%rbp), %rdi
+	movl 	%eax, -340(%rbp)
+	movq 	-340(%rbp), %rdi
 	call	printInt
-	movl	%eax, -332(%rbp)
-	movq 	$.LC7, -336(%rbp)
-	movq 	-336(%rbp), %rdi
-	call	printStr
 	movl	%eax, -344(%rbp)
+	movq 	$.LC8, -348(%rbp)
+	movq 	-348(%rbp), %rdi
+	call	printStr
+	movl	%eax, -356(%rbp)
 	jmp .L18
 .L20: 
-	movq 	$.LC8, -216(%rbp)
-	movq 	-216(%rbp), %rdi
+	movq 	$.LC9, -228(%rbp)
+	movq 	-228(%rbp), %rdi
 	call	printStr
-	movl	%eax, -224(%rbp)
+	movl	%eax, -236(%rbp)
 	movl	$0, %eax
-	movl 	%eax, -228(%rbp)
-	movl	-228(%rbp), %eax
+	movl 	%eax, -240(%rbp)
+	movl	-240(%rbp), %eax
 	leave
 	.cfi_restore 5
 	.cfi_def_cfa 4, 4

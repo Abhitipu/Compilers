@@ -15,14 +15,12 @@ int main() {
 	int b;
 	a = 2;
 	b = 3;
-	printStr("\n\n------------------------------------------\n\n");
 	printStr("Testing function calls\n");
 	printStr("Numbers before swapping\n");
 	printInt(a); printStr(" "); printInt(b); printStr("\n");
 	swapTwoNumbers(&a, &b);
 	printStr("Numbers after swapping\n");
 	printInt(a); printStr(" "); printInt(b); printStr("\n");
-	printStr("\n\nDone test\n\n");
 	return 0;
 }
 

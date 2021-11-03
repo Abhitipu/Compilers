@@ -624,16 +624,16 @@ static const yytype_int16 yyrline[] =
      946,   951,   953,   958,   960,   965,   967,   972,   974,   978,
      980,   982,   987,   989,   991,   996,   997,  1001,  1003,  1009,
     1011,  1017,  1019,  1021,  1026,  1031,  1042,  1048,  1059,  1060,
-    1061,  1062,  1082,  1102,  1103,  1104,  1105,  1106,  1127,  1128,
-    1153,  1154,  1159,  1163,  1170,  1172,  1177,  1179,  1184,  1186,
-    1191,  1195,  1200,  1202,  1207,  1212,  1214,  1216,  1221,  1223,
-    1228,  1229,  1233,  1238,  1240,  1245,  1247,  1252,  1254,  1256,
-    1261,  1263,  1265,  1270,  1271,  1276,  1277,  1278,  1281,  1295,
-    1297,  1302,  1310,  1312,  1320,  1322,  1327,  1329,  1334,  1337,
-    1343,  1355,  1368,  1373,  1390,  1407,  1420,  1432,  1450,  1468,
-    1486,  1505,  1522,  1524,  1526,  1531,  1539,  1541,  1546,  1548,
-    1553,  1569,  1570,  1574,  1576,  1580,  1587,  1594,  1601,  1608,
-    1624,  1636,  1652
+    1061,  1062,  1083,  1104,  1105,  1106,  1107,  1108,  1129,  1130,
+    1155,  1156,  1161,  1165,  1172,  1174,  1179,  1181,  1186,  1188,
+    1193,  1197,  1202,  1204,  1209,  1214,  1216,  1218,  1223,  1225,
+    1230,  1231,  1235,  1240,  1242,  1247,  1249,  1254,  1256,  1258,
+    1263,  1265,  1267,  1272,  1273,  1278,  1279,  1280,  1283,  1297,
+    1299,  1304,  1312,  1314,  1322,  1324,  1329,  1331,  1336,  1339,
+    1345,  1357,  1370,  1375,  1392,  1409,  1422,  1434,  1452,  1470,
+    1488,  1507,  1524,  1526,  1528,  1533,  1541,  1543,  1548,  1550,
+    1555,  1571,  1572,  1576,  1578,  1582,  1589,  1596,  1603,  1610,
+    1626,  1638,  1654
 };
 #endif
 
@@ -3350,12 +3350,13 @@ yyreduce:
                             prev->arrtype =  new symboltype("arr", t, stoi((yyvsp[-1].expr)->loc->val));      // similar arguments as above		
                             (yyval.symp) = (yyvsp[-3].symp)->update((yyvsp[-3].symp)->type);
                         }
+                        (yyvsp[-3].symp)->category = "array"; //TODO
                     }
-#line 3355 "ass6_19CS10069_19CS30007.tab.c"
+#line 3356 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 152:
-#line 1083 "ass6_19CS10069_19CS30007.y"
+#line 1084 "ass6_19CS10069_19CS30007.y"
                     {
                         symboltype *t = (yyvsp[-2].symp)->type;
                         symboltype *prev = NULL;                                    // initialize prev to NULL
@@ -3374,36 +3375,37 @@ yyreduce:
                             prev->arrtype =  new symboltype("arr", t, 0);
                             (yyval.symp) = (yyvsp[-2].symp)->update((yyvsp[-2].symp)->type);
                         }
+                        (yyvsp[-2].symp)->category = "array"; //TODO
                     }
-#line 3379 "ass6_19CS10069_19CS30007.tab.c"
+#line 3381 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 153:
-#line 1102 "ass6_19CS10069_19CS30007.y"
+#line 1104 "ass6_19CS10069_19CS30007.y"
                                                                                                  {	}
-#line 3385 "ass6_19CS10069_19CS30007.tab.c"
+#line 3387 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 154:
-#line 1103 "ass6_19CS10069_19CS30007.y"
+#line 1105 "ass6_19CS10069_19CS30007.y"
                                                                              {	}
-#line 3391 "ass6_19CS10069_19CS30007.tab.c"
+#line 3393 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 155:
-#line 1104 "ass6_19CS10069_19CS30007.y"
+#line 1106 "ass6_19CS10069_19CS30007.y"
                                                                          {	}
-#line 3397 "ass6_19CS10069_19CS30007.tab.c"
+#line 3399 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 156:
-#line 1105 "ass6_19CS10069_19CS30007.y"
+#line 1107 "ass6_19CS10069_19CS30007.y"
                                                      {	}
-#line 3403 "ass6_19CS10069_19CS30007.tab.c"
+#line 3405 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 157:
-#line 1107 "ass6_19CS10069_19CS30007.y"
+#line 1109 "ass6_19CS10069_19CS30007.y"
                     {
                         string nameOfTable = (yyvsp[-4].symp)->name;
                         if(nameOfTable.find(".")!=nameOfTable.npos)
@@ -3424,17 +3426,17 @@ yyreduce:
                         changeTable(globalST);				        // Come back to globalsymbol table
                         currSymbolPtr = (yyval.symp);
                     }
-#line 3428 "ass6_19CS10069_19CS30007.tab.c"
+#line 3430 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 158:
-#line 1127 "ass6_19CS10069_19CS30007.y"
+#line 1129 "ass6_19CS10069_19CS30007.y"
                                                                 {	}
-#line 3434 "ass6_19CS10069_19CS30007.tab.c"
+#line 3436 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 159:
-#line 1129 "ass6_19CS10069_19CS30007.y"
+#line 1131 "ass6_19CS10069_19CS30007.y"
                     {        //similar as above
 
                         string nameOfTable = (yyvsp[-3].symp)->name;
@@ -3456,251 +3458,251 @@ yyreduce:
                         changeTable(globalST);				// Go back to global Symbol table
                         currSymbolPtr = (yyval.symp);
                     }
-#line 3460 "ass6_19CS10069_19CS30007.tab.c"
+#line 3462 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 160:
-#line 1153 "ass6_19CS10069_19CS30007.y"
+#line 1155 "ass6_19CS10069_19CS30007.y"
                                         { }
-#line 3466 "ass6_19CS10069_19CS30007.tab.c"
+#line 3468 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 161:
-#line 1154 "ass6_19CS10069_19CS30007.y"
+#line 1156 "ass6_19CS10069_19CS30007.y"
                              {  }
-#line 3472 "ass6_19CS10069_19CS30007.tab.c"
+#line 3474 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 162:
-#line 1160 "ass6_19CS10069_19CS30007.y"
+#line 1162 "ass6_19CS10069_19CS30007.y"
                     { 
                         (yyval.sym_type) = new symboltype("ptr");   //create a new pointer symbol
                     }
-#line 3480 "ass6_19CS10069_19CS30007.tab.c"
+#line 3482 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 163:
-#line 1164 "ass6_19CS10069_19CS30007.y"
+#line 1166 "ass6_19CS10069_19CS30007.y"
                     { 
                         (yyval.sym_type) = new symboltype("ptr",(yyvsp[0].sym_type)); // create the symboltype with $3 symbol type
                     }
-#line 3488 "ass6_19CS10069_19CS30007.tab.c"
+#line 3490 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 164:
-#line 1171 "ass6_19CS10069_19CS30007.y"
+#line 1173 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3494 "ass6_19CS10069_19CS30007.tab.c"
+#line 3496 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 165:
-#line 1173 "ass6_19CS10069_19CS30007.y"
+#line 1175 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3500 "ass6_19CS10069_19CS30007.tab.c"
+#line 3502 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 166:
-#line 1178 "ass6_19CS10069_19CS30007.y"
+#line 1180 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3506 "ass6_19CS10069_19CS30007.tab.c"
+#line 3508 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 167:
-#line 1180 "ass6_19CS10069_19CS30007.y"
+#line 1182 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3512 "ass6_19CS10069_19CS30007.tab.c"
+#line 3514 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 168:
-#line 1185 "ass6_19CS10069_19CS30007.y"
+#line 1187 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3518 "ass6_19CS10069_19CS30007.tab.c"
+#line 3520 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 169:
-#line 1187 "ass6_19CS10069_19CS30007.y"
+#line 1189 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3524 "ass6_19CS10069_19CS30007.tab.c"
+#line 3526 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 170:
-#line 1192 "ass6_19CS10069_19CS30007.y"
+#line 1194 "ass6_19CS10069_19CS30007.y"
                     {  
                         (yyvsp[0].symp)->category = "param";              // verify
                     }
-#line 3532 "ass6_19CS10069_19CS30007.tab.c"
+#line 3534 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 171:
-#line 1196 "ass6_19CS10069_19CS30007.y"
+#line 1198 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3538 "ass6_19CS10069_19CS30007.tab.c"
+#line 3540 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 172:
-#line 1201 "ass6_19CS10069_19CS30007.y"
+#line 1203 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3544 "ass6_19CS10069_19CS30007.tab.c"
+#line 3546 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 173:
-#line 1203 "ass6_19CS10069_19CS30007.y"
+#line 1205 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3550 "ass6_19CS10069_19CS30007.tab.c"
+#line 3552 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 174:
-#line 1208 "ass6_19CS10069_19CS30007.y"
+#line 1210 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3556 "ass6_19CS10069_19CS30007.tab.c"
+#line 3558 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 175:
-#line 1213 "ass6_19CS10069_19CS30007.y"
+#line 1215 "ass6_19CS10069_19CS30007.y"
                     { (yyval.symp)=(yyvsp[0].expr)->loc; /* assignment */  }
-#line 3562 "ass6_19CS10069_19CS30007.tab.c"
+#line 3564 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 176:
-#line 1215 "ass6_19CS10069_19CS30007.y"
+#line 1217 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3568 "ass6_19CS10069_19CS30007.tab.c"
+#line 3570 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 177:
-#line 1217 "ass6_19CS10069_19CS30007.y"
+#line 1219 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3574 "ass6_19CS10069_19CS30007.tab.c"
+#line 3576 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 178:
-#line 1222 "ass6_19CS10069_19CS30007.y"
+#line 1224 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3580 "ass6_19CS10069_19CS30007.tab.c"
+#line 3582 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 179:
-#line 1224 "ass6_19CS10069_19CS30007.y"
+#line 1226 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3586 "ass6_19CS10069_19CS30007.tab.c"
+#line 3588 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 180:
-#line 1228 "ass6_19CS10069_19CS30007.y"
+#line 1230 "ass6_19CS10069_19CS30007.y"
                                 { }
-#line 3592 "ass6_19CS10069_19CS30007.tab.c"
+#line 3594 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 181:
-#line 1229 "ass6_19CS10069_19CS30007.y"
+#line 1231 "ass6_19CS10069_19CS30007.y"
                              { }
-#line 3598 "ass6_19CS10069_19CS30007.tab.c"
+#line 3600 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 182:
-#line 1234 "ass6_19CS10069_19CS30007.y"
+#line 1236 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3604 "ass6_19CS10069_19CS30007.tab.c"
+#line 3606 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 183:
-#line 1239 "ass6_19CS10069_19CS30007.y"
+#line 1241 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3610 "ass6_19CS10069_19CS30007.tab.c"
+#line 3612 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 184:
-#line 1241 "ass6_19CS10069_19CS30007.y"
+#line 1243 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3616 "ass6_19CS10069_19CS30007.tab.c"
+#line 3618 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 185:
-#line 1246 "ass6_19CS10069_19CS30007.y"
+#line 1248 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3622 "ass6_19CS10069_19CS30007.tab.c"
+#line 3624 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 186:
-#line 1248 "ass6_19CS10069_19CS30007.y"
+#line 1250 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3628 "ass6_19CS10069_19CS30007.tab.c"
+#line 3630 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 187:
-#line 1253 "ass6_19CS10069_19CS30007.y"
+#line 1255 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3634 "ass6_19CS10069_19CS30007.tab.c"
+#line 3636 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 188:
-#line 1255 "ass6_19CS10069_19CS30007.y"
+#line 1257 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); }
-#line 3640 "ass6_19CS10069_19CS30007.tab.c"
+#line 3642 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 189:
-#line 1257 "ass6_19CS10069_19CS30007.y"
+#line 1259 "ass6_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat)=new Statement();              //create new statement with same nextlist
                         (yyval.stat)->nextlist=(yyvsp[0].expr)->nextlist; 
                     }
-#line 3649 "ass6_19CS10069_19CS30007.tab.c"
+#line 3651 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 190:
-#line 1262 "ass6_19CS10069_19CS30007.y"
+#line 1264 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); }
-#line 3655 "ass6_19CS10069_19CS30007.tab.c"
+#line 3657 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 191:
-#line 1264 "ass6_19CS10069_19CS30007.y"
+#line 1266 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); }
-#line 3661 "ass6_19CS10069_19CS30007.tab.c"
+#line 3663 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 192:
-#line 1266 "ass6_19CS10069_19CS30007.y"
+#line 1268 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); }
-#line 3667 "ass6_19CS10069_19CS30007.tab.c"
+#line 3669 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 193:
-#line 1270 "ass6_19CS10069_19CS30007.y"
+#line 1272 "ass6_19CS10069_19CS30007.y"
                                         {  }
-#line 3673 "ass6_19CS10069_19CS30007.tab.c"
+#line 3675 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 194:
-#line 1272 "ass6_19CS10069_19CS30007.y"
+#line 1274 "ass6_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat)=new Statement();                         // create new statement with same nextlist
                         (yyval.stat)->nextlist=(yyvsp[0].expr)->nextlist;                  // assign the nextlist
                     }
-#line 3682 "ass6_19CS10069_19CS30007.tab.c"
+#line 3684 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 195:
-#line 1276 "ass6_19CS10069_19CS30007.y"
+#line 1278 "ass6_19CS10069_19CS30007.y"
                                             { (yyval.stat)=(yyvsp[0].stat); }
-#line 3688 "ass6_19CS10069_19CS30007.tab.c"
+#line 3690 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 196:
-#line 1277 "ass6_19CS10069_19CS30007.y"
+#line 1279 "ass6_19CS10069_19CS30007.y"
                                             { (yyval.stat)=(yyvsp[0].stat); }
-#line 3694 "ass6_19CS10069_19CS30007.tab.c"
+#line 3696 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 197:
-#line 1278 "ass6_19CS10069_19CS30007.y"
+#line 1280 "ass6_19CS10069_19CS30007.y"
                                        { (yyval.stat)=(yyvsp[0].stat); }
-#line 3700 "ass6_19CS10069_19CS30007.tab.c"
+#line 3702 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 198:
-#line 1282 "ass6_19CS10069_19CS30007.y"
+#line 1284 "ass6_19CS10069_19CS30007.y"
                     {  
                         (yyval.stat) = (yyvsp[0].stat);
                         label *s = find_label((yyvsp[-3].symp)->name);
@@ -3714,85 +3716,85 @@ yyreduce:
                             label_table.push_back(*s);
                         }
                     }
-#line 3718 "ass6_19CS10069_19CS30007.tab.c"
+#line 3720 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 199:
-#line 1296 "ass6_19CS10069_19CS30007.y"
+#line 1298 "ass6_19CS10069_19CS30007.y"
                     { /* Not to be modelled */ }
-#line 3724 "ass6_19CS10069_19CS30007.tab.c"
+#line 3726 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 200:
-#line 1298 "ass6_19CS10069_19CS30007.y"
+#line 1300 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 3730 "ass6_19CS10069_19CS30007.tab.c"
+#line 3732 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 201:
-#line 1303 "ass6_19CS10069_19CS30007.y"
+#line 1305 "ass6_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat)=(yyvsp[-1].stat);                           // Compound Statement = blockItemList
                         changeTable(ST->parent);         // Change Symbol Table
                     }
-#line 3739 "ass6_19CS10069_19CS30007.tab.c"
+#line 3741 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 202:
-#line 1311 "ass6_19CS10069_19CS30007.y"
+#line 1313 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); /* Simple assign */}
-#line 3745 "ass6_19CS10069_19CS30007.tab.c"
+#line 3747 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 203:
-#line 1313 "ass6_19CS10069_19CS30007.y"
+#line 1315 "ass6_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat)=(yyvsp[0].stat);
                         backpatch((yyvsp[-2].stat)->nextlist,(yyvsp[-1].instr_number));     //after $1, move to block_item via $2
                     }
-#line 3754 "ass6_19CS10069_19CS30007.tab.c"
+#line 3756 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 204:
-#line 1321 "ass6_19CS10069_19CS30007.y"
+#line 1323 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat) ;/* simple assign */}
-#line 3760 "ass6_19CS10069_19CS30007.tab.c"
+#line 3762 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 205:
-#line 1323 "ass6_19CS10069_19CS30007.y"
+#line 1325 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=new Statement(); /* Create new statement */}
-#line 3766 "ass6_19CS10069_19CS30007.tab.c"
+#line 3768 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 206:
-#line 1328 "ass6_19CS10069_19CS30007.y"
+#line 1330 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=new Statement(); /* Create new statement */}
-#line 3772 "ass6_19CS10069_19CS30007.tab.c"
+#line 3774 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 207:
-#line 1330 "ass6_19CS10069_19CS30007.y"
+#line 1332 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat)=(yyvsp[0].stat); /* Simple assign */}
-#line 3778 "ass6_19CS10069_19CS30007.tab.c"
+#line 3780 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 208:
-#line 1335 "ass6_19CS10069_19CS30007.y"
+#line 1337 "ass6_19CS10069_19CS30007.y"
                     { (yyval.expr) = new Expression(); /* new Expression */
                     }
-#line 3785 "ass6_19CS10069_19CS30007.tab.c"
+#line 3787 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 209:
-#line 1338 "ass6_19CS10069_19CS30007.y"
+#line 1340 "ass6_19CS10069_19CS30007.y"
                     { (yyval.expr)=(yyvsp[-1].expr); /* Simple assign */
                     }
-#line 3792 "ass6_19CS10069_19CS30007.tab.c"
+#line 3794 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 210:
-#line 1344 "ass6_19CS10069_19CS30007.y"
+#line 1346 "ass6_19CS10069_19CS30007.y"
                     {
                         // if without else
                         convertIntToBool((yyvsp[-4].expr));                                   // expression in IF is converted to bool
@@ -3804,11 +3806,11 @@ yyreduce:
                         (yyval.stat)->nextlist = merge((yyvsp[0].stat)->nextlist, temp);
                         backpatch((yyval.stat)->nextlist, nextinstr());
                     }
-#line 3808 "ass6_19CS10069_19CS30007.tab.c"
+#line 3810 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 211:
-#line 1356 "ass6_19CS10069_19CS30007.y"
+#line 1358 "ass6_19CS10069_19CS30007.y"
                     {
                         // if with else
                         convertIntToBool((yyvsp[-7].expr));                                   // convert expression to bool 
@@ -3821,17 +3823,17 @@ yyreduce:
                         (yyval.stat)->nextlist = merge((yyvsp[0].stat)->nextlist,temp);
                         backpatch((yyval.stat)->nextlist, nextinstr());	
                     }
-#line 3825 "ass6_19CS10069_19CS30007.tab.c"
+#line 3827 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 212:
-#line 1369 "ass6_19CS10069_19CS30007.y"
+#line 1371 "ass6_19CS10069_19CS30007.y"
                     { /* Not asked in question */ }
-#line 3831 "ass6_19CS10069_19CS30007.tab.c"
+#line 3833 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 213:
-#line 1374 "ass6_19CS10069_19CS30007.y"
+#line 1376 "ass6_19CS10069_19CS30007.y"
                     {	
                         // while statement
                         (yyval.stat) = new Statement();                                  
@@ -3848,11 +3850,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3852 "ass6_19CS10069_19CS30007.tab.c"
+#line 3854 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 214:
-#line 1391 "ass6_19CS10069_19CS30007.y"
+#line 1393 "ass6_19CS10069_19CS30007.y"
                     {	
                         //while statement
                         (yyval.stat) = new Statement();                   // create statement
@@ -3869,11 +3871,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3873 "ass6_19CS10069_19CS30007.tab.c"
+#line 3875 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 215:
-#line 1408 "ass6_19CS10069_19CS30007.y"
+#line 1410 "ass6_19CS10069_19CS30007.y"
                     {
                         //do statement
                         (yyval.stat) = new Statement();                               //create statement	
@@ -3886,11 +3888,11 @@ yyreduce:
                         (yyval.stat)->nextlist = (yyvsp[-2].expr)->falselist;                       // Exit loop if statement is false
                         loop_name = "";
                     }
-#line 3890 "ass6_19CS10069_19CS30007.tab.c"
+#line 3892 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 216:
-#line 1421 "ass6_19CS10069_19CS30007.y"
+#line 1423 "ass6_19CS10069_19CS30007.y"
                         {
                         //do statement
 		                (yyval.stat) = new Statement();     //create statement	
@@ -3902,11 +3904,11 @@ yyreduce:
                         (yyval.stat)->nextlist = (yyvsp[-2].expr)->falselist;                       // Exit loop if statement is false
 		                loop_name = "";
 	                }
-#line 3906 "ass6_19CS10069_19CS30007.tab.c"
+#line 3908 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 217:
-#line 1433 "ass6_19CS10069_19CS30007.y"
+#line 1435 "ass6_19CS10069_19CS30007.y"
                     {
                         //for loop
                         (yyval.stat) = new Statement();		            // create new statement
@@ -3924,11 +3926,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3928 "ass6_19CS10069_19CS30007.tab.c"
+#line 3930 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 218:
-#line 1451 "ass6_19CS10069_19CS30007.y"
+#line 1453 "ass6_19CS10069_19CS30007.y"
                     {
                         //for loop
                         (yyval.stat) = new Statement();		 //create new statement
@@ -3946,11 +3948,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3950 "ass6_19CS10069_19CS30007.tab.c"
+#line 3952 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 219:
-#line 1469 "ass6_19CS10069_19CS30007.y"
+#line 1471 "ass6_19CS10069_19CS30007.y"
                     {
                         //for loop
                         (yyval.stat) = new Statement();		                    // create new statement
@@ -3968,11 +3970,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-#line 3972 "ass6_19CS10069_19CS30007.tab.c"
+#line 3974 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 220:
-#line 1487 "ass6_19CS10069_19CS30007.y"
+#line 1489 "ass6_19CS10069_19CS30007.y"
                     {	
                         (yyval.stat) = new Statement();		                    // create new statement
                         convertIntToBool((yyvsp[-8].expr));                           // convert expression to boolean
@@ -3988,11 +3990,11 @@ yyreduce:
                         loop_name = "";
                         changeTable(ST->parent);                        
                     }
-#line 3992 "ass6_19CS10069_19CS30007.tab.c"
+#line 3994 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 221:
-#line 1506 "ass6_19CS10069_19CS30007.y"
+#line 1508 "ass6_19CS10069_19CS30007.y"
                     { 
                         (yyval.stat) = new Statement();
                         label *l = find_label((yyvsp[-1].symp)->name);
@@ -4009,65 +4011,65 @@ yyreduce:
                             label_table.push_back(*l);
                         }
                     }
-#line 4013 "ass6_19CS10069_19CS30007.tab.c"
+#line 4015 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 222:
-#line 1523 "ass6_19CS10069_19CS30007.y"
+#line 1525 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat) = new Statement(); }
-#line 4019 "ass6_19CS10069_19CS30007.tab.c"
+#line 4021 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 223:
-#line 1525 "ass6_19CS10069_19CS30007.y"
+#line 1527 "ass6_19CS10069_19CS30007.y"
                     { (yyval.stat) = new Statement(); }
-#line 4025 "ass6_19CS10069_19CS30007.tab.c"
+#line 4027 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 224:
-#line 1527 "ass6_19CS10069_19CS30007.y"
+#line 1529 "ass6_19CS10069_19CS30007.y"
                     {
                         (yyval.stat) = new Statement();	
                         Q.emit("return",(yyvsp[-1].expr)->loc->name);             
                     }
-#line 4034 "ass6_19CS10069_19CS30007.tab.c"
+#line 4036 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 225:
-#line 1532 "ass6_19CS10069_19CS30007.y"
+#line 1534 "ass6_19CS10069_19CS30007.y"
                     {
                         (yyval.stat) = new Statement();	
                         Q.emit("return","");                         
                     }
-#line 4043 "ass6_19CS10069_19CS30007.tab.c"
+#line 4045 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 226:
-#line 1540 "ass6_19CS10069_19CS30007.y"
+#line 1542 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 4049 "ass6_19CS10069_19CS30007.tab.c"
+#line 4051 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 227:
-#line 1542 "ass6_19CS10069_19CS30007.y"
+#line 1544 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 4055 "ass6_19CS10069_19CS30007.tab.c"
+#line 4057 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 228:
-#line 1547 "ass6_19CS10069_19CS30007.y"
+#line 1549 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 4061 "ass6_19CS10069_19CS30007.tab.c"
+#line 4063 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 229:
-#line 1549 "ass6_19CS10069_19CS30007.y"
+#line 1551 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 4067 "ass6_19CS10069_19CS30007.tab.c"
+#line 4069 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 230:
-#line 1554 "ass6_19CS10069_19CS30007.y"
+#line 1556 "ass6_19CS10069_19CS30007.y"
                     {
                         // int next_instr=0;	 	
                         Q.emit("funcend", ST->name);
@@ -4080,71 +4082,71 @@ yyreduce:
 
                         changeTable(globalST);                     // Change the table again to Global ST
                     }
-#line 4084 "ass6_19CS10069_19CS30007.tab.c"
+#line 4086 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 231:
-#line 1569 "ass6_19CS10069_19CS30007.y"
+#line 1571 "ass6_19CS10069_19CS30007.y"
                                      { }
-#line 4090 "ass6_19CS10069_19CS30007.tab.c"
+#line 4092 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 232:
-#line 1570 "ass6_19CS10069_19CS30007.y"
+#line 1572 "ass6_19CS10069_19CS30007.y"
                              { }
-#line 4096 "ass6_19CS10069_19CS30007.tab.c"
+#line 4098 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 233:
-#line 1575 "ass6_19CS10069_19CS30007.y"
+#line 1577 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 4102 "ass6_19CS10069_19CS30007.tab.c"
+#line 4104 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 234:
-#line 1577 "ass6_19CS10069_19CS30007.y"
+#line 1579 "ass6_19CS10069_19CS30007.y"
                     {  }
-#line 4108 "ass6_19CS10069_19CS30007.tab.c"
+#line 4110 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 235:
-#line 1581 "ass6_19CS10069_19CS30007.y"
+#line 1583 "ass6_19CS10069_19CS30007.y"
         {
         // Used in backpatching
 		(yyval.instr_number) = nextinstr();
 	}
-#line 4117 "ass6_19CS10069_19CS30007.tab.c"
+#line 4119 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 236:
-#line 1588 "ass6_19CS10069_19CS30007.y"
+#line 1590 "ass6_19CS10069_19CS30007.y"
         {
 		// Beginning of the for statement
 		loop_name = "FOR";
 	}
-#line 4126 "ass6_19CS10069_19CS30007.tab.c"
+#line 4128 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 237:
-#line 1595 "ass6_19CS10069_19CS30007.y"
+#line 1597 "ass6_19CS10069_19CS30007.y"
         {
 		// Beginning of the while statement
 		loop_name = "WHILE";
 	}
-#line 4135 "ass6_19CS10069_19CS30007.tab.c"
+#line 4137 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 238:
-#line 1602 "ass6_19CS10069_19CS30007.y"
+#line 1604 "ass6_19CS10069_19CS30007.y"
         {
 		// Beginning of the do while statement
 		loop_name = "DO_WHILE";
 	}
-#line 4144 "ass6_19CS10069_19CS30007.tab.c"
+#line 4146 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 239:
-#line 1609 "ass6_19CS10069_19CS30007.y"
+#line 1611 "ass6_19CS10069_19CS30007.y"
         {
 		string name = ST->name+"$"+loop_name+"$"+to_string(table_count);
 		table_count++; 
@@ -4158,11 +4160,11 @@ yyreduce:
 
 		currSymbolPtr = s;          // updating the current symbol
 	}
-#line 4162 "ass6_19CS10069_19CS30007.tab.c"
+#line 4164 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 240:
-#line 1625 "ass6_19CS10069_19CS30007.y"
+#line 1627 "ass6_19CS10069_19CS30007.y"
         {
         /*
             This is also useful in backpatching
@@ -4172,11 +4174,11 @@ yyreduce:
 
 		Q.emit("goto","");
 	}
-#line 4176 "ass6_19CS10069_19CS30007.tab.c"
+#line 4178 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 241:
-#line 1637 "ass6_19CS10069_19CS30007.y"
+#line 1639 "ass6_19CS10069_19CS30007.y"
         {    
         // Utility to change the table
 		parST = ST;                                                               
@@ -4190,19 +4192,19 @@ yyreduce:
 			Q.emit("func", ST->name);
 		}
 	}
-#line 4194 "ass6_19CS10069_19CS30007.tab.c"
+#line 4196 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
   case 242:
-#line 1653 "ass6_19CS10069_19CS30007.y"
+#line 1655 "ass6_19CS10069_19CS30007.y"
         {
             lookupInsideParent = true;
         }
-#line 4202 "ass6_19CS10069_19CS30007.tab.c"
+#line 4204 "ass6_19CS10069_19CS30007.tab.c"
     break;
 
 
-#line 4206 "ass6_19CS10069_19CS30007.tab.c"
+#line 4208 "ass6_19CS10069_19CS30007.tab.c"
 
       default: break;
     }
@@ -4434,7 +4436,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1656 "ass6_19CS10069_19CS30007.y"
+#line 1658 "ass6_19CS10069_19CS30007.y"
 
 
 /*Auxiliaries*/

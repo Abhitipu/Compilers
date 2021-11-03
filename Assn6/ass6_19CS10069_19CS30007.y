@@ -1078,6 +1078,7 @@ direct_declarator:
                             prev->arrtype =  new symboltype("arr", t, stoi($3->loc->val));      // similar arguments as above		
                             $$ = $1->update($1->type);
                         }
+                        $1->category = "array"; //TODO
                     }
                     | direct_declarator '[' ']' 
                     {
@@ -1098,6 +1099,7 @@ direct_declarator:
                             prev->arrtype =  new symboltype("arr", t, 0);
                             $$ = $1->update($1->type);
                         }
+                        $1->category = "array"; //TODO
                     }
                     | direct_declarator '[' STATIC type_qualifier_list assignment_expression ']' {	}
                     | direct_declarator '[' STATIC assignment_expression ']' {	}

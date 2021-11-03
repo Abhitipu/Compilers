@@ -2,6 +2,7 @@ int printInt(int);
 int printStr(char * p);
 
 int main() {
+    printStr("Testing branch intruction\n");
     int x = 707;
     printInt(x);
     printStr("\nHello World\n");
@@ -36,5 +37,5 @@ int main() {
     } else {
         printStr("else executed incorrectly\n");
     }
-    return x;
+    return 0;
 }

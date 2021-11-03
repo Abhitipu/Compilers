@@ -35,6 +35,16 @@
 	.string	") = "
 .LC16:
 	.string	"\n"
+.LC17:
+	.string	"Testing a simple for loop\n"
+.LC18:
+	.string	"Loop iteration "
+.LC19:
+	.string	"\n"
+.LC20:
+	.string	"a = "
+.LC21:
+	.string	"\n"
 	.text
 	.globl	abs
 	.type	abs, @function
@@ -150,7 +160,7 @@ main:
 	.cfi_offset 5, -8
 	movq 	%rsp, %rbp
 	.cfi_def_cfa_register 5
-	subq	$324, %rsp
+	subq	$424, %rsp
 
 	movl	$23, %eax
 	movl 	%eax, -28(%rbp)
@@ -283,9 +293,63 @@ main:
 	movq 	-308(%rbp), %rdi
 	call	printStr
 	movl	%eax, -316(%rbp)
+	movq 	$.LC17, -320(%rbp)
+	movq 	-320(%rbp), %rdi
+	call	printStr
+	movl	%eax, -328(%rbp)
+	movl	$60, %eax
+	movl 	%eax, -336(%rbp)
+	movl	-336(%rbp), %eax
+	movl 	%eax, -332(%rbp)
+	nop
 	movl	$0, %eax
-	movl 	%eax, -320(%rbp)
-	movl	-320(%rbp), %eax
+	movl 	%eax, -352(%rbp)
+	movl	-352(%rbp), %eax
+	movl 	%eax, -348(%rbp)
+.L10: 
+	movl	$10, %eax
+	movl 	%eax, -356(%rbp)
+	movl	-348(%rbp), %eax
+	cmpl	-356(%rbp), %eax
+	jl .L12
+	jmp .L13
+.L11: 
+	addl 	$1, -348(%rbp)
+	jmp .L10
+.L12: 
+	movq 	$.LC18, -360(%rbp)
+	movq 	-360(%rbp), %rdi
+	call	printStr
+	movl	%eax, -368(%rbp)
+	movq 	-348(%rbp), %rdi
+	call	printInt
+	movl	%eax, -372(%rbp)
+	movq 	$.LC19, -376(%rbp)
+	movq 	-376(%rbp), %rdi
+	call	printStr
+	movl	%eax, -384(%rbp)
+	movq 	$.LC20, -388(%rbp)
+	movq 	-388(%rbp), %rdi
+	call	printStr
+	movl	%eax, -396(%rbp)
+	movq 	-332(%rbp), %rdi
+	call	printInt
+	movl	%eax, -400(%rbp)
+	movq 	$.LC21, -404(%rbp)
+	movq 	-404(%rbp), %rdi
+	call	printStr
+	movl	%eax, -412(%rbp)
+	movl 	-332(%rbp), %eax
+	movl 	-348(%rbp), %edx
+	addl 	%edx, %eax
+	movl 	%eax, -416(%rbp)
+	movl	-416(%rbp), %eax
+	movl 	%eax, -332(%rbp)
+	jmp .L11
+.L13: 
+	movl	$0, %eax
+	movl 	%eax, -344(%rbp)
+	movl	-344(%rbp), %eax
 	leave
 	.cfi_restore 5
 	.cfi_def_cfa 4, 4

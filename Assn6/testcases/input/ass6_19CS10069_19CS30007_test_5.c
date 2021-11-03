@@ -13,6 +13,7 @@ int fib(int n) {
 int main () { 
   int n;
   int ans;
+  printStr("Program to print fibonacci numbers upto 10\n");
   for(n = 1; n<=10; n++)
   {
     ans = fib(n);

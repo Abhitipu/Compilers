@@ -2,8 +2,7 @@ int printInt(int);
 int printStr(char * p);
 
 // function calling and conditional statements (ternary and if-else)
-// Return from functions
-// TODO return
+
 int abs(int x) {
 	if(x < 0)
 		return -x;
@@ -42,5 +41,14 @@ int main(){
 	printStr("Testing the max function\n");
 	printStr("Max("); printInt(x); printStr(", "); printInt(y); printStr(") = "); printInt(ans4); printStr("\n");
 
+	printStr("Testing a simple for loop\n");
+
+	int a;
+	a = 60;
+	for(int i = 0; i<10; ++i) {
+	    printStr("Loop iteration "); printInt(i); printStr("\n");
+	    printStr("a = ");printInt(a);printStr("\n");
+	    a = a + i;
+	}
 	return 0;
 }

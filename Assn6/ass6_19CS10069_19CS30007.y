@@ -1607,7 +1607,7 @@ D: %empty
 
 X: %empty 
 	{
-		string name = ST->name+"."+loop_name+"$"+to_string(table_count);
+		string name = ST->name+"$"+loop_name+"$"+to_string(table_count);
 		table_count++; 
 
         // First an entry is created

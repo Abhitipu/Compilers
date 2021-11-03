@@ -59,6 +59,20 @@ inline int getOffset(string arg) {
 	return ST->ActivationRecord[arg];
 }
 
+// Some helper functions used for optimization
+inline bool isPowerOfTwo(int num) {
+	return (num&(num - 1)) == 0 && num > 0;
+}
+
+int logBaseTwo(int val) {
+	int ans = 0;
+	while(val != 1) {
+		ans++;
+		val >>= 1;
+	}
+	return ans;
+}
+
 void generateAsm() {
     // We are generating the .s file here
 
@@ -149,7 +163,6 @@ void generateAsm() {
     
     vector <string> params;
 
-
     int opSerialNumber = 0;
 
     for(auto it: Array){
@@ -172,15 +185,22 @@ void generateAsm() {
 			
 			// addition operation
 			if (op == "+") {
+				// res = arg1 + arg2
+				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
+				
 				if (isNumber(arg2)) {
-					asmFile << "\taddl \t$" << arg2 << ", " << getOffset(arg1) << "(%rbp)";
+					int toAdd = stoi(arg2);
+					if(toAdd == 1) {
+						// optimization using inc
+						asmFile << "\tincl "<<"%eax\n";
+					} else {
+						asmFile << "\taddl \t$" << arg2 << ", " << "%eax\n";
+					}
 				}
 				else {
-					asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
-					asmFile << "\tmovl \t" << getOffset(arg2) << "(%rbp), " << "%edx" << '\n';
-					asmFile << "\taddl \t%edx, %eax\n";
-					asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";
+					asmFile << "\taddl \t" << getOffset(arg2) << "(%rbp), " << "%eax" << '\n';
 				}
+				asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";
 			}
 
 			// subtract operation
@@ -195,7 +215,13 @@ void generateAsm() {
 			else if (op=="*") {
 				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
                 if(isNumber(arg2)) {
-                    asmFile << "\timull \t$" << stoi(arg2) << ", " << "%eax" << endl;
+					int multiplier = stoi(arg2);
+					if(isPowerOfTwo(multiplier)) {
+						// strength reduction
+						asmFile << "\tsall \t$" << logBaseTwo(multiplier) << ", " << "%eax"<<'\n';
+					} else {
+                    	asmFile << "\timull \t$" << stoi(arg2) << ", " << "%eax" << endl;
+					}
                 } else {
                     asmFile  << "\timull \t" << getOffset(arg2) << "(%rbp), " << "%eax" << endl;
                 }
@@ -204,10 +230,11 @@ void generateAsm() {
 
 			// divide operation
 			else if(op=="/") {
+				// res = arg1 / arg2
 				asmFile << "\tmovl \t" << getOffset(arg1) << "(%rbp), " << "%eax" << '\n';
 				asmFile << "\tcltd" << '\n';
 				asmFile << "\tidivl \t" << getOffset(arg2) << "(%rbp)" << '\n';
-				asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";		
+				asmFile << "\tmovl \t%eax, " << getOffset(res) << "(%rbp)";  
 			}
 
 			// modulo operation
@@ -436,7 +463,7 @@ void generateAsm() {
 			}
 			else
 			{
-				cerr << op<<" "<<res<<"\n";
+				// cerr << op<<" "<<res<<"\n";
 				asmFile << "\tnop";
 			} 
 			

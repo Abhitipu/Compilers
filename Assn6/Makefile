@@ -1,4 +1,4 @@
-test: tinyC libass2_19CS10069.a
+test: tinyC libass2_19CS10069_19CS30007.a
 	
 	@echo "TEST 1"
 	./tinyC _test_1 < testcases/input/ass6_19CS10069_19CS30007_test_1.c > testcases/output/ass6_19CS10069_19CS30007_quads1.out
@@ -44,14 +44,14 @@ test: tinyC libass2_19CS10069.a
 	@echo "Successfully Generated .o files !\n\n"
 
 	@echo "Compiling the test files !\n"
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_1.o -o testcases/output/test1 -L. -lass2_19CS10069 -no-pie
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_2.o -o testcases/output/test2 -L. -lass2_19CS10069 -no-pie
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_3.o -o testcases/output/test3 -L. -lass2_19CS10069 -no-pie
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_4.o -o testcases/output/test4 -L. -lass2_19CS10069 -no-pie
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_5.o -o testcases/output/test5 -L. -lass2_19CS10069 -no-pie
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_6.o -o testcases/output/test6 -L. -lass2_19CS10069 -no-pie
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_7.o -o testcases/output/test7 -L. -lass2_19CS10069 -no-pie
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_8.o -o testcases/output/test8 -L. -lass2_19CS10069 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_1.o -o testcases/output/test1 -L. -lass2_19CS10069_19CS30007 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_2.o -o testcases/output/test2 -L. -lass2_19CS10069_19CS30007 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_3.o -o testcases/output/test3 -L. -lass2_19CS10069_19CS30007 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_4.o -o testcases/output/test4 -L. -lass2_19CS10069_19CS30007 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_5.o -o testcases/output/test5 -L. -lass2_19CS10069_19CS30007 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_6.o -o testcases/output/test6 -L. -lass2_19CS10069_19CS30007 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_7.o -o testcases/output/test7 -L. -lass2_19CS10069_19CS30007 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_8.o -o testcases/output/test8 -L. -lass2_19CS10069_19CS30007 -no-pie
 	@echo "Successfully Compiled All test files !\n\n"
 
 	@echo "Executing all the files !\n"
@@ -88,12 +88,12 @@ test: tinyC libass2_19CS10069.a
 	./testcases/output/test8
 	@echo "Done!!\n"
 
-testmini: tinyC libass2_19CS10069.a
+testmini: tinyC libass2_19CS10069_19CS30007.a
 	@echo "TEST 3"
 	./tinyC _test_3 < testcases/input/ass6_19CS10069_19CS30007_test_3.c > testcases/output/ass6_19CS10069_19CS30007_quads3.out
 	@echo "\nTest 3 Successfully Translated !\n"
 	gcc -c testcases/output/ass6_19CS10069_19CS30007_test_3.s -o testcases/output/ass6_19CS10069_19CS30007_test_3.o
-	gcc testcases/output/ass6_19CS10069_19CS30007_test_3.o -o testcases/output/test3 -L. -lass2_19CS10069 -no-pie
+	gcc testcases/output/ass6_19CS10069_19CS30007_test_3.o -o testcases/output/test3 -L. -lass2_19CS10069_19CS30007 -no-pie
 
 tinyC: lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o
 	g++ -g lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o -lfl -o tinyC
@@ -119,12 +119,12 @@ ass6_19CS10069_19CS30007.tab.c: ass6_19CS10069_19CS30007.y
 ass6_19CS10069_19CS30007.tab.h: ass6_19CS10069_19CS30007.y
 	bison -dv ass6_19CS10069_19CS30007.y -W
 
-libass2_19CS10069.a:
-	gcc -W -c ass2_19CS10069.c
-	ar -rcs libass2_19CS10069.a ass2_19CS10069.o
+libass2_19CS10069_19CS30007.a:
+	gcc -W -c ass2_19CS10069_19CS30007.c
+	ar -rcs libass2_19CS10069_19CS30007.a ass2_19CS10069_19CS30007.o
 
 tarify:
-	tar -cvf ass6_19CS10069_19CS30007.tar ./input/ ./output/ ass6_19CS10069_19CS30007_translator.h ass6_19CS10069_19CS30007_translator.cxx ass6_19CS10069_19CS30007.l ass6_19CS10069_19CS30007.y Makefile README.md
+	tar -cvf ass6_19CS10069_19CS30007.tar ./testcases/ myl.h ass6_19CS10069_19CS30007_translator.h ass6_19CS10069_19CS30007_translator.cxx ass6_19CS10069_19CS30007_target_translator.cxx ass6_19CS10069_19CS30007.l ass6_19CS10069_19CS30007.y Makefile ass2_19CS10069_19CS30007.c README.md
 cleanTarify:
 	rm ass6_19CS10069_19CS30007.tar
 clean:
@@ -133,4 +133,4 @@ clean:
 	   ass6_19CS10069_19CS30007.tab.h\
 	   ass6_19CS10069_19CS30007.output\
 	   testcases/output/*\
-	   libass2_19CS10069.a\
+	   libass2_19CS10069_19CS30007.a\

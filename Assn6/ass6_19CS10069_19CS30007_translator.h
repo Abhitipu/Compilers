@@ -61,8 +61,8 @@ class sym  {                                                                    
         string val;                                                                        // initial value of the symbol if specified
         bool isItFunction;                                                                 // True if the symbol represent a function
 
-        string category; //TODO constructor and linking
-        // local, param, function??
+        string category; 
+        // local, param, function
 
         inline void updateFuntionStatus(bool b){ isItFunction = b; }                       // inline function to update isItFunction
         sym (string , string t="int", symboltype* ptr = NULL, int width = 0);              // constructor
@@ -96,7 +96,7 @@ class symboltype
 };
 
 //
-//          Class defination for the Symbol Table
+//          Class definition for the Symbol Table
 //
 class symtable 
 {                                                                                           // class for the symbol table, made as a tree of tables with global table as the root
@@ -106,7 +106,7 @@ class symtable
         list<sym> symbols;                                                                  // The table of symbols which is essentially a list of sym
         symtable* parent;                                                                   // Parent SymbolTable of the current ST
         
-        map<string, int> ActivationRecord; // TODO
+        map<string, int> ActivationRecord; 
 
         symtable (string name="NULL");                                                      // Constructor
         s* lookup (string);                                                                 // Lookup for a symbol in ST

@@ -159,13 +159,13 @@ primary_expression:
                     }
                     | STRING_LITERAL
                     {
-                        // TODO: pushback in the strings to be printed
+                        // pushback in the strings to be printed
                         $$ = new Expression();
                         symboltype* temp = new symboltype("ptr");
                         $$->loc = gentemp(temp, $1);
                         $$->loc->type->arrtype = new symboltype("char");
 
-                        Q.emit("equalstr", $$->loc->name, to_string(stringsToBePrinted.size()));          // TODO: verify this
+                        Q.emit("equalstr", $$->loc->name, to_string(stringsToBePrinted.size()));          
                         stringsToBePrinted.push_back($1);
                     }
                     | '(' expression ')'
@@ -786,7 +786,7 @@ assignment_expression:
                         else                                                            // otherwise simple assignment
                         {
                             $3->loc = convertType($3->loc, $1->Array->type->type);
-                            // ithink we can fix this TODO
+                            
                             Q.emit("=", $1->Array->name, $3->loc->name);
                         }
                         
@@ -1078,7 +1078,7 @@ direct_declarator:
                             prev->arrtype =  new symboltype("arr", t, stoi($3->loc->val));      // similar arguments as above		
                             $$ = $1->update($1->type);
                         }
-                        $1->category = "array"; //TODO
+                        
                     }
                     | direct_declarator '[' ']' 
                     {
@@ -1099,7 +1099,7 @@ direct_declarator:
                             prev->arrtype =  new symboltype("arr", t, 0);
                             $$ = $1->update($1->type);
                         }
-                        $1->category = "array"; //TODO
+                        
                     }
                     | direct_declarator '[' STATIC type_qualifier_list assignment_expression ']' {	}
                     | direct_declarator '[' STATIC assignment_expression ']' {	}
@@ -1118,7 +1118,7 @@ direct_declarator:
                             s->update($1->type);		            // update return type
                         }
                         $1->nested=ST;                              // link nested Symbol Table 
-                        $1->category = "function";                   // TODO: clarify
+                        $1->category = "function";                   
                         $1->updateFuntionStatus(true);
                         listOffunctions.push_back($1);
                         ST->parent = globalST;                      // link parent Symbol Table
@@ -1141,7 +1141,7 @@ direct_declarator:
                             s->update($1->type);            // update return type
                         }
                         $1->nested=ST;                      // link nested Symbol table
-                        $1->category = "function";                   // TODO: clarify
+                        $1->category = "function";          
                         $1->updateFuntionStatus(true);
                         listOffunctions.push_back($1);
                         ST->parent = globalST;              // Set parent to Global Symbol table

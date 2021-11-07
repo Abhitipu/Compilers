@@ -1,16 +1,6 @@
 int printInt(int);
 int printStr(char * p);
-// TODO Array
-void printArray(int arr[6], int n)
-{
-    printStr("Printing the array\n");
-    for(int i=0;i<n;++i) 
-    {
-   		printInt(arr[i]); printStr(", ");
-   	}
-    printStr("\n");
-    return ;
-}
+
 
 int main() {
     int i,n;
@@ -25,8 +15,7 @@ int main() {
 
     printStr("Sorting Arrays using insertion sort\n");
     printStr("Before Sorting: \n");
-    // printInt(&arr);printStr("\n");
-    // printArray(arr, n);
+  
     for(i=0;i<n;++i)
    	{
    		printInt(arr[i]); printStr(", ");

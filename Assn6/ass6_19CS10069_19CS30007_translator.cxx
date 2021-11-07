@@ -53,7 +53,7 @@ sym::sym(string name, string t, symboltype* arrtype, int width)
     val = "";                                                                                     // Initial value not yet defined
     nested = NULL;                                                                                  // No nested tables attached
     isItFunction = false;                                                                           // Stores if current entry is a symbol
-    category = "";                                                                                  // TODO: update this
+    category = "";                                                                                  // 
 }
 
 /*
@@ -85,7 +85,6 @@ symtable::symtable(string _name):
 sym* symtable::lookup(string name)                                                 // Lookup an symbol in the symbol table, whether it exists or not
 {
     sym* symbol;
-    // TODO: check if we need category here?
 
     // function check
     string nameOffunc = name;
@@ -128,7 +127,7 @@ sym* symtable::lookup(string name)                                              
     // we create a new symbol and return its address
     if(ST == this and !ptr){
         symbol = new sym(name);
-        symbol->category = "local";                                                                 // TODO: check this (it will be a local variable tho
+        symbol->category = "local";                                                                 // it will be a local variable
         symbols.push_back(*symbol);                                                                  // push the symbol into the table
         return &symbols.back();                                                                      // return the symbol
     } else if(ptr) 
@@ -308,7 +307,7 @@ void quad::print()  {
     // Assignment + operation | Unary Assignment Instruction
 	else if(op=="=&") cout<<res<<" = &"<<arg1;         // reference
 	else if(op=="=*") cout<<res<<" = *"<<arg1;         // pointer
-	else if(op=="*=") cout<<"*"<<res<<" = "<<arg1;     // *res = something TODO :C
+	else if(op=="*=") cout<<"*"<<res<<" = "<<arg1;     // *res = arg1 
 	else if(op=="uminus") cout<<res<<" = -"<<arg1;         
 	else if(op=="~") cout<<res<<" = ~"<<arg1;
 	else if(op=="!") cout<<res<<" = !"<<arg1;
@@ -394,7 +393,7 @@ void quadArray::emit(string op, string res, float arg1, string arg2){
     Then it returns the pointer to the Current entry
 */
 sym* gentemp(symboltype* t, string str_new) {
-    // TODO easy use static count for unique temps 
+    
     static int tempCnt = 1;                                                                                                
     string tmp_name = "t_"+convertIntToString(tempCnt++);                                              
     sym* s = new sym(tmp_name);
@@ -663,25 +662,4 @@ map<string, int> basicType :: getSize = {   {"null", 0},
                         {"arr", 0},
                         {"func", 0},
                         {"block", 0}    };
-/*
-int main() {
-    label_table.clear();
 
-    table_count = 0;                                                                                    // count of nested table
-    globalST=new symtable("Global");                                                                    // Global Symbol Table
-    ST = globalST;
-    parST = NULL;
-    loop_name = "";
-
-    if(yyparse()){
-        cout<<"Error while parsing\n";
-    }
-    else{
-        globalST->update();                                                                                 // update the global Symbol Table
-        cout<<"\n";
-        Q.print();                                                                                          // print the three address codes
-        cout << "\nSYMBOL TABLES:\n\n";
-        globalST->print();                                                                                  // print all Symbol Tables
-    }
-};
-*/

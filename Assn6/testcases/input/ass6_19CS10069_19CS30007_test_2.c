@@ -23,16 +23,3 @@ int main() {
 	printInt(a); printStr(" "); printInt(b); printStr("\n");
 	return 0;
 }
-
-// int main()
-// {
-//     int a;
-//     a = 5;
-//     int *b;
-//     b = &a;
-//     printInt(&a); printStr("\n");
-//     printInt(b); printStr("\n");
-//     readInt(&a);
-//     printInt(a); printStr("\n");
-//     return 0;
-// }

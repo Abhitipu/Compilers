@@ -7,7 +7,7 @@
 using namespace std;
 
 extern FILE *yyin;
-extern vector<string> stringsToBePrinted;               // by printString meth TODO
+extern vector<string> stringsToBePrinted;               // by printString meth 
 
 int functionLabelCount=0;							
 map<int, int> labelSerialNumber;				                    // map from quad number to label number
@@ -36,14 +36,11 @@ bool isNumber(string s) {
 }
 
 void computeActivationRecord(symtable *st) {
-    // TODO: maybe augment return waala logic
     int param_offset = -20;
     int locals_offset = -24;
-    // int param_offset = 8;
-    // int locals_offset = -4;
 
     for(auto &it: st->symbols) {
-        // it.category is not working TODO: fix this
+
         if(it.category == "param") {
             st->ActivationRecord[it.name] = param_offset;
             param_offset += it.size;
@@ -381,23 +378,19 @@ void generateAsm() {
 					int ourOffset = getOffset(params[paramCount]);
 
 					if(paramCount==0) {
-						// asmFile << "\tmovl \t" << ourOffset << "(%rbp), " << "%eax" << '\n';
 						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rdi" << '\n';
 					}
 					else if(paramCount==1) {
-						// asmFile << "\tmovl \t" << ourOffset << "(%rbp), " << "%eax" << '\n';
 						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rsi" << '\n';
 					}
 					else if(paramCount==2) {
-						// asmFile << "\tmovl \t" << ourOffset << "(%rbp), " << "%eax" << '\n';
 						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rdx" << '\n';
 					}
 					else if(paramCount==3) {
-						// asmFile << "\tmovl \t" << ourOffset << "(%rbp), " << "%eax" << '\n';
 						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rcx" << '\n';
 					}
 					else {
-						// TODO
+						
 						asmFile << "\tmovq \t" << ourOffset << "(%rbp), " << "%rdi" << '\n';							
 					}
 				}
@@ -409,7 +402,7 @@ void generateAsm() {
 			}
 
 			else if (op=="func") { 
-				// continue;
+
 				// prologue of a function
 				asmFile << "\t.globl\t" << res << "\n";
 				asmFile << "\t.type\t"	<< res << ", @function\n";
@@ -452,7 +445,7 @@ void generateAsm() {
 				
 			// epilogue of a function
 			else if (op=="funcend") { 
-				// continue;
+
 				asmFile << "\tleave\n";
 				asmFile << "\t.cfi_restore 5\n";
 				asmFile << "\t.cfi_def_cfa 4, 4\n";
@@ -463,7 +456,6 @@ void generateAsm() {
 			}
 			else
 			{
-				// cerr << op<<" "<<res<<"\n";
 				asmFile << "\tnop";
 			} 
 			
@@ -476,13 +468,7 @@ void generateAsm() {
     return;
 }
 
-// // make a function which takes a stream operator and writes to it
-// template <typename T>
-// ostream& operator<<(ostream& os, const vector<T>& v) {
-//     for(auto& it: v)
-//         os << it << " ";
-//     return os;
-// }
+
 
 int main(int argc, char *argv[]) {
     label_table.clear();

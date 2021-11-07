@@ -2,12 +2,13 @@
 %{
     #include <bits/stdc++.h>
     #include <sstream>
-    #include "ass5_19CS10069_19CS30007_translator.h"
+    #include "ass6_19CS10069_19CS30007_translator.h"
     extern int yylex();
     void yyerror(string s);
     extern string var_type;
     extern vector<label> label_table;
     extern int line;
+    extern vector<string> stringsToBePrinted;
     using namespace std;
 %}
 
@@ -110,7 +111,7 @@ changetable: %empty
 
         // If nested call recursively on the nested table
 		if(currSymbolPtr->nested==NULL) {
-			changeTable(new symtable(""));	                                           
+			changeTable(new symtable(curPossibleSTName));	                                           
 		}
 		else {
 			changeTable(currSymbolPtr ->nested);						               
@@ -122,7 +123,8 @@ changetable: %empty
 
 
 constant:
-                    INTEGER_CONST { 
+                    INTEGER_CONST 
+                    { 
                         // Here we are creating a new instance and storing it
                         $$=new Expression();	
                         string p=convertIntToString($1);
@@ -140,7 +142,7 @@ constant:
                     {                                                                        
                         $$=new Expression();
                         $$->loc=gentemp(new symboltype("char"),$1);
-                        Q.emit("=",$$->loc->name,string($1));
+                        Q.emit("equalchar",$$->loc->name,string($1));
                     }
                     ;
 
@@ -154,6 +156,17 @@ primary_expression:
                     | constant
                     { 
                         $$ = $1; 
+                    }
+                    | STRING_LITERAL
+                    {
+                        // pushback in the strings to be printed
+                        $$ = new Expression();
+                        symboltype* temp = new symboltype("ptr");
+                        $$->loc = gentemp(temp, $1);
+                        $$->loc->type->arrtype = new symboltype("char");
+
+                        Q.emit("equalstr", $$->loc->name, to_string(stringsToBePrinted.size()));          
+                        stringsToBePrinted.push_back($1);
                     }
                     | '(' expression ')'
                     {                                                                        
@@ -773,6 +786,7 @@ assignment_expression:
                         else                                                            // otherwise simple assignment
                         {
                             $3->loc = convertType($3->loc, $1->Array->type->type);
+                            
                             Q.emit("=", $1->Array->name, $3->loc->name);
                         }
                         
@@ -819,7 +833,7 @@ constant_expression:
                     ;
 
 declaration:
-                    declaration_specifiers init_declarator_list_opt ';'
+                    declaration_specifiers init_declarator_list_opt semicolon
                     {  }
                     ;
 
@@ -878,17 +892,22 @@ storage_class_specifier:
 
 type_specifier:
                     VOID
-                    { var_type="void"; /* Store the latest var type */ }
+                    { var_type="void"; /* Store the latest var type */ 
+                        lookupInsideParent = false;
+                    }
                     | CHAR
-                    { var_type="char"; /* Store the latest var type */ }
+                    { var_type="char"; /* Store the latest var type */ 
+                    lookupInsideParent = false;}
                     | SHORT
                     {  }
                     | INT
-                    { var_type="int"; /* Store the latest var type */ }
+                    { var_type="int"; /* Store the latest var type */ 
+                    lookupInsideParent = false;}
                     | LONG
                     {  }
                     | FLOAT
-                    { var_type="float"; /* Store the latest var type */ }
+                    { var_type="float"; /* Store the latest var type */ 
+                    lookupInsideParent = false;}
                     | DOUBLE
                     {  }
                     | SIGNED
@@ -943,9 +962,9 @@ struct_declaration_list:
                     ;
 
 struct_declaration:
-                    specifier_qualifier_list ';'
+                    specifier_qualifier_list semicolon
                     {  }
-                    | specifier_qualifier_list struct_declarator_list ';'
+                    | specifier_qualifier_list struct_declarator_list semicolon
                     {  }
                     ;
 
@@ -1029,6 +1048,11 @@ direct_declarator:
                     IDENTIFIER                 
                     {
                         //if ID, simply add a new variable of var_type
+                        
+                        string nameOfTable = $1->name;
+                        if(nameOfTable.find(".")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("."));
+                        curPossibleSTName = nameOfTable;	 
                         $$ = $1->update(new symboltype(var_type));                                      // update the symbol type to latest type specifier
                         currSymbolPtr = $$;	                                                            // store the latest Symbol
                     }
@@ -1046,19 +1070,19 @@ direct_declarator:
                         }
                         if(prev==NULL) 
                         {
-                            int temp = atoi($3->loc->val.c_str());                                      // temp = string(value)
-                            symboltype* s = new symboltype("arr", $1->type, temp);                      // Create a new symbol with the initial value
+                            symboltype* s = new symboltype("arr", t, stoi($3->loc->val));                      // Create a new symbol with the initial value
                             $$ = $1->update(s);                                                         // Update the symbol type
                         }
                         else 
                         {
-                            prev->arrtype =  new symboltype("arr", t, atoi($3->loc->val.c_str()));      // similar arguments as above		
+                            prev->arrtype =  new symboltype("arr", t, stoi($3->loc->val));      // similar arguments as above		
                             $$ = $1->update($1->type);
                         }
+                        
                     }
                     | direct_declarator '[' ']' 
                     {
-                        symboltype *t = $1 -> type;
+                        symboltype *t = $1->type;
                         symboltype *prev = NULL;                                    // initialize prev to NULL
                         while(t->type == "arr") 
                         {
@@ -1067,7 +1091,7 @@ direct_declarator:
                         }
                         if(prev==NULL) 
                         {
-                            symboltype* s = new symboltype("arr", $1->type, 0);     // no initial values, simply keep 0
+                            symboltype* s = new symboltype("arr", t, 0);     // no initial values, simply keep 0
                             $$ = $1->update(s);                                     // Update the symboltype of $$
                         }
                         else 
@@ -1075,35 +1099,51 @@ direct_declarator:
                             prev->arrtype =  new symboltype("arr", t, 0);
                             $$ = $1->update($1->type);
                         }
+                        
                     }
                     | direct_declarator '[' STATIC type_qualifier_list assignment_expression ']' {	}
                     | direct_declarator '[' STATIC assignment_expression ']' {	}
                     | direct_declarator '[' type_qualifier_list MULT ']' {	}
                     | direct_declarator '[' MULT ']' {	}
-                    | direct_declarator '(' changetable parameter_type_list ')' 
+                    | direct_declarator '(' FUN_CT parameter_type_list ')' 
                     {
-                        ST->name = $1->name;	                    // change the ST name to fun
+                        string nameOfTable = $1->name;
+                        if(nameOfTable.find(".")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("."));
+                        ST->name = nameOfTable;
+                        $1->name = nameOfTable;	                    // change the ST name to fun
                         if($1->type->type !="void") 
                         {
                             sym *s = ST->lookup("return");          // lookup for return value	
                             s->update($1->type);		            // update return type
                         }
                         $1->nested=ST;                              // link nested Symbol Table 
+                        $1->category = "function";                   
+                        $1->updateFuntionStatus(true);
+                        listOffunctions.push_back($1);
                         ST->parent = globalST;                      // link parent Symbol Table
                         
                         changeTable(globalST);				        // Come back to globalsymbol table
                         currSymbolPtr = $$;
                     }
                     | direct_declarator '(' identifier_list ')' {	}
-                    | direct_declarator '(' changetable ')' 
+                    | direct_declarator '(' FUN_CT ')' 
                     {        //similar as above
-                        ST->name = $1->name;
+
+                        string nameOfTable = $1->name;
+                        if(nameOfTable.find(".")!=nameOfTable.npos)
+                            nameOfTable = nameOfTable.substr(0, nameOfTable.find("."));
+                        ST->name = nameOfTable;
+                        $1->name = nameOfTable;
                         if($1->type->type !="void") 
                         {
                             sym *s = ST->lookup("return");
                             s->update($1->type);            // update return type
                         }
                         $1->nested=ST;                      // link nested Symbol table
+                        $1->category = "function";          
+                        $1->updateFuntionStatus(true);
+                        listOffunctions.push_back($1);
                         ST->parent = globalST;              // Set parent to Global Symbol table
                         
                         changeTable(globalST);				// Go back to global Symbol table
@@ -1151,7 +1191,9 @@ parameter_list:
 
 parameter_declaration:
                     declaration_specifiers declarator
-                    {  }
+                    {  
+                        $2->category = "param";              // verify
+                    }
                     | declaration_specifiers
                     {  }
                     ;
@@ -1291,37 +1333,39 @@ block_item:
                     ;
 
 expression_statement:
-                    ';'
-                    { $$ = new Expression(); /* new Expression */ }
-                    | expression ';'
-                    { $$=$1; /* Simple assign */}
+                    semicolon
+                    { $$ = new Expression(); /* new Expression */
+                    }
+                    | expression semicolon
+                    { $$=$1; /* Simple assign */
+                    }
                     ;
 
 selection_statement:
-                    IF '(' expression N ')' M statement N %prec "then"
+                    IF '(' expression ')' M statement N %prec "then"
                     {
                         // if without else
-                        backpatch($4->nextlist, nextinstr());                   // After we hit N we go to next instr
                         convertIntToBool($3);                                   // expression in IF is converted to bool
 
                         $$ = new Statement();                                   
-                        backpatch($3->truelist, $6);                            // We do the backpatch here
+                        backpatch($3->truelist, $5);                            // We do the backpatch here
 
-                        list<int> temp = merge($3->falselist, $7->nextlist);    // If it is false, we just escape the inner statement
-                        $$->nextlist = merge($8->nextlist, temp);
+                        list<int> temp = merge($3->falselist, $6->nextlist);    // If it is false, we just escape the inner statement
+                        $$->nextlist = merge($7->nextlist, temp);
+                        backpatch($$->nextlist, nextinstr());
                     }
-                    | IF '(' expression N ')' M statement N ELSE M statement
+                    | IF '(' expression ')' M statement N ELSE M statement
                     {
                         // if with else
-                        backpatch($4->nextlist, nextinstr());		            // After we hit N we go to next instr
                         convertIntToBool($3);                                   // convert expression to bool 
 
                         $$ = new Statement();                                   
-                        backpatch($3->truelist, $6);                            // If true, we access the first part
-                        backpatch($3->falselist, $10);                          // Else the second prt
+                        backpatch($3->truelist, $5);                            // If true, we access the first part
+                        backpatch($3->falselist, $9);                          // Else the second prt
 
-                        list<int> temp = merge($7->nextlist, $8->nextlist);       // Then we merge with the nextlists of both statements
-                        $$->nextlist = merge($11->nextlist,temp);	
+                        list<int> temp = merge($6->nextlist, $7->nextlist);       // Then we merge with the nextlists of both statements
+                        $$->nextlist = merge($10->nextlist,temp);
+                        backpatch($$->nextlist, nextinstr());	
                     }
                     | SWITCH '(' expression ')' statement
                     { /* Not asked in question */ }
@@ -1362,7 +1406,7 @@ iteration_statement:
                         loop_name = "";
                         changeTable(ST->parent);
                     }
-                    | DO D M loop_statement M WHILE '(' expression ')' ';'
+                    | DO D M loop_statement M WHILE '(' expression ')' semicolon
                     {
                         //do statement
                         $$ = new Statement();                               //create statement	
@@ -1375,7 +1419,7 @@ iteration_statement:
                         $$->nextlist = $8->falselist;                       // Exit loop if statement is false
                         loop_name = "";
                     }
-                    | DO D '{' M block_item_list_opt '}' M WHILE '(' expression ')' ';'      
+                    | DO D '{' M block_item_list_opt '}' M WHILE '(' expression ')' semicolon      
 	                {
                         //do statement
 		                $$ = new Statement();     //create statement	
@@ -1460,7 +1504,7 @@ iteration_statement:
                     ;
 
 jump_statement:
-                    GOTO IDENTIFIER ';'
+                    GOTO IDENTIFIER semicolon
                     { 
                         $$ = new Statement();
                         label *l = find_label($2->name);
@@ -1477,16 +1521,16 @@ jump_statement:
                             label_table.push_back(*l);
                         }
                     }  
-                    | CONTINUE ';'
+                    | CONTINUE semicolon
                     { $$ = new Statement(); }	
-                    | BREAK ';'
+                    | BREAK semicolon
                     { $$ = new Statement(); }
-                    | RETURN expression ';'
+                    | RETURN expression semicolon
                     {
                         $$ = new Statement();	
                         Q.emit("return",$2->loc->name);             
                     }
-                    | RETURN ';'
+                    | RETURN semicolon
                     {
                         $$ = new Statement();	
                         Q.emit("return","");                         
@@ -1508,10 +1552,12 @@ external_declaration:
                     ;
 
 function_definition:
-                    declaration_specifiers declarator declaration_list_opt changetable '{' block_item_list_opt '}' 
+                    declaration_specifiers declarator declaration_list_opt FUN_CT '{' block_item_list_opt '}' 
                     {
-                        int next_instr=0;	 	
+                        // int next_instr=0;	 	
+                        Q.emit("funcend", ST->name);
                         ST->parent=globalST;
+
                         $2->updateFuntionStatus(true);
                         // Add a function name
                         table_count = 0;
@@ -1563,7 +1609,7 @@ D: %empty
 
 X: %empty 
 	{
-		string name = ST->name+"."+loop_name+"$"+to_string(table_count);
+		string name = ST->name+"$"+loop_name+"$"+to_string(table_count);
 		table_count++; 
 
         // First an entry is created
@@ -1588,6 +1634,27 @@ N: %empty
 		Q.emit("goto","");
 	}
 	;
+
+FUN_CT: %empty 
+	{    
+        // Utility to change the table
+		parST = ST;                                                               
+
+        // If nested call recursively on the nested table
+		if(currSymbolPtr->nested==NULL) {
+			changeTable(new symtable(curPossibleSTName));	                                           
+		}
+		else {
+			changeTable(currSymbolPtr ->nested);						               
+			Q.emit("func", ST->name);
+		}
+	}
+	;
+semicolon:
+        ';'
+        {
+            lookupInsideParent = true;
+        };
 %%
 
 /*Auxiliaries*/

@@ -192,7 +192,7 @@ void generateAsm() {
 					int toAdd = stoi(arg2);
 					if(toAdd == 1) {
 						// optimization using inc
-						asmFile << "\tincl "<<"%eax\n";
+						asmFile << "\tincl \t"<<"%eax\n";
 					} else {
 						asmFile << "\taddl \t$" << arg2 << ", " << "%eax\n";
 					}

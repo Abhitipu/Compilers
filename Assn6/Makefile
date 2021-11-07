@@ -96,19 +96,19 @@ testmini: tinyC libass2_19CS10069_19CS30007.a
 	gcc testcases/output/ass6_19CS10069_19CS30007_test_3.o -o testcases/output/test3 -L. -lass2_19CS10069_19CS30007 -no-pie
 
 tinyC: lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o
-	g++ -g lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o -lfl -o tinyC
+	g++ lex.yy.o ass6_19CS10069_19CS30007.tab.o ass6_19CS10069_19CS30007_translator.o ass6_19CS10069_19CS30007_target_translator.o -lfl -o tinyC
 
 ass6_19CS10069_19CS30007_target_translator.o: ass6_19CS10069_19CS30007_target_translator.cxx ass6_19CS10069_19CS30007_translator.h
-	g++ -g -c ass6_19CS10069_19CS30007_target_translator.cxx
+	g++ -c ass6_19CS10069_19CS30007_target_translator.cxx
 
 ass6_19CS10069_19CS30007_translator.o: ass6_19CS10069_19CS30007_translator.cxx ass6_19CS10069_19CS30007_translator.h
-	g++ -g -c ass6_19CS10069_19CS30007_translator.cxx
+	g++ -c ass6_19CS10069_19CS30007_translator.cxx
 
 lex.yy.o: lex.yy.c
-	g++ -g -c lex.yy.c
+	g++ -c lex.yy.c
 
 ass6_19CS10069_19CS30007.tab.o: ass6_19CS10069_19CS30007.tab.c
-	g++ -g -c ass6_19CS10069_19CS30007.tab.c
+	g++ -c ass6_19CS10069_19CS30007.tab.c
 
 lex.yy.c: ass6_19CS10069_19CS30007.l ass6_19CS10069_19CS30007.tab.h ass6_19CS10069_19CS30007_translator.h
 	flex ass6_19CS10069_19CS30007.l
